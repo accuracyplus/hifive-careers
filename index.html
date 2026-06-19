@@ -67,14 +67,6 @@ const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 const WORKER = "https://recruitment.sinusuresh.workers.dev";
 
-const FALLBACK = [
-  { entity:'APML', branch:'Hamdan St', position:'Senior Medical Laboratory Technologist', experienceRequired:'3-5 yrs', expectedJoining:'2026-02-01', filled:1, headcount:3 },
-  { entity:'Pine Pharmacy', branch:'Dubai', position:'Registered Pharmacist', experienceRequired:'2+ yrs', genderPreference:'None', filled:0, headcount:2 },
-  { entity:'Al Jebal Opticals', branch:'Fujairah', position:'Optometrist', experienceRequired:'2-4 yrs', filled:0, headcount:1 },
-  { entity:'Herbal Park', branch:'Abu Dhabi', position:'Ayurveda Therapist', experienceRequired:'1-3 yrs', filled:2, headcount:2 },
-  { entity:'Atomic Drugstore', branch:'RAK', position:'Retail Supervisor', experienceRequired:'3+ yrs', expectedJoining:'2026-03-15', filled:0, headcount:1 },
-  { entity:'APML', branch:'Abu Dhabi', position:'Phlebotomist (Home Collection)', experienceRequired:'1+ yr', filled:1, headcount:4 },
-];
 
 function CareersPage() {
   const [lang, setLang] = useState('en');
@@ -188,10 +180,10 @@ function CareersPage() {
       .then(r => r.json())
       .then(d => {
         const arr = d.positions || [];
-        setPositions(arr.length ? arr : FALLBACK);
+        setPositions(arr);
         setLoading(false);
       })
-      .catch(() => { setPositions(FALLBACK); setLoading(false); });
+      .catch(() => { setPositions([]); setLoading(false); });
   }, []);
 
   useEffect(() => {
