@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Careers — HiFive Holdings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:#efe9e1;color:#1c1b22;font-family:"Inter",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    ::selection{background:#b4123a;color:#fff}
+    #root{min-height:100vh}
+
+    @keyframes hf-drift{0%{transform:translate(0,0) scale(1)}33%{transform:translate(38px,-30px) scale(1.12)}66%{transform:translate(-28px,22px) scale(.94)}100%{transform:translate(0,0) scale(1)}}
+    @keyframes hf-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    @keyframes hf-float2{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+    @keyframes hf-up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes hf-in{from{opacity:0}to{opacity:1}}
+    @keyframes hf-blurin{from{opacity:0;filter:blur(14px);transform:translateY(14px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+    @keyframes hf-spin{to{transform:rotate(360deg)}}
+
+    @media(max-width:820px){
+      [data-r="rail"]{display:none!important}
+      [data-r="hpad"]{padding-left:clamp(20px,5vw,30px)!important;padding-right:clamp(20px,5vw,30px)!important}
+      [data-r="cpad"]{padding-left:clamp(20px,5vw,30px)!important;padding-right:clamp(20px,5vw,30px)!important}
+    }
+    @media(max-width:600px){
+      [data-r="navsub"]{display:none!important}
+      [data-r="navbtns"]{gap:4px!important}
+      [data-r="navbtns"] button{font-size:12px!important;padding:8px 11px!important}
+      [data-r="filterbar"]{border-radius:22px!important;padding:8px!important}
+      [data-r="hero-h1"]{font-size:clamp(40px,12vw,56px)!important}
+      [data-r="bulkrow"]{grid-template-columns:1fr!important}
+      [data-r="trackgrid"]{grid-template-columns:1fr!important}
+    }
+    @media(max-width:400px){
+      [data-r="navname"]{display:none!important}
+    }
+
+    .hf-nav-btn:hover{background:rgba(180,18,58,.08)!important;color:#b4123a!important}
+    .hf-lang-btn:hover{transform:translateY(-1px)!important}
+    .hf-cta-primary:hover{transform:translateY(-2px)!important;box-shadow:0 18px 36px rgba(110,11,42,.4)!important}
+    .hf-cta-secondary:hover{background:#fff!important}
+    .hf-filter-btn:hover{transform:translateY(-1px)!important}
+    .hf-icon-btn:hover{background:rgba(255,255,255,.7)!important;color:#b4123a!important}
+    .hf-stat-btn:hover{transform:rotate(-12deg) scale(1.05)!important}
+    .hf-featured-apply:hover{background:#b4123a!important;color:#fff!important}
+    .hf-apply-btn:hover{transform:translateY(-1px)!important}
+    .hf-why-card:hover{transform:translateY(-4px)!important;box-shadow:0 22px 50px rgba(110,11,42,.16)!important}
+    .hf-track-btn:hover{transform:translateY(-1px)!important}
+    .hf-bulk-zone:hover{border-color:#b4123a!important;background:rgba(255,255,255,.72)!important}
+    .hf-pos-card-open:hover{transform:translateY(-3px)!important;box-shadow:0 20px 48px rgba(110,11,42,.14)!important}
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js" crossorigin></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
+
+const WORKER = "https://recruitment.sinusuresh.workers.dev";
+
+const FALLBACK = [
+  { entity:'APML', branch:'Hamdan St', position:'Senior Medical Laboratory Technologist', experienceRequired:'3-5 yrs', expectedJoining:'2026-02-01', filled:1, headcount:3 },
+  { entity:'Pine Pharmacy', branch:'Dubai', position:'Registered Pharmacist', experienceRequired:'2+ yrs', genderPreference:'None', filled:0, headcount:2 },
+  { entity:'Al Jebal Opticals', branch:'Fujairah', position:'Optometrist', experienceRequired:'2-4 yrs', filled:0, headcount:1 },
+  { entity:'Herbal Park', branch:'Abu Dhabi', position:'Ayurveda Therapist', experienceRequired:'1-3 yrs', filled:2, headcount:2 },
+  { entity:'Atomic Drugstore', branch:'RAK', position:'Retail Supervisor', experienceRequired:'3+ yrs', expectedJoining:'2026-03-15', filled:0, headcount:1 },
+  { entity:'APML', branch:'Abu Dhabi', position:'Phlebotomist (Home Collection)', experienceRequired:'1+ yr', filled:1, headcount:4 },
+];
+
+function CareersPage() {
+  const [lang, setLang] = useState('en');
+  const [positions, setPositions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [entity, setEntity] = useState('');
+  const [statCount, setStatCount] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalPosition, setModalPosition] = useState('');
+  const [modalEntity, setModalEntity] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [successRef, setSuccessRef] = useState('');
+  const [formName, setFormName] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formNat, setFormNat] = useState('');
+  const [formSalary, setFormSalary] = useState('');
+  const [trackInput, setTrackInput] = useState('');
+  const [trackLoading, setTrackLoading] = useState(false);
+  const [trackErr, setTrackErr] = useState('');
+  const [trackResult, setTrackResult] = useState(null);
+  const [trackNotFound, setTrackNotFound] = useState(false);
+  const [bulkFiles, setBulkFiles] = useState([]);
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [bulkDone, setBulkDone] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState(0);
+  const [bulkStatus, setBulkStatus] = useState('');
+
+  const cvRef = useRef(null);
+  const bulkInputRef = useRef(null);
+
+  const ar = lang === 'ar';
+  const dir = ar ? 'rtl' : 'ltr';
+  const t = (en, a) => ar ? a : en;
+
+  const L = {
+    navSub: t('Healthcare & Retail Group','مجموعة الرعاية والتجزئة'),
+    navPositions: t('Open Positions','الوظائف'),
+    navTrack: t('Track Application','تتبع طلبك'),
+    langLabel: ar ? 'English' : 'عربي',
+    heroEyebrow: t('Now Hiring · 5 Units','نوظف الآن · 5 وحدات'),
+    heroTitle1: t('Build Your','ابنِ'),
+    heroTitle2: t('Career','مسيرتك'),
+    heroSub: t('Join a growing healthcare & retail group across Abu Dhabi, Dubai, Fujairah and beyond. We invest in people who care.','انضم إلى مجموعة متنامية في الرعاية الصحية والتجزئة عبر أبوظبي ودبي والفجيرة وما هو أبعد. نستثمر في من يهتمون.'),
+    heroCtaPrimary: t('View Open Positions','عرض الوظائف'),
+    heroCtaSecondary: t('Track My Application','تتبع طلبي'),
+    uploadHint: t('Recommended: 1040 × 1280 px · PNG · portrait','يُفضّل: 1040 × 1280 بكسل · PNG · عمودي'),
+    allEntities: t('All Entities','جميع الجهات'),
+    findBtn: t('Find Roles','ابحث'),
+    searchPlaceholder: t('Search a role…','ابحث عن وظيفة…'),
+    statCardTitle: t('Find The Right Place','اعثر على مكانك'),
+    statCardDesc: t('We connect you with meaningful roles across our growing group.','نربطك بوظائف ذات معنى عبر مجموعتنا المتنامية.'),
+    statTeam: t('Professionals','محترفون'),
+    featuredLabel: t('Featured Opening','وظيفة مميزة'),
+    uaeFullTime: t('UAE · Full Time','الإمارات · دوام كامل'),
+    applyWord: t('Apply Now','تقدم الآن'),
+    entitiesLabel: t('Our Business Units','وحدات أعمالنا'),
+    posTitle: t('Open Positions','الوظائف المتاحة'),
+    posSub: t('Live openings, updated in real time','وظائف شاغرة تُحدَّث في الوقت الفعلي'),
+    loadingText: t('Loading positions…','جاري تحميل الوظائف…'),
+    errorText: t('Unable to load positions right now.','تعذر تحميل الوظائف حالياً.'),
+    emptyText: t('No positions match your filters.','لا توجد وظائف تطابق معاييرك.'),
+    whyTitle: t('Why Join HiFive?','لماذا تنضم إلى هايفايف؟'),
+    whySub: t('We grow together','ننمو معاً'),
+    why1Title: t('Healthcare Leader','رائد في الرعاية'),
+    why1Desc: t('ISO 15189:2022 accredited laboratory and DOH-licensed clinics.','مختبر معتمد وعيادات مرخصة من دائرة الصحة.'),
+    why2Title: t('UAE-Wide Operations','عمليات في الإمارات'),
+    why2Desc: t('Branches across Abu Dhabi, Dubai, RAK and Fujairah.','فروع عبر أبوظبي ودبي ورأس الخيمة والفجيرة.'),
+    why3Title: t('Growth Culture','ثقافة النمو'),
+    why3Desc: t('Training, certifications and clear career progression.','تدريب وشهادات ومسارات ترقٍّ واضحة.'),
+    why4Title: t('Diverse Team','فريق متنوع'),
+    why4Desc: t('160+ professionals from 20+ nationalities.','أكثر من 160 محترفاً من أكثر من 20 جنسية.'),
+    trackTitle: t('Track Your Application','تتبع طلبك'),
+    trackSub: t('Enter the reference ID you received after submitting your CV to check your current status.','أدخل رقم المرجع الذي تلقيته بعد تقديم سيرتك الذاتية للتحقق من حالتك.'),
+    trackBtn: t('Track','تتبع'),
+    trackNotFound: t('No application found with this ID. Please check and try again.','لم يتم العثور على طلب بهذا الرقم. يرجى التحقق والمحاولة مرة أخرى.'),
+    posWord: t('Position','الوظيفة'),
+    entityWord: t('Entity','الجهة'),
+    appliedOn: t('Applied On','تاريخ التقديم'),
+    interviewDate: t('Interview Date','تاريخ المقابلة'),
+    progressLabel: t('Application Progress','تقدم الطلب'),
+    bulkTitle: t('Drop Your CV Directly','أرسل سيرتك مباشرة'),
+    bulkSub: t('Upload one or multiple CVs — no account needed. Files are saved securely and HR is notified instantly.','ارفع سيرة ذاتية أو أكثر — بدون حساب. تُحفظ الملفات بأمان وتُخطر الموارد البشرية فوراً.'),
+    dropTitle: t('Drop CVs here or click to browse','أسقط السير هنا أو انقر للتصفح'),
+    dropHint: t('PDF · Word · Image · Multiple files supported','PDF · Word · صورة · ملفات متعددة'),
+    candidateName: t('Candidate name *','اسم المرشح *'),
+    positionOptional: t('Position (optional)','الوظيفة (اختياري)'),
+    uploadAll: t('Upload All CVs','رفع جميع السير'),
+    addMore: t('+ Add More','+ إضافة المزيد'),
+    doneTitle: t('All CVs uploaded!','تم رفع جميع السير!'),
+    doneSub: t('HR has been notified. You will be contacted if your profile matches.','تم إخطار الموارد البشرية. سنتواصل معك إذا تطابق ملفك.'),
+    modalSubtitle: t('Submit your CV and basic details. Our HR team will reach out within 3–5 business days.','أرسل سيرتك وتفاصيلك الأساسية. سيتواصل فريقنا خلال 3-5 أيام عمل.'),
+    fullName: t('Full Name *','الاسم الكامل *'),
+    phone: t('Phone *','رقم الهاتف *'),
+    email: t('Email *','البريد الإلكتروني *'),
+    nationality: t('Nationality *','الجنسية *'),
+    expSalary: t('Expected Salary (AED) *','الراتب المتوقع (درهم) *'),
+    cvLabel: t('CV (PDF/DOC) *','السيرة الذاتية *'),
+    cancelBtn: t('Cancel','إلغاء'),
+    successTitle: t('Application Submitted!','تم تقديم طلبك!'),
+    refLabel: t('Your reference number:','رقم مرجعك:'),
+    saveIdNote: t('Save this ID to track your application status above.','احفظ هذا الرقم لتتبع حالة طلبك أعلاه.'),
+    closeBtn: t('Close','إغلاق'),
+    footerNote: t('All positions subject to UAE Labour Law and visa eligibility.','جميع الوظائف خاضعة لقانون العمل الإماراتي وأهلية التأشيرة.'),
+  };
+
+  useEffect(() => {
+    fetch(`${WORKER}/get-open-positions`)
+      .then(r => r.json())
+      .then(d => {
+        const arr = d.positions || [];
+        setPositions(arr.length ? arr : FALLBACK);
+        setLoading(false);
+      })
+      .catch(() => { setPositions(FALLBACK); setLoading(false); });
+  }, []);
+
+  useEffect(() => {
+    const target = 160, dur = 1200, t0 = performance.now();
+    let raf;
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - k, 3);
+      setStatCount(Math.round(target * eased));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const scrollToId = (id) => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+  };
+
+  const fmtDate = (val) => {
+    if (!val) return '';
+    const s = String(val).trim();
+    if (/^\d{2}-\d{2}-\d{4}$/.test(s)) return s;
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) { const [y,m,d] = s.split('T')[0].split('-'); return `${d}-${m}-${y}`; }
+    const n = parseFloat(s);
+    if (!isNaN(n) && n > 1000) { const dt = new Date(new Date(1899,11,30).getTime() + n*86400000); return `${String(dt.getDate()).padStart(2,'0')}-${String(dt.getMonth()+1).padStart(2,'0')}-${dt.getFullYear()}`; }
+    return s;
+  };
+
+  const filteredPositions = useMemo(() => {
+    const s = search.toLowerCase().trim();
+    return positions.filter(p => {
+      const pos = (p.customPosition || p.position || '').toLowerCase();
+      return (!s || pos.includes(s)) && (!entity || p.entity === entity);
+    });
+  }, [positions, search, entity]);
+
+  const posVM = (p) => {
+    const filled = p.filled || 0;
+    const total = p.headcount || p.count || 1;
+    const pct = Math.min(100, Math.round((filled / total) * 100));
+    const isFull = pct >= 100;
+    const isAlmost = pct >= 50 && pct < 100;
+    const barColor = isFull ? '#c0392b' : isAlmost ? '#d98a14' : '#1e8449';
+    const labelColor = isFull ? '#c0392b' : isAlmost ? '#b8740f' : '#1a7a42';
+    let meta = t('UAE · Full Time','الإمارات · دوام كامل');
+    if (p.experienceRequired) meta += ` · ${p.experienceRequired}`;
+    if (p.genderPreference && p.genderPreference !== 'None') meta += ` · ${p.genderPreference} ${t('preferred','مفضل')}`;
+    return {
+      title: p.customPosition || p.position,
+      entityLine: p.entity + (p.branch ? ` · ${p.branch}` : ''),
+      metaLine: meta,
+      hasJoining: !!p.expectedJoining,
+      joiningLine: p.expectedJoining ? `${t('Target joining','الالتحاق')}: ${fmtDate(p.expectedJoining)}` : '',
+      pct, isFull, isOpen: !isFull,
+      barColor,
+      fillLabel: isFull ? t('Position Filled','تم الشغل') : `${total - filled} ${t('of','من')} ${total} ${t('open','متاح')}`,
+      fillLabelStyle: { fontSize:'11.5px', fontWeight:'700', color:labelColor },
+      badgeText: isFull ? t('Filled','مكتمل') : t('Hiring Now','نوظف الآن'),
+      badgeFull: isFull,
+      locWord: t('UAE','الإمارات'),
+      applyText: isFull ? t('No vacancies','لا شواغر') : t('Apply','تقدم'),
+      onApply: () => openApply(p.position, p.entity),
+    };
+  };
+
+  const allVMs = useMemo(() => positions.map(posVM), [positions, lang]);
+  const featured = useMemo(() => {
+    const open = allVMs.find(v => v.isOpen) || allVMs[0] || {
+      title: t('Multiple Openings','وظائف متعددة'), entityLine: 'HiFive Holdings',
+      metaTag: t('Across 5 units','عبر 5 وحدات'), onApply: () => scrollToId('positions'),
+    };
+    if (open) {
+      const parts = (open.metaLine || '').split(' · ');
+      const expLabel = parts.slice(2).find(p => /yr|year|exp/i.test(p)) || parts.slice(2).join(' · ');
+      const branchParts = (open.entityLine || '').split(' · ');
+      const branch = branchParts.length > 1 ? branchParts.slice(1).join(' · ') : '';
+      open.metaTag = expLabel || branch || open.fillLabel || t('Open now','متاح الآن');
+    }
+    return open;
+  }, [allVMs, lang]);
+
+  const openApply = (position, ent) => {
+    setModalOpen(true); setModalPosition(position); setModalEntity(ent);
+    setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormSalary('');
+  };
+  const closeModal = () => { setModalOpen(false); setSuccess(false); };
+
+  const submitApplication = async () => {
+    const cvFile = cvRef.current?.files?.[0];
+    if (!formName || !formPhone || !formEmail || !formNat || !formSalary || !cvFile) {
+      alert(t('Please fill in all required fields and attach your CV.','يرجى ملء جميع الحقول المطلوبة وإرفاق سيرتك الذاتية.'));
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${WORKER}/add-candidate`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ name:formName, phone:formPhone, email:formEmail, nationality:formNat,
+          expectedSalary:formSalary, position:modalPosition, entity:modalEntity, source:'Careers Page', role:'recruiter' }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Submission failed');
+      const candID = data.candidateID;
+      const fd = new FormData();
+      fd.append('candidateID', candID);
+      fd.append('file', cvFile);
+      await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
+      setSuccess(true); setSuccessRef(candID);
+    } catch (e) {
+      alert(t('Submission failed: ','فشل الإرسال: ') + e.message);
+    } finally { setSubmitting(false); }
+  };
+
+  const STATUS_STEPS = ['Active','Shortlisted','Ops Cleared','Mgmt Cleared','Offered','Accepted','Joined'];
+  const statusLabel = (s) => {
+    const en = { Active:'Applied', Shortlisted:'Shortlisted', 'Ops Cleared':'Ops Cleared',
+      'Mgmt Cleared':'Mgmt Cleared', Offered:'Offer Extended', Accepted:'Offer Accepted', Joined:'Joined' };
+    const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', 'Ops Cleared':'اجتاز العمليات',
+      'Mgmt Cleared':'اجتاز الإدارة', Offered:'تم إرسال العرض', Accepted:'قبل العرض', Joined:'التحق' };
+    return (ar ? ara : en)[s] || s;
+  };
+  const statusBadgeStyle = (status) => {
+    const m = {
+      Active:{bg:'rgba(43,108,176,.18)',color:'#cfe6ff'}, Shortlisted:{bg:'rgba(216,138,20,.22)',color:'#ffd9a0'},
+      Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'}, Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
+      Rejected:{bg:'rgba(192,57,43,.24)',color:'#ffc2bb'}, 'On Hold':{bg:'rgba(108,52,131,.24)',color:'#e6c8f0'}, Onboarding:{bg:'rgba(30,100,200,.24)',color:'#c2d6ff'}, Accepted:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'}, 'Ops Cleared':{bg:'rgba(14,165,233,.24)',color:'#bae6fd'}, 'Mgmt Cleared':{bg:'rgba(16,185,129,.24)',color:'#a7f3d0'}, 'Verbal Offered':{bg:'rgba(249,115,22,.24)',color:'#fed7aa'},
+    };
+    const {bg='rgba(255,255,255,.15)',color='#fff'} = m[status] || {};
+    return { fontSize:'12.5px', fontWeight:'700', padding:'6px 15px', borderRadius:'99px', background:bg, color };
+  };
+  const buildTimeline = (status) => {
+    const cur = STATUS_STEPS.indexOf(status);
+    const nodes = [];
+    STATUS_STEPS.forEach((s, i) => {
+      const done = i < cur, current = i === cur;
+      const dotBg = done ? '#1e8449' : current ? 'linear-gradient(135deg,#d6204a,#6e0b2a)' : 'rgba(255,255,255,.14)';
+      const dotColor = (done || current) ? '#fff' : 'rgba(255,255,255,.45)';
+      nodes.push({ isDot:true, isLine:false, dotText: done ? '✓' : String(i+1),
+        dotBg, dotColor, labelText: statusLabel(s),
+        labelColor: current?'#ff9fb2':done?'rgba(255,255,255,.7)':'rgba(255,255,255,.4)',
+        labelWeight: current?'700':'500' });
+      if (i < STATUS_STEPS.length-1) nodes.push({ isDot:false, isLine:true, lineBg: done?'#1e8449':'rgba(255,255,255,.14)' });
+    });
+    return nodes;
+  };
+
+  const onTrackKey = (e) => { if (e.key === 'Enter') doTrack(); };
+  const doTrack = async () => {
+    const id = trackInput.trim().toUpperCase();
+    setTrackErr(''); setTrackResult(null); setTrackNotFound(false);
+    if (!/^REC-\d{4}$/.test(id)) { setTrackErr(t('Please enter a valid reference ID (e.g. REC-0001)','يرجى إدخال رقم مرجع صحيح (مثال: REC-0001)')); return; }
+    setTrackLoading(true);
+    try {
+      const r = await fetch(`${WORKER}/track-status?id=${id}`);
+      const data = await r.json();
+      if (!data.found) { setTrackNotFound(true); return; }
+      setTrackResult(data);
+    } catch (e) { setTrackErr(t('Error checking status. Please try again.','خطأ في التحقق من الحالة. يرجى المحاولة مرة أخرى.')); }
+    finally { setTrackLoading(false); }
+  };
+
+  const guessName = (fn) => fn.replace(/\.(pdf|doc|docx|jpg|jpeg|png)$/i,'').replace(/[_\-.]+/g,' ')
+    .replace(/\b(cv|resume|application)\b/gi,'').trim()
+    .split(/\s+/).map(w => w ? w[0].toUpperCase()+w.slice(1).toLowerCase() : '').join(' ').trim();
+
+  const addBulk = (fileList) => {
+    const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', status:'idle' }));
+    setBulkFiles(prev => [...prev, ...add]);
+    setBulkDone(false);
+  };
+  const setBulkField = (i, k, v) => setBulkFiles(prev => { const a=[...prev]; a[i]={...a[i],[k]:v}; return a; });
+  const removeBulk = (i) => setBulkFiles(prev => prev.filter((_,j) => j !== i));
+
+  const uploadAllBulk = async () => {
+    if (bulkUploading) return;
+    const snapshot = [...bulkFiles];
+    const pending = snapshot.filter(f => f.status === 'idle');
+    if (!pending.length) return;
+    setBulkUploading(true); setBulkProgress(0); setBulkStatus('');
+    let done = 0;
+    for (let i = 0; i < snapshot.length; i++) {
+      if (snapshot[i].status !== 'idle') continue;
+      setBulkField(i, 'status', 'loading');
+      try {
+        const f = snapshot[i];
+        const fd = new FormData();
+        fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', f.position||''); fd.append('source','Careers Page');
+        const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error||'fail');
+        setBulkField(i, 'status', 'done'); done++;
+      } catch { setBulkField(i, 'status', 'error'); }
+      setBulkProgress(Math.round((done/pending.length)*100));
+      setBulkStatus(`${t('Uploaded','تم رفع')} ${done} ${t('of','من')} ${pending.length}…`);
+    }
+    setBulkUploading(false);
+    setBulkFiles(prev => { if (prev.every(f=>f.status==='done') && prev.length) { setBulkDone(true); return []; } return prev; });
+  };
+
+  const timelineNodes = trackResult ? buildTimeline(trackResult.status) : [];
+
+  return (
+    <div style={{position:'relative', minHeight:'100vh', overflow:'hidden', direction:dir}}>
+
+      {/* Ambient orbs */}
+      <div style={{position:'fixed',inset:0,zIndex:0,pointerEvents:'none',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:'-120px',left:'-80px',width:'520px',height:'520px',borderRadius:'50%',background:'radial-gradient(circle at 30% 30%,rgba(214,32,74,.22),transparent 65%)',filter:'blur(20px)',animation:'hf-drift 22s ease-in-out infinite'}}></div>
+        <div style={{position:'absolute',top:'30%',right:'-140px',width:'560px',height:'560px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(120,11,42,.16),transparent 66%)',filter:'blur(24px)',animation:'hf-drift 28s ease-in-out infinite reverse'}}></div>
+        <div style={{position:'absolute',bottom:'-160px',left:'25%',width:'480px',height:'480px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(196,150,120,.18),transparent 66%)',filter:'blur(22px)',animation:'hf-drift 26s ease-in-out infinite'}}></div>
+      </div>
+
+      <div style={{position:'relative',zIndex:2}}>
+
+        {/* NAV */}
+        <nav style={{position:'sticky',top:0,zIndex:60,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'20px',padding:'14px clamp(16px,4vw,48px)',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',borderBottom:'1px solid rgba(255,255,255,.6)'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
+            <img src="https://raw.githubusercontent.com/accuracyplus/hifive-recruitment/main/public/logo.png" alt="HiFive" style={{height:'34px',width:'auto',display:'block'}} />
+            <div style={{display:'flex',flexDirection:'column',lineHeight:'1.1'}}>
+              <span data-r="navname" style={{fontWeight:'800',fontSize:'15px',letterSpacing:'-.01em',color:'#1c1b22'}}>HiFive Holdings</span>
+              <span data-r="navsub" style={{fontSize:'10.5px',letterSpacing:'.16em',textTransform:'uppercase',color:'#8a8590',fontWeight:'600'}}>{L.navSub}</span>
+            </div>
+          </div>
+          <div data-r="navbtns" style={{display:'flex',alignItems:'center',gap:'6px'}}>
+            <button className="hf-nav-btn" onClick={() => scrollToId('positions')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navPositions}</button>
+            <button className="hf-nav-btn" onClick={() => scrollToId('tracker')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navTrack}</button>
+            <button className="hf-lang-btn" onClick={() => setLang(l => l==='en'?'ar':'en')} style={{cursor:'pointer',fontFamily:'inherit',fontSize:'13px',fontWeight:'700',color:'#fff',padding:'9px 18px',borderRadius:'99px',border:'none',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 16px rgba(110,11,42,.28)',transition:'transform .2s'}}>{L.langLabel}</button>
+          </div>
+        </nav>
+
+        {/* HERO */}
+        <section style={{padding:'clamp(20px,3vw,40px) clamp(14px,3vw,40px) clamp(30px,4vw,56px)'}}>
+          <div style={{position:'relative',maxWidth:'1240px',margin:'0 auto',borderRadius:'34px',overflow:'hidden',background:'linear-gradient(152deg,#f4dce1 0%,#e9dcef 36%,#dfe7f4 66%,#f6ede3 100%)',boxShadow:'0 40px 90px -30px rgba(110,11,42,.32),0 8px 24px rgba(28,27,34,.06)',minHeight:'clamp(540px,62vw,620px)',animation:'hf-blurin 1s cubic-bezier(.2,.7,.2,1) both'}}>
+            {/* glints */}
+            <div style={{position:'absolute',top:'-60px',right:'8%',width:'340px',height:'340px',borderRadius:'50%',background:'radial-gradient(circle,rgba(255,255,255,.55),transparent 60%)',filter:'blur(10px)',pointerEvents:'none'}}></div>
+            <div style={{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'}}></div>
+
+            {/* Filter bar */}
+            <div data-r="filterbar" style={{position:'relative',zIndex:5,margin:'18px clamp(16px,3vw,26px) 0',display:'flex',flexWrap:'wrap',alignItems:'center',gap:'10px',padding:'10px',borderRadius:'99px',background:'rgba(255,255,255,.5)',backdropFilter:'blur(18px)',WebkitBackdropFilter:'blur(18px)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 10px 30px rgba(110,11,42,.10)',animation:'hf-up .8s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.15s'}}>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 20px',borderRadius:'99px',background:'#fff',fontSize:'13.5px',fontWeight:'700',color:'#b4123a',boxShadow:'0 2px 8px rgba(110,11,42,.10)'}}>
+                <span style={{width:'8px',height:'8px',borderRadius:'50%',background:'#d6204a',boxShadow:'0 0 0 4px rgba(214,32,74,.18)'}}></span>{L.heroEyebrow}
+              </span>
+              <div style={{display:'flex',alignItems:'center',gap:'8px',flex:'1',minWidth:'240px',justifyContent:'flex-end',flexWrap:'wrap'}}>
+                <div style={{display:'flex',alignItems:'center',gap:'8px',padding:'0 6px 0 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',minWidth:'150px'}}>
+                  <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 6px',cursor:'pointer',width:'100%'}}>
+                    <option value="">{L.allEntities}</option>
+                    <option value="APML">APML</option>
+                    <option value="Herbal Park">Herbal Park</option>
+                    <option value="Atomic Drugstore">Atomic Drugstore</option>
+                    <option value="Pine Pharmacy">Pine Pharmacy</option>
+                    <option value="Al Jebal Opticals">Al Jebal Opticals</option>
+                  </select>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <button className="hf-filter-btn" onClick={() => scrollToId('positions')} style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 22px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 20px rgba(110,11,42,.3)',transition:'transform .2s'}}>
+                  {L.findBtn}
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Icon rail */}
+            <div data-r="rail" style={{position:'absolute',left:'clamp(14px,2.2vw,26px)',top:'54%',transform:'translateY(-50%)',zIndex:6,display:'flex',flexDirection:'column',gap:'8px',padding:'9px',borderRadius:'99px',background:'rgba(255,255,255,.46)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.65)',boxShadow:'0 12px 30px rgba(110,11,42,.12)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.45s'}}>
+              <div style={{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.32)'}}>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+              </div>
+              {[
+                <><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></>,
+                <><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></>,
+                <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>,
+              ].map((icon, i) => (
+                <div key={i} className="hf-icon-btn" style={{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'#7a4a55',transition:'all .2s'}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">{icon}</svg>
+                </div>
+              ))}
+            </div>
+
+            {/* Two-column: content left, upload right */}
+            <div style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',alignItems:'stretch',gap:'clamp(14px,2vw,28px)'}}>
+
+              {/* Left column */}
+              <div style={{flex:'1 1 320px',minWidth:'280px',display:'flex',flexDirection:'column'}}>
+                {/* Headline */}
+                <div data-r="hpad" style={{position:'relative',zIndex:4,padding:'clamp(28px,5vw,52px) clamp(20px,4vw,56px) 0 clamp(100px,10vw,130px)',maxWidth:'760px'}}>
+                  <h1 data-r="hero-h1" style={{fontFamily:"'Playfair Display',serif",fontWeight:'500',fontSize:'clamp(44px,7.2vw,92px)',lineHeight:'.98',letterSpacing:'-.02em',color:'#23202b',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.25s'}}>
+                    {L.heroTitle1}<br/>
+                    <span style={{background:'linear-gradient(100deg,#d6204a,#6e0b2a 60%,#b4123a)',WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent',fontStyle:'italic',fontWeight:'600',display:'block'}}>{L.heroTitle2}</span>
+                  </h1>
+                  <p style={{marginTop:'18px',maxWidth:'420px',fontSize:'15.5px',lineHeight:'1.6',color:'#5b5560',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.4s'}}>{L.heroSub}</p>
+                  <div style={{marginTop:'26px',display:'flex',gap:'12px',flexWrap:'wrap',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.55s'}}>
+                    <button className="hf-cta-primary" onClick={() => scrollToId('positions')} style={{display:'inline-flex',alignItems:'center',gap:'9px',padding:'14px 26px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.32)',transition:'transform .2s,box-shadow .2s'}}>
+                      {L.heroCtaPrimary}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                    <button className="hf-cta-secondary" onClick={() => scrollToId('tracker')} style={{padding:'14px 24px',borderRadius:'99px',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'600',color:'#23202b',background:'rgba(255,255,255,.55)',backdropFilter:'blur(10px)',WebkitBackdropFilter:'blur(10px)',border:'1px solid rgba(255,255,255,.8)',transition:'all .2s'}}>{L.heroCtaSecondary}</button>
+                  </div>
+                </div>
+
+                {/* Floating glass cards */}
+                <div data-r="cpad" style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',gap:'22px',padding:'clamp(26px,4vw,40px) clamp(20px,4vw,56px) clamp(22px,3vw,32px) clamp(100px,10vw,130px)',alignItems:'flex-end'}}>
+                  {/* Stat card */}
+                  <div style={{flex:'1',minWidth:'230px',maxWidth:'310px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 18px 44px rgba(110,11,42,.14)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float 7s ease-in-out 1.4s infinite',animationDelay:'.65s',minHeight:'200px',alignSelf:'flex-end'}}>
+                    <div style={{fontWeight:'700',fontSize:'14.5px',color:'#23202b',marginBottom:'5px'}}>{L.statCardTitle}</div>
+                    <div style={{fontSize:'12.5px',lineHeight:'1.5',color:'#6b6670',marginBottom:'16px'}}>{L.statCardDesc}</div>
+                    <div style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',gap:'10px'}}>
+                      <div style={{minWidth:0}}>
+                        <div style={{fontFamily:"'Playfair Display',serif",fontSize:'38px',fontWeight:'700',lineHeight:'1',color:'#b4123a'}}>{statCount}+</div>
+                        <div style={{fontSize:'11.5px',letterSpacing:'.04em',color:'#8a8590',fontWeight:'600',marginTop:'3px'}}>{L.statTeam}</div>
+                      </div>
+                      <button className="hf-stat-btn" onClick={() => scrollToId('positions')} style={{width:'46px',height:'46px',flexShrink:0,borderRadius:'50%',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.32)',transition:'transform .2s'}}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Featured role card */}
+                  {featured && (
+                    <div style={{flex:'1.3',minWidth:'280px',maxWidth:'420px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.7)',backdropFilter:'blur(22px)',WebkitBackdropFilter:'blur(22px)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 20px 50px rgba(110,11,42,.18)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float2 8s ease-in-out 1.6s infinite',animationDelay:'.8s'}}>
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'12px',marginBottom:'12px'}}>
+                        <div>
+                          <div style={{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#d6204a',marginBottom:'6px'}}>{L.featuredLabel}</div>
+                          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'21px',fontWeight:'600',color:'#23202b',lineHeight:'1.15'}}>{featured.title}</div>
+                          <div style={{display:'flex',alignItems:'center',gap:'6px',marginTop:'6px',fontSize:'12.5px',color:'#6b6670'}}>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                            {featured.entityLine}
+                          </div>
+                        </div>
+                        <button className="hf-featured-apply" onClick={featured.onApply} style={{width:'42px',height:'42px',flexShrink:0,borderRadius:'50%',border:'1px solid rgba(180,18,58,.25)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'#fff',color:'#b4123a',transition:'all .2s'}}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                        </button>
+                      </div>
+                      <div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginBottom:'16px'}}>
+                        <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{L.uaeFullTime}</span>
+                        {featured.metaTag && <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{featured.metaTag}</span>}
+                      </div>
+                      <button className="hf-apply-btn" onClick={featured.onApply} style={{width:'100%',padding:'12px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.26)',transition:'transform .2s'}}>{L.applyWord} →</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Right: hero image upload */}
+              <div style={{flex:'0 1 360px',minWidth:'240px',display:'flex',flexDirection:'column',justifyContent:'center',padding:'clamp(16px,2.4vw,26px) clamp(18px,2.6vw,28px) clamp(22px,3vw,32px) 0',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.7s'}}>
+                <div style={{position:'relative',display:'flex'}}>
+                  <image-slot id="heroImage" shape="rounded" radius="26" fit="cover" placeholder="Drop your hero PNG here" style={{display:'block',width:'100%',height:'100%',minHeight:'clamp(340px,40vw,500px)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 22px 54px rgba(110,11,42,.18)'}}></image-slot>
+                  <div style={{position:'absolute',inset:0,borderRadius:'26px',pointerEvents:'none',background:'linear-gradient(to bottom,rgba(255,255,255,.09) 0%,transparent 28%,transparent 68%,rgba(110,11,42,.22) 100%)',boxShadow:'inset 0 0 0 1.5px rgba(255,255,255,.78),inset 0 4px 28px rgba(255,255,255,.38),inset 0 -58px 84px -38px rgba(110,11,42,.34),0 0 0 1px rgba(255,255,255,.32),0 10px 40px rgba(110,11,42,.14)'}}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ENTITIES STRIP */}
+        <section style={{maxWidth:'1240px',margin:'0 auto',padding:'6px clamp(16px,4vw,48px) 18px'}}>
+          <div style={{textAlign:'center',fontSize:'11px',letterSpacing:'.18em',textTransform:'uppercase',fontWeight:'700',color:'#a59b92',marginBottom:'16px'}}>{L.entitiesLabel}</div>
+          <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'10px'}}>
+            {['APML — Medical Laboratory','Herbal Park — Ayurveda','Atomic Drugstore','Pine Pharmacy','Al Jebal Opticals'].map((name, i) => (
+              <div key={i} style={{display:'inline-flex',alignItems:'center',gap:'9px',padding:'11px 20px',borderRadius:'99px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,.75)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',fontSize:'13px',fontWeight:'600',color:'#3a3640'}}>
+                <span style={{width:'7px',height:'7px',borderRadius:'50%',background:'#d6204a',flexShrink:0}}></span>{name}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* OPEN POSITIONS */}
+        <section id="positions" style={{maxWidth:'1240px',margin:'0 auto',padding:'clamp(40px,5vw,72px) clamp(16px,4vw,48px) clamp(30px,4vw,48px)',scrollMarginTop:'90px'}}>
+          <div style={{display:'flex',flexWrap:'wrap',alignItems:'flex-end',justifyContent:'space-between',gap:'18px',marginBottom:'26px'}}>
+            <div>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b',lineHeight:'1.05'}}>{L.posTitle}</h2>
+              <p style={{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'}}>{L.posSub}</p>
+            </div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'10px',alignItems:'center'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'9px',padding:'11px 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',minWidth:'220px'}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b08a90" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+                <input value={search} onInput={e => setSearch(e.target.value)} placeholder={L.searchPlaceholder} style={{border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',color:'#1c1b22',flex:'1',minWidth:'120px'}} />
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',padding:'0 14px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)'}}>
+                <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 4px',cursor:'pointer'}}>
+                  <option value="">{L.allEntities}</option>
+                  <option value="APML">APML</option>
+                  <option value="Herbal Park">Herbal Park</option>
+                  <option value="Atomic Drugstore">Atomic Drugstore</option>
+                  <option value="Pine Pharmacy">Pine Pharmacy</option>
+                  <option value="Al Jebal Opticals">Al Jebal Opticals</option>
+                </select>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          {loading && (
+            <div style={{textAlign:'center',padding:'60px 20px',color:'#8a8590',fontSize:'14.5px'}}>
+              <div style={{width:'34px',height:'34px',margin:'0 auto 14px',borderRadius:'50%',border:'3px solid rgba(180,18,58,.18)',borderTopColor:'#b4123a',animation:'hf-spin .8s linear infinite'}}></div>
+              {L.loadingText}
+            </div>
+          )}
+          {!loading && filteredPositions.length === 0 && (
+            <div style={{textAlign:'center',padding:'50px 20px',color:'#8a8590',fontSize:'14.5px'}}>{L.emptyText}</div>
+          )}
+
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(310px,1fr))',gap:'18px'}}>
+            {filteredPositions.map((p, i) => {
+              const vm = posVM(p);
+              return (
+                <div key={i} className={vm.isOpen ? 'hf-pos-card-open' : ''} style={{padding:'22px',borderRadius:'22px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',opacity:vm.isFull?'0.72':'1',transition:'transform .25s,box-shadow .25s'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px',marginBottom:'12px'}}>
+                    <span style={{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'}}>{vm.entityLine}</span>
+                    <span style={{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background:vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color:vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em'}}>{vm.badgeText}</span>
+                  </div>
+                  <div style={{fontFamily:"'Playfair Display',serif",fontSize:'19px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'8px'}}>{vm.title}</div>
+                  <div style={{fontSize:'12.5px',color:'#6b6670',lineHeight:'1.5',marginBottom:'6px'}}>{vm.metaLine}</div>
+                  {vm.hasJoining && (
+                    <div style={{display:'inline-flex',alignItems:'center',gap:'6px',fontSize:'12px',fontWeight:'600',color:'#7a4a55',marginBottom:'4px'}}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                      {vm.joiningLine}
+                    </div>
+                  )}
+                  <div style={{marginTop:'14px'}}>
+                    <div style={{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.07)',overflow:'hidden',marginBottom:'6px'}}>
+                      <div style={{height:'100%',borderRadius:'99px',transition:'width .9s cubic-bezier(.2,.7,.2,1)',width:`${vm.pct}%`,background:vm.barColor}}></div>
+                    </div>
+                    <span style={vm.fillLabelStyle}>{vm.fillLabel}</span>
+                  </div>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'16px',paddingTop:'14px',borderTop:'1px solid rgba(28,27,34,.07)'}}>
+                    <span style={{fontSize:'12px',color:'#9a949e',fontWeight:'500'}}>{vm.locWord}</span>
+                    {vm.isOpen ? (
+                      <button className="hf-apply-btn" onClick={vm.onApply} style={{display:'inline-flex',alignItems:'center',gap:'7px',padding:'9px 18px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'12.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.24)',transition:'transform .2s'}}>
+                        {vm.applyText}
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                      </button>
+                    ) : (
+                      <span style={{fontSize:'12px',color:'#b6afa6',fontWeight:'600'}}>{vm.applyText}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* WHY HIFIVE */}
+        <section style={{maxWidth:'1240px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'}}>
+          <div style={{textAlign:'center',marginBottom:'34px'}}>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'}}>{L.whyTitle}</h2>
+            <p style={{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'}}>{L.whySub}</p>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:'18px'}}>
+            {[
+              { title: L.why1Title, desc: L.why1Desc, icon: <><path d="M8 2h8l4 6-8 14L4 8z"/><path d="M12 8v8M8.5 12h7"/></> },
+              { title: L.why2Title, desc: L.why2Desc, icon: <><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></> },
+              { title: L.why3Title, desc: L.why3Desc, icon: <><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></> },
+              { title: L.why4Title, desc: L.why4Desc, icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></> },
+            ].map((card, i) => (
+              <div key={i} className="hf-why-card" style={{padding:'28px 24px',borderRadius:'24px',background:'rgba(255,255,255,.6)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.78)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',transition:'transform .25s,box-shadow .25s'}}>
+                <div style={{width:'50px',height:'50px',borderRadius:'16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,rgba(214,32,74,.12),rgba(110,11,42,.1))',color:'#b4123a',marginBottom:'16px'}}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{card.icon}</svg>
+                </div>
+                <div style={{fontWeight:'700',fontSize:'15px',color:'#23202b',marginBottom:'6px'}}>{card.title}</div>
+                <div style={{fontSize:'13px',color:'#6b6670',lineHeight:'1.55'}}>{card.desc}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* TRACKER */}
+        <section id="tracker" style={{padding:'clamp(34px,4vw,60px) clamp(16px,4vw,48px)',scrollMarginTop:'90px'}}>
+          <div style={{maxWidth:'760px',margin:'0 auto',borderRadius:'30px',overflow:'hidden',position:'relative',background:'linear-gradient(150deg,#2a0a18 0%,#5c0a24 50%,#3a0a18 100%)',boxShadow:'0 30px 70px -24px rgba(110,11,42,.5)'}}>
+            <div style={{position:'absolute',top:'-80px',right:'-60px',width:'300px',height:'300px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.4),transparent 65%)',filter:'blur(10px)',pointerEvents:'none'}}></div>
+            <div style={{position:'relative',zIndex:2,padding:'clamp(34px,4vw,52px) clamp(22px,4vw,48px)',textAlign:'center'}}>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,38px)',fontWeight:'600',color:'#fff',letterSpacing:'-.01em'}}>{L.trackTitle}</h2>
+              <p style={{margin:'12px auto 0',maxWidth:'480px',fontSize:'14px',color:'rgba(255,255,255,.66)',lineHeight:'1.6'}}>{L.trackSub}</p>
+              <div style={{display:'flex',gap:'10px',maxWidth:'460px',margin:'26px auto 0',flexWrap:'wrap'}}>
+                <input value={trackInput} onInput={e => { setTrackInput(e.target.value.toUpperCase()); setTrackErr(''); setTrackNotFound(false); }} onKeyDown={onTrackKey} placeholder="REC-0001" maxLength={8} style={{flex:'1',minWidth:'180px',border:'1px solid rgba(255,255,255,.18)',borderRadius:'14px',padding:'15px 18px',fontFamily:'inherit',fontSize:'15px',fontWeight:'600',letterSpacing:'.08em',textTransform:'uppercase',color:'#fff',background:'rgba(255,255,255,.08)',outline:'none'}} />
+                <button className="hf-track-btn" onClick={doTrack} style={{padding:'15px 28px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#9a0f33)',boxShadow:'0 10px 22px rgba(214,32,74,.4)',whiteSpace:'nowrap',transition:'transform .2s'}}>{trackLoading ? '…' : L.trackBtn}</button>
+              </div>
+              {trackErr && <div style={{color:'#ff8aa0',fontSize:'13.5px',marginTop:'14px'}}>{trackErr}</div>}
+              {trackNotFound && <div style={{color:'rgba(255,255,255,.7)',fontSize:'14px',marginTop:'18px'}}>{L.trackNotFound}</div>}
+
+              {trackResult && (
+                <div style={{marginTop:'26px',textAlign:'left',borderRadius:'20px',padding:'26px',background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.1)'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:'10px',marginBottom:'20px'}}>
+                    <div>
+                      <div style={{color:'#fff',fontSize:'18px',fontWeight:'700'}}>{trackResult.name}</div>
+                      <div style={{color:'rgba(255,255,255,.5)',fontSize:'13px',marginTop:'3px'}}>{trackResult.id}</div>
+                    </div>
+                    <span style={statusBadgeStyle(trackResult.status)}>{trackResult.status}</span>
+                  </div>
+                  <div data-r="trackgrid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.posWord}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.position}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.entityWord}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.entity}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.appliedOn}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.submittedDate || '—'}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.interviewDate}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.interviewDate || '—'}</div></div>
+                  </div>
+                  <div style={{marginTop:'22px',paddingTop:'18px',borderTop:'1px solid rgba(255,255,255,.1)'}}>
+                    <div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'14px'}}>{L.progressLabel}</div>
+                    <div style={{display:'flex',alignItems:'flex-start'}}>
+                      {timelineNodes.map((n, i) => (
+                        <React.Fragment key={i}>
+                          {n.isDot && (
+                            <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:'7px',flex:'0 0 auto',width:'64px'}}>
+                              <div style={{width:'30px',height:'30px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12.5px',fontWeight:'700',background:n.dotBg,color:n.dotColor}}>{n.dotText}</div>
+                              <div style={{fontSize:'10px',textAlign:'center',lineHeight:'1.3',color:n.labelColor,fontWeight:n.labelWeight}}>{n.labelText}</div>
+                            </div>
+                          )}
+                          {n.isLine && <div style={{flex:'1',height:'2px',marginTop:'14px',borderRadius:'2px',background:n.lineBg}}></div>}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* BULK CV DROP */}
+        <section id="cvdrop" style={{maxWidth:'820px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'}}>
+          <div style={{textAlign:'center',marginBottom:'28px'}}>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'}}>{L.bulkTitle}</h2>
+            <p style={{marginTop:'8px',fontSize:'14px',color:'#6b6670',maxWidth:'520px',marginLeft:'auto',marginRight:'auto',lineHeight:'1.6'}}>{L.bulkSub}</p>
+          </div>
+
+          <div className="hf-bulk-zone" onClick={() => bulkInputRef.current?.click()} onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); addBulk(e.dataTransfer.files); }} style={{border:'2px dashed rgba(180,18,58,.3)',borderRadius:'26px',padding:'44px 24px',textAlign:'center',cursor:'pointer',background:'rgba(255,255,255,.5)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',transition:'all .25s'}}>
+            <input ref={bulkInputRef} type="file" multiple accept=".pdf,.doc,.docx,image/*" onChange={e => addBulk(e.target.files)} style={{display:'none'}} />
+            <div style={{width:'70px',height:'70px',borderRadius:'22px',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.3)'}}>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+            </div>
+            <div style={{fontSize:'17px',fontWeight:'700',color:'#23202b',marginBottom:'6px'}}>{L.dropTitle}</div>
+            <div style={{fontSize:'12.5px',color:'#9a949e'}}>{L.dropHint}</div>
+          </div>
+
+          {bulkFiles.length > 0 && (
+            <div style={{display:'flex',flexDirection:'column',gap:'9px',marginTop:'16px'}}>
+              {bulkFiles.map((f, i) => {
+                const stStyle = f.status==='done'?{marginLeft:'8px',color:'#1e8449',fontWeight:'700',fontSize:'11px'}:f.status==='error'?{marginLeft:'8px',color:'#c0392b',fontWeight:'700',fontSize:'11px'}:f.status==='loading'?{marginLeft:'8px',color:'#b4123a',fontSize:'11px'}:{display:'none'};
+                const stText = f.status==='done'?t('✓ Done','✓ تم'):f.status==='error'?t('✗ Failed','✗ فشل'):f.status==='loading'?t('Uploading…','جاري الرفع…'):'';
+                return (
+                  <div key={i} data-r="bulkrow" style={{display:'grid',gridTemplateColumns:'1fr 1fr auto',gap:'9px',alignItems:'center',padding:'12px 14px',borderRadius:'14px',background:'rgba(255,255,255,.62)',border:'1px solid rgba(255,255,255,.8)'}}>
+                    <div style={{gridColumn:'1/-1',fontSize:'12.5px',fontWeight:'600',color:'#3a3640',display:'flex',alignItems:'center',gap:'8px'}}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
+                      {f.fileName}<span style={stStyle}>{stText}</span>
+                    </div>
+                    <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} placeholder={L.candidateName} style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    <input value={f.position} onInput={e => setBulkField(i,'position',e.target.value)} disabled={f.status!=='idle'} placeholder={L.positionOptional} style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    {f.status === 'idle' && (
+                      <button onClick={() => removeBulk(i)} style={{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'}}>✕</button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {bulkUploading && (
+            <>
+              <div style={{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.08)',overflow:'hidden',margin:'14px 0 8px'}}>
+                <div style={{height:'100%',borderRadius:'99px',transition:'width .4s',width:`${bulkProgress}%`,background:'linear-gradient(90deg,#d6204a,#6e0b2a)'}}></div>
+              </div>
+              <div style={{fontSize:'12.5px',color:'#6b6670',textAlign:'center'}}>{bulkStatus}</div>
+            </>
+          )}
+
+          {bulkFiles.length > 0 && (
+            <div style={{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}>
+              <button onClick={uploadAllBulk} disabled={bulkUploading} style={{padding:'13px 26px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'}}>{L.uploadAll}</button>
+              <button onClick={() => bulkInputRef.current?.click()} style={{padding:'12px 22px',borderRadius:'14px',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'600',color:'#b4123a',background:'rgba(214,32,74,.08)',border:'1px solid rgba(180,18,58,.2)'}}>{L.addMore}</button>
+            </div>
+          )}
+
+          {bulkDone && (
+            <div style={{textAlign:'center',padding:'30px 0',marginTop:'16px'}}>
+              <div style={{width:'56px',height:'56px',borderRadius:'50%',margin:'0 auto 14px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)'}}>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </div>
+              <div style={{fontSize:'18px',fontWeight:'800',color:'#1e8449',marginBottom:'6px'}}>{L.doneTitle}</div>
+              <div style={{fontSize:'13px',color:'#6b6670'}}>{L.doneSub}</div>
+            </div>
+          )}
+        </section>
+
+        {/* FOOTER */}
+        <footer style={{marginTop:'30px',padding:'40px clamp(16px,4vw,48px)',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'}}>
+          <img src="https://raw.githubusercontent.com/accuracyplus/hifive-recruitment/main/public/logo.png" alt="HiFive Holdings" style={{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1) sepia(1) saturate(6) hue-rotate(-15deg)',opacity:'0.92'}} />
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'18px',color:'#fff',fontWeight:'600',letterSpacing:'.02em',marginBottom:'10px'}}>HiFive Holdings</div>
+          <p style={{fontSize:'13px',color:'rgba(255,255,255,.5)',lineHeight:'1.7'}}>
+            © 2026 HiFive Holdings LLC · Abu Dhabi, UAE<br/>
+            <a href="mailto:hr@hifiveholdings.ae" style={{color:'rgba(255,255,255,.78)',textDecoration:'none'}}>hr@hifiveholdings.ae</a> &nbsp;·&nbsp; {L.footerNote}
+          </p>
+        </footer>
+      </div>
+
+      {/* APPLY MODAL */}
+      {modalOpen && (
+        <div onClick={e => { if (e.target === e.currentTarget) closeModal(); }} style={{position:'fixed',inset:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'center',padding:'20px',background:'rgba(42,10,24,.5)',backdropFilter:'blur(6px)',WebkitBackdropFilter:'blur(6px)',animation:'hf-in .25s ease both',direction:dir}}>
+          <div style={{width:'100%',maxWidth:'520px',maxHeight:'92vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(255,255,255,.96)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'}}>
+            {success ? (
+              <div style={{textAlign:'center',padding:'14px 0'}}>
+                <div style={{width:'64px',height:'64px',borderRadius:'50%',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)',boxShadow:'0 12px 26px rgba(30,132,73,.34)'}}>
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'24px',fontWeight:'600',color:'#23202b',marginBottom:'8px'}}>{L.successTitle}</h3>
+                <p style={{fontSize:'13.5px',color:'#6b6670'}}>{L.refLabel}</p>
+                <div style={{margin:'14px auto',maxWidth:'240px',padding:'13px',borderRadius:'12px',background:'rgba(30,132,73,.1)',color:'#1e8449',fontSize:'16px',fontWeight:'800',letterSpacing:'.08em'}}>{successRef}</div>
+                <p style={{fontSize:'12.5px',color:'#9a949e',marginBottom:'18px'}}>{L.saveIdNote}</p>
+                <button onClick={closeModal} style={{padding:'13px 30px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)'}}>{L.closeBtn}</button>
+              </div>
+            ) : (
+              <div>
+                <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'23px',fontWeight:'600',color:'#23202b',lineHeight:'1.2'}}>{t('Apply — ','تقدم — ')}{modalPosition}</h3>
+                <p style={{fontSize:'13px',color:'#6b6670',margin:'8px 0 22px',lineHeight:'1.55'}}>{L.modalSubtitle}</p>
+                <div style={{display:'flex',flexDirection:'column',gap:'13px'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.fullName}</label>
+                    <input value={formName} onInput={e => setFormName(e.target.value)} placeholder="As per passport" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'13px'}}>
+                    <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                      <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.phone}</label>
+                      <input value={formPhone} onInput={e => setFormPhone(e.target.value)} placeholder="971XXXXXXXXX" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    </div>
+                    <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                      <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.nationality}</label>
+                      <input value={formNat} onInput={e => setFormNat(e.target.value)} style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    </div>
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.email}</label>
+                    <input value={formEmail} onInput={e => setFormEmail(e.target.value)} type="email" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.expSalary}</label>
+                    <input value={formSalary} onInput={e => setFormSalary(e.target.value)} type="number" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.cvLabel}</label>
+                    <input ref={cvRef} type="file" accept=".pdf,.doc,.docx" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'11px 12px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#6b6670'}} />
+                  </div>
+                </div>
+                <div style={{display:'flex',gap:'10px',marginTop:'22px'}}>
+                  <button onClick={submitApplication} disabled={submitting} style={{flex:'1',padding:'14px',borderRadius:'13px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'}}>{submitting ? t('Submitting…','جاري الإرسال…') : t('Submit Application','تقديم الطلب')}</button>
+                  <button onClick={closeModal} style={{padding:'14px 22px',borderRadius:'13px',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'600',color:'#6b6670',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'}}>{L.cancelBtn}</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<CareersPage />);
+</script>
+</body>
+</html>
