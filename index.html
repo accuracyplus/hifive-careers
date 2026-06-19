@@ -1,793 +1,880 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>HiFive Holdings Careers</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:"Inter",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:#efe9e1;color:#1c1b22;line-height:1.5}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer}
-img{max-width:100%}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Careers — HiFive Holdings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:#efe9e1;color:#1c1b22;font-family:"Inter",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    ::selection{background:#b4123a;color:#fff}
+    #root{min-height:100vh}
 
-:root{
-  --bg:#efe9e1; --ink:#1c1b22; --ink2:#5b5560; --muted:#8a8590;
-  --line:rgba(28,27,34,.08); --card:rgba(255,255,255,.88); --card2:rgba(255,255,255,.6); --cb:rgba(255,255,255,.8);
-  --acc:#d6204a; --acc2:#6e0b2a; --grad:linear-gradient(135deg,#d6204a,#6e0b2a);
-  --soft:rgba(214,32,74,.08); --soft2:rgba(214,32,74,.16);
-  --glow:rgba(110,11,42,.30); --glowS:rgba(110,11,42,.14);
-}
+    @keyframes hf-drift{0%{transform:translate(0,0) scale(1)}33%{transform:translate(38px,-30px) scale(1.12)}66%{transform:translate(-28px,22px) scale(.94)}100%{transform:translate(0,0) scale(1)}}
+    @keyframes hf-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    @keyframes hf-float2{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+    @keyframes hf-up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes hf-in{from{opacity:0}to{opacity:1}}
+    @keyframes hf-blurin{from{opacity:0;filter:blur(14px);transform:translateY(14px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+    @keyframes hf-spin{to{transform:rotate(360deg)}}
 
-@keyframes drift{0%{transform:translate(0,0) scale(1)}33%{transform:translate(38px,-30px) scale(1.12)}66%{transform:translate(-28px,22px) scale(.94)}100%{transform:translate(0,0) scale(1)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .hf-loader{width:40px;aspect-ratio:1;--c:linear-gradient(#b4123a 0 0);--m:radial-gradient(farthest-side,#b4123a 90%,#0000);background:var(--c),var(--m),var(--c);background-size:16px 8px,10px 10px;background-repeat:no-repeat;animation:hf-l19-1 .5s infinite alternate,hf-l19-2 4s infinite linear .5s;}
+    @keyframes hf-l19-1{0%,10%{background-position:calc(50% - 8px) 50%,50% 10%,calc(50% + 8px) 50%}80%,100%{background-position:-20px 50%,50% 50%,calc(100% + 20px) 50%}}
+    @keyframes hf-l19-2{0%,24.99%{transform:rotate(0)}25%,49.99%{transform:rotate(90deg)}50%,74.99%{transform:rotate(180deg)}75%,100%{transform:rotate(270deg)}}
 
-.loader{width:40px;aspect-ratio:1;--c:linear-gradient(#000 0 0);--m:radial-gradient(farthest-side,#000 90%,#0000);background:var(--c),var(--m),var(--c);background-size:16px 8px,10px 10px;background-repeat:no-repeat;animation:l19-1 .5s infinite alternate,l19-2 4s infinite linear .5s;}
-@keyframes l19-1{0%,10%{background-position:calc(50% - 8px) 50%,50% 10%,calc(50% + 8px) 50%}80%,100%{background-position:-20px 50%,50% 50%,calc(100% + 20px) 50%}}
-@keyframes l19-2{0%,24.99%{transform:rotate(0)}25%,49.99%{transform:rotate(90deg)}50%,74.99%{transform:rotate(180deg)}75%,100%{transform:rotate(270deg)}}
-.loader-maroon{--c:linear-gradient(var(--acc) 0 0);--m:radial-gradient(farthest-side,var(--acc) 90%,#0000)}
-.loader-wrap{display:flex;align-items:center;justify-content:center;min-height:50vh;width:100%;grid-column:1/-1}
+    @media(max-width:820px){
+      [data-r="rail"]{display:none!important}
+      [data-r="hpad"]{padding-left:clamp(20px,5vw,30px)!important;padding-right:clamp(20px,5vw,30px)!important}
+      [data-r="cpad"]{padding-left:clamp(20px,5vw,30px)!important;padding-right:clamp(20px,5vw,30px)!important}
+    }
+    @media(max-width:600px){
+      [data-r="navsub"]{display:none!important}
+      [data-r="navbtns"]{gap:4px!important}
+      [data-r="navbtns"] button{font-size:12px!important;padding:8px 11px!important}
+      [data-r="filterbar"]{border-radius:22px!important;padding:8px!important}
+      [data-r="hero-h1"]{font-size:clamp(40px,12vw,56px)!important}
+      [data-r="bulkrow"]{grid-template-columns:1fr!important}
+      [data-r="trackgrid"]{grid-template-columns:1fr!important}
+    }
+    @media(max-width:400px){
+      [data-r="navname"]{display:none!important}
+    }
 
-.nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(16px,4vw,48px);background:rgba(255,255,255,.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.6)}
-.nav-left{display:flex;align-items:center;gap:12px}
-.nav-logo{width:38px;height:38px;border-radius:11px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 16px var(--glow)}
-.nav-logo span{font-family:"Playfair Display",serif;font-weight:700;font-size:20px;color:#fff;line-height:1}
-.nav-name{font-weight:800;font-size:15px;letter-spacing:-.01em;color:#1c1b22}
-.nav-links{display:flex;align-items:center;gap:4px}
-.nav-btn{border:none;background:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:600;color:#4a4751;padding:9px 14px;border-radius:99px;transition:all .2s}
-.nav-btn:hover{background:var(--soft);color:var(--acc2)}
-@media(max-width:640px){.nav-links{display:none}}
-
-.hero{position:relative;padding:clamp(40px,6vw,80px) clamp(16px,4vw,48px) clamp(30px,5vw,60px);max-width:1320px;margin:0 auto}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,60px);align-items:center}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:99px;background:var(--soft);color:var(--acc2);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:20px}
-.hero-h1{font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.02em;color:var(--ink);line-height:1.08;margin-bottom:18px}
-.hero-h1 .line1{display:block;font-size:clamp(32px,4.6vw,50px)}
-.hero-h1 .line2{display:block;font-size:clamp(26px,3.6vw,40px);color:var(--acc2);margin-top:4px}
-.hero-sub{font-size:clamp(15px,1.6vw,17.5px);color:var(--ink2);line-height:1.65;max-width:520px;margin-bottom:30px}
-.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
-.cta-primary{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:99px;border:none;cursor:pointer;font-family:inherit;font-size:14.5px;font-weight:700;color:#fff;background:var(--grad);box-shadow:0 12px 26px var(--glow);transition:transform .2s,box-shadow .2s}
-.cta-primary:hover{transform:translateY(-2px);box-shadow:0 16px 32px var(--glow)}
-.cta-secondary{padding:14px 24px;border-radius:99px;cursor:pointer;font-family:inherit;font-size:14.5px;font-weight:600;color:#23202b;background:rgba(255,255,255,.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.8);transition:all .2s}
-.cta-secondary:hover{background:rgba(255,255,255,.8)}
-.hero-stats{display:flex;gap:28px;flex-wrap:wrap}
-.stat{display:flex;align-items:center;gap:12px}
-.stat-icon{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--grad);box-shadow:0 8px 18px var(--glow);flex-shrink:0}
-.stat-val{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:var(--ink);line-height:1}
-.stat-label{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px}
-.hero-img-wrap{position:relative;border-radius:26px;overflow:hidden}
-.hero-img-wrap img{display:block;width:100%;height:100%;min-height:clamp(300px,38vw,460px);object-fit:cover;border-radius:26px;border:1px solid rgba(255,255,255,.7);box-shadow:0 22px 54px var(--glowS)}
-
-.section{max-width:1240px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(16px,4vw,48px) clamp(30px,4vw,48px);scroll-margin-top:90px}
-.section-head{text-align:center;margin-bottom:38px}
-.section-eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc2);margin-bottom:10px}
-.section-h2{font-family:"Playfair Display",serif;font-size:clamp(26px,3.6vw,40px);font-weight:600;letter-spacing:-.02em;color:#23202b}
-.section-sub{font-size:14.5px;color:var(--ink2);max-width:580px;margin:10px auto 0}
-
-.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-@media(max-width:900px){.why-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.why-grid{grid-template-columns:1fr}}
-.why-card{padding:26px 22px;border-radius:20px;background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--cb);box-shadow:0 12px 30px var(--glowS);transition:transform .25s,box-shadow .25s}
-.why-card:hover{transform:translateY(-4px);box-shadow:0 20px 44px var(--glowS)}
-.why-icon{width:46px;height:46px;border-radius:14px;background:var(--soft);color:var(--acc2);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.why-num{font-family:"Playfair Display",serif;font-weight:700;font-size:13px;color:var(--acc);margin-bottom:6px}
-.why-card-title{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:8px}
-.why-card-desc{font-size:13px;color:var(--ink2);line-height:1.6}
-
-.filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:24px;padding:16px 18px;border-radius:18px;background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--cb);box-shadow:0 10px 26px var(--glowS)}
-.filter-select{padding:10px 14px;border-radius:99px;border:1px solid var(--cb);background:#fff;font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer}
-.filter-search{flex:1;min-width:180px;display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:99px;border:1px solid var(--cb);background:#fff}
-.filter-search input{border:none;outline:none;background:none;font-family:inherit;font-size:13px;flex:1;color:var(--ink)}
-
-.positions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
-.position-card{padding:22px 22px 20px;border-radius:20px;background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--cb);border-left:4px solid var(--acc);box-shadow:0 12px 30px var(--glowS);transition:transform .25s,box-shadow .25s}
-.position-card:hover{transform:translateY(-4px);box-shadow:0 20px 44px var(--glowS)}
-.pos-entity{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--acc2);margin-bottom:6px}
-.pos-title{font-family:"Playfair Display",serif;font-size:19px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.25}
-.pos-meta{font-size:12.5px;color:var(--muted);margin-bottom:10px;line-height:1.6}
-.pos-joining{font-size:12px;color:var(--acc2);margin-bottom:6px;font-weight:500}
-.pos-fill{margin:12px 0 14px}
-.pos-fill-bar{height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden;margin-bottom:5px}
-.pos-fill-fill{height:100%;border-radius:3px;transition:width .6s ease}
-.pos-fill-label{font-size:11px;font-weight:700}
-.pos-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
-.pos-badge{display:inline-block;padding:5px 13px;border-radius:99px;font-size:11px;font-weight:700;background:var(--soft);color:var(--acc2)}
-.pos-badge-full{background:rgba(207,53,82,.12);color:#cf3552}
-.pos-apply{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:99px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--grad);box-shadow:0 6px 16px var(--glow);transition:all .2s}
-.pos-apply:hover{transform:translateY(-1px)}
-.no-positions{text-align:center;padding:50px 20px;color:var(--muted);font-size:14px;grid-column:1/-1}
-
-.cv-drop-section{padding:clamp(40px,5vw,64px) clamp(16px,4vw,48px);background:#fff}
-.cv-drop-inner{max-width:780px;margin:0 auto}
-.drop-zone{border:2px dashed rgba(214,32,74,.3);border-radius:22px;padding:clamp(36px,5vw,52px) 24px;text-align:center;cursor:pointer;transition:all .25s;background:#fdf9f7}
-.drop-zone:hover{border-color:var(--acc);background:var(--soft)}
-.drop-orb{width:72px;height:72px;border-radius:20px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 10px 26px var(--glow)}
-.drop-title{font-family:"Playfair Display",serif;font-size:20px;font-weight:600;color:var(--ink);margin-bottom:6px}
-.drop-sub{font-size:13px;color:var(--muted)}
-.mandatory-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
-@media(max-width:560px){.mandatory-fields{grid-template-columns:1fr}}
-.field-label{display:block;font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:6px}
-.field-select,.field-input{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--cb);background:#fff;font-family:inherit;font-size:13.5px;color:var(--ink);outline:none}
-.field-select:focus,.field-input:focus{border-color:var(--acc)}
-.field-req{color:#cf3552}
-.file-list{display:flex;flex-direction:column;gap:8px;margin:18px 0}
-.file-row{padding:12px 14px;border-radius:12px;background:#F4F1ED;border:1px solid var(--line);display:flex;align-items:center;gap:10px}
-.file-row-name{flex:1;font-size:13px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.file-rm{width:26px;height:26px;border-radius:8px;border:none;background:rgba(207,53,82,.1);color:#cf3552;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.upload-btn{margin-top:14px;width:100%;padding:14px;border-radius:14px;border:none;background:var(--grad);color:#fff;font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px var(--glow)}
-.upload-btn:disabled{opacity:.6;cursor:not-allowed}
-.error-msg{background:rgba(207,53,82,.08);color:#cf3552;border-radius:10px;padding:10px 14px;font-size:12.5px;font-weight:600;margin-bottom:14px}
-.success-box{text-align:center;padding:24px 0}
-.success-icon{width:64px;height:64px;border-radius:50%;background:#1f9d63;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 12px 26px rgba(31,157,99,.35)}
-
-.tracker-card{max-width:560px;margin:0 auto;padding:28px;border-radius:22px;background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--cb);box-shadow:0 16px 38px var(--glowS)}
-.tracker-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-@media(max-width:480px){.tracker-fields{grid-template-columns:1fr}}
-.tracker-btn{width:100%;padding:13px;border-radius:99px;border:none;background:var(--grad);color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 10px 22px var(--glow)}
-.status-result{margin-top:20px;padding:18px;border-radius:16px;background:var(--card2)}
-.status-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
-.status-row:last-child{border-bottom:none}
-
-.footer{margin-top:30px;padding:40px clamp(16px,4vw,48px) 30px;background:linear-gradient(160deg,#23202b,#1a0a12);text-align:center}
-.footer-logo{height:40px;width:auto;margin:0 auto 16px;display:block;filter:brightness(0) invert(1)}
-.footer-links{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:20px}
-.footer-links a{font-size:12px;color:rgba(255,255,255,.65);transition:color .2s}
-.footer-links a:hover{color:#fff}
-.footer-divider{height:1px;background:rgba(255,255,255,.1);max-width:600px;margin:0 auto 18px}
-.footer-disclaimer{font-size:10.5px;color:rgba(255,255,255,.4);max-width:680px;margin:0 auto;line-height:1.7}
-
-.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(20px)}
-.orb1{top:-120px;left:-80px;width:520px;height:520px;background:radial-gradient(circle at 30% 30%,rgba(214,32,74,.18),transparent 65%);animation:drift 22s ease-in-out infinite}
-.orb2{top:30%;right:-140px;width:560px;height:560px;background:radial-gradient(circle,rgba(110,11,42,.14),transparent 66%);animation:drift 28s ease-in-out infinite reverse}
-.orb3{bottom:-160px;left:25%;width:480px;height:480px;background:radial-gradient(circle,rgba(196,150,120,.15),transparent 66%);animation:drift 26s ease-in-out infinite}
-
-.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(20,12,18,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .25s ease both}
-.modal-box{width:100%;max-width:520px;max-height:88vh;overflow-y:auto;border-radius:22px;background:#fff;box-shadow:0 40px 90px -20px var(--glow)}
-.modal-head{padding:22px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
-.modal-title{font-family:"Playfair Display",serif;font-size:19px;font-weight:600;color:var(--ink)}
-.modal-close{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink2)}
-.modal-body{padding:22px 24px}
-
-.toggle-lang{border:1px solid var(--cb);background:rgba(255,255,255,.6);border-radius:99px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink2)}
-
-body.ar{direction:rtl}
-
-.hidden{display:none!important}
-</style>
+    .hf-nav-btn:hover{background:rgba(180,18,58,.08)!important;color:#b4123a!important}
+    .hf-lang-btn:hover{transform:translateY(-1px)!important}
+    .hf-cta-primary:hover{transform:translateY(-2px)!important;box-shadow:0 18px 36px rgba(110,11,42,.4)!important}
+    .hf-cta-secondary:hover{background:#fff!important}
+    .hf-filter-btn:hover{transform:translateY(-1px)!important}
+    .hf-icon-btn:hover{background:rgba(255,255,255,.7)!important;color:#b4123a!important}
+    .hf-stat-btn:hover{transform:rotate(-12deg) scale(1.05)!important}
+    .hf-featured-apply:hover{background:#b4123a!important;color:#fff!important}
+    .hf-apply-btn:hover{transform:translateY(-1px)!important}
+    .hf-why-card:hover{transform:translateY(-4px)!important;box-shadow:0 22px 50px rgba(110,11,42,.16)!important}
+    .hf-track-btn:hover{transform:translateY(-1px)!important}
+    .hf-bulk-zone:hover{border-color:#b4123a!important;background:rgba(255,255,255,.72)!important}
+    .hf-pos-card-open:hover{transform:translateY(-3px)!important;box-shadow:0 20px 48px rgba(110,11,42,.14)!important}
+  </style>
 </head>
 <body>
+<div id="root">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;color:#8a8590;font-size:14px">Loading…</div>
+</div>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin onerror="document.getElementById('root').innerHTML='<div style=\'padding:60px 20px;text-align:center;font-family:sans-serif;color:#b4123a\'>Unable to load required scripts. Please check your internet connection and refresh the page.</div>'"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin onerror="document.getElementById('root').innerHTML='<div style=\'padding:60px 20px;text-align:center;font-family:sans-serif;color:#b4123a\'>Unable to load required scripts. Please check your internet connection and refresh the page.</div>'"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js" crossorigin onerror="document.getElementById('root').innerHTML='<div style=\'padding:60px 20px;text-align:center;font-family:sans-serif;color:#b4123a\'>Unable to load required scripts. Please check your internet connection and refresh the page.</div>'"></script>
 
-<div id="root"></div>
-
-<script>
-'use strict';
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 const WORKER = "https://recruitment.sinusuresh.workers.dev";
-const CAREERS_EMAIL = "career@hifiveholding.ae";
 
-const BUSINESS_UNITS = [
-  "Accuracy Plus Medical Laboratory",
-  "Herbal Park Ayurveda",
-  "Atomic Drugstore",
-  "Pine Group of Pharmacies",
-  "Al Jebal Group of Opticals",
-];
+const FALLBACK = [];
 
-const ENTITY_DISPLAY = {
-  "APML": "Accuracy Plus Medical Laboratory",
-  "Herbal Park": "Herbal Park Ayurveda",
-  "Atomic Drugstore": "Atomic Drugstore",
-  "Atomic": "Atomic Drugstore",
-  "Pine Pharmacy": "Pine Group of Pharmacies",
-  "Pine": "Pine Group of Pharmacies",
-  "Al Jebal Opticals": "Al Jebal Group of Opticals",
-  "Al Jebal": "Al Jebal Group of Opticals",
-};
-function fullEntityName(e) { return ENTITY_DISPLAY[e] || e; }
+function CareersPage() {
+  const [lang, setLang] = useState('en');
+  const [positions, setPositions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [entity, setEntity] = useState('');
+  const [statCount, setStatCount] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalPosition, setModalPosition] = useState('');
+  const [modalEntity, setModalEntity] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [successRef, setSuccessRef] = useState('');
+  const [formName, setFormName] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formNat, setFormNat] = useState('');
+  const [formSalary, setFormSalary] = useState('');
+  const [trackInput, setTrackInput] = useState('');
+  const [trackFirstName, setTrackFirstName] = useState('');
+  const [trackLoading, setTrackLoading] = useState(false);
+  const [trackErr, setTrackErr] = useState('');
+  const [trackResult, setTrackResult] = useState(null);
+  const [trackNotFound, setTrackNotFound] = useState(false);
+  const [bulkFiles, setBulkFiles] = useState([]);
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [bulkDone, setBulkDone] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState(0);
+  const [bulkStatus, setBulkStatus] = useState('');
 
-let LANG = 'en';
-const T = {
-  en: {
-    navPositions: "Open Positions", navTrack: "Track Application",
-    heroEyebrow: "We're Hiring", heroLine1: "Built on Momentum.", heroLine2: "Run by People Who Care.",
-    heroSub: "At HiFive, we combine gold standard healthcare with rapid retail expansion. If you thrive in an active, high growth environment, you'll fit right in!",
-    heroCtaPrimary: "View Open Positions", heroCtaSecondary: "Track My Application",
-    statPositionsLabel: "Open Positions", statUnitsLabel: "Business Units", statTeamLabel: "Team Members",
-    whyTitle: "Why Join HiFive?",
-    why1Title: "Gold-Standard Excellence", why1Desc: "Practice your craft at the highest level within our accredited and licensed facilities.",
-    why2Title: "Uncapped Career Growth", why2Desc: "Elevate your professional journey through structured training, specialized certifications, and clear advancement pathways.",
-    why3Title: "A Truly Global Team", why3Desc: "Collaborate within a rich, inclusive community of 160+ professionals representing various nationalities.",
-    why4Title: "Nationwide Impact", why4Desc: "Build your career with an expanding healthcare leader operating across UAE.",
-    posEyebrow: "Careers", posTitle: "Open Positions", posSub: "Explore current openings across our business units",
-    filterEntity: "All Business Units", filterSearch: "Search positions…",
-    badgeOpen: "Hiring Now", badgeFull: "Filled ✓", applyBtn: "Apply",
-    noPositions: "No positions match your filters right now.",
-    cvEyebrow: "Don't see your role?", cvTitle: "Drop Your CV", cvSub: "Submit your résumé to our talent database — we'll reach out when a matching position opens.",
-    dropTitle: "Drop your CV here or tap to browse", dropSub: "PDF, Word, or image — max 10MB",
-    fieldName: "Full Name", fieldPosition: "Position Interested In", fieldFacility: "Preferred Facility",
-    fieldPhone: "Phone (optional)", fieldEmail: "Email (optional)",
-    selectPosition: "Select a position…", selectFacility: "Select a facility…",
-    uploadBtn: "Submit CV", uploadingBtn: "Submitting…",
-    cvSuccess: "CV received!", cvSuccessSub: "Your reference number is",
-    trackEyebrow: "Already Applied?", trackTitle: "Track Your Application",
-    trackFirstName: "First Name", trackRefId: "Reference ID (REC-XXXX)",
-    trackBtn: "Check Status", trackNotFound: "No application found. Please check your details and try again.",
-    statusLabels: { Active:'Applied', Shortlisted:'Shortlisted', 'Ops Cleared':'Operations Cleared', 'Mgmt Cleared':'Management Cleared', 'Verbal Offered':'Offer Extended', Offered:'Offer Extended', Accepted:'Offer Accepted', Onboarding:'Onboarding', Joined:'Joined', Rejected:'Not Selected' },
-    statusPosition: "Position", statusEntity: "Business Unit", statusSubmitted: "Submitted", statusCurrent: "Current Status",
-    footerDisclaimer: "All content, trademarks, and logos on this page are the property of HiFive Holdings LLC and its affiliated business units, and may not be reproduced or used without prior written permission. By submitting your information through this page, you consent to its use solely for recruitment purposes in accordance with applicable UAE data protection regulations. HiFive Holdings does not request payment at any stage of recruitment; any such request is fraudulent and should be reported immediately to ",
-  },
-  ar: {
-    navPositions: "الوظائف", navTrack: "تتبع طلبك",
-    heroEyebrow: "نحن نوظف", heroLine1: "مبنيون على الزخم.", heroLine2: "يديرنا أشخاص يهتمون.",
-    heroSub: "في هايفايف، نجمع بين الرعاية الصحية ذات المعايير الذهبية والتوسع السريع في التجزئة. إذا كنت تزدهر في بيئة نشطة وعالية النمو، فستجد مكانك هنا!",
-    heroCtaPrimary: "عرض الوظائف الشاغرة", heroCtaSecondary: "تتبع طلبي",
-    statPositionsLabel: "وظائف شاغرة", statUnitsLabel: "وحدات الأعمال", statTeamLabel: "أعضاء الفريق",
-    whyTitle: "لماذا تنضم إلى هايفايف؟",
-    why1Title: "تميز بمعايير ذهبية", why1Desc: "مارس مهنتك بأعلى مستوى ضمن منشآتنا المعتمدة والمرخصة.",
-    why2Title: "نمو وظيفي غير محدود", why2Desc: "ارتقِ بمسارك المهني من خلال تدريب منظم وشهادات متخصصة ومسارات ترقٍّ واضحة.",
-    why3Title: "فريق عالمي حقاً", why3Desc: "تعاون ضمن مجتمع غني وشامل يضم أكثر من 160 محترفاً يمثلون جنسيات متنوعة.",
-    why4Title: "تأثير على مستوى الدولة", why4Desc: "ابنِ مسيرتك المهنية مع رائد رعاية صحية متنامٍ يعمل في جميع أنحاء الإمارات.",
-    posEyebrow: "الوظائف", posTitle: "الوظائف الشاغرة", posSub: "استكشف الشواغر الحالية عبر وحدات أعمالنا",
-    filterEntity: "جميع وحدات الأعمال", filterSearch: "ابحث عن وظيفة…",
-    badgeOpen: "نوظف الآن", badgeFull: "مكتمل ✓", applyBtn: "تقدم",
-    noPositions: "لا توجد وظائف تطابق معاييرك حالياً.",
-    cvEyebrow: "لا ترى دورك؟", cvTitle: "أرسل سيرتك الذاتية", cvSub: "أرسل سيرتك الذاتية إلى قاعدة بيانات المواهب لدينا — سنتواصل معك عند توفر وظيفة مناسبة.",
-    dropTitle: "أسقط سيرتك الذاتية هنا أو انقر للتصفح", dropSub: "PDF أو Word أو صورة — حد أقصى 10 ميغابايت",
-    fieldName: "الاسم الكامل", fieldPosition: "الوظيفة المهتم بها", fieldFacility: "المنشأة المفضلة",
-    fieldPhone: "الهاتف (اختياري)", fieldEmail: "البريد الإلكتروني (اختياري)",
-    selectPosition: "اختر وظيفة…", selectFacility: "اختر منشأة…",
-    uploadBtn: "إرسال السيرة الذاتية", uploadingBtn: "جارٍ الإرسال…",
-    cvSuccess: "تم استلام سيرتك الذاتية!", cvSuccessSub: "رقمك المرجعي هو",
-    trackEyebrow: "تقدمت بالفعل؟", trackTitle: "تتبع طلبك",
-    trackFirstName: "الاسم الأول", trackRefId: "الرقم المرجعي (REC-XXXX)",
-    trackBtn: "تحقق من الحالة", trackNotFound: "لم يتم العثور على طلب. يرجى التحقق من بياناتك والمحاولة مرة أخرى.",
-    statusLabels: { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', 'Ops Cleared':'اجتاز العمليات', 'Mgmt Cleared':'اجتاز الإدارة', 'Verbal Offered':'تم إرسال العرض', Offered:'تم إرسال العرض', Accepted:'تم قبول العرض', Onboarding:'التأهيل', Joined:'التحق', Rejected:'لم يتم الاختيار' },
-    statusPosition: "الوظيفة", statusEntity: "وحدة الأعمال", statusSubmitted: "تاريخ التقديم", statusCurrent: "الحالة الحالية",
-    footerDisclaimer: "جميع المحتويات والعلامات التجارية والشعارات الموجودة على هذه الصفحة هي ملك لشركة هايفايف القابضة ذ.م.م ووحدات أعمالها التابعة، ولا يجوز إعادة إنتاجها أو استخدامها دون إذن كتابي مسبق. من خلال إرسال معلوماتك عبر هذه الصفحة، فإنك توافق على استخدامها حصراً لأغراض التوظيف وفقاً للوائح حماية البيانات المعمول بها في دولة الإمارات. لا تطلب هايفايف هولدنجز أي مبالغ مالية في أي مرحلة من مراحل التوظيف؛ وأي طلب من هذا القبيل يعتبر احتيالاً ويجب الإبلاغ عنه فوراً إلى ",
-  }
-};
-function t(en, ar) { return LANG === 'ar' ? ar : en; }
-function L() { return T[LANG]; }
+  const cvRef = useRef(null);
+  const bulkInputRef = useRef(null);
 
-function fmtDateDDMMYYYY(val) {
-  if (!val) return '—';
-  const s = String(val).trim();
-  if (/^\d{2}-\d{2}-\d{4}$/.test(s)) return s;
-  if (/^\d{4}-\d{2}-\d{2}/.test(s)) {
-    const parts = s.split('T')[0].split('-');
-    return parts[2] + '-' + parts[1] + '-' + parts[0];
-  }
-  const n = parseFloat(s);
-  if (!isNaN(n) && n > 1000) {
-    const dt = new Date(new Date(1899,11,30).getTime() + n*86400000);
-    return String(dt.getDate()).padStart(2,'0') + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + dt.getFullYear();
-  }
-  return s;
-}
-function el(tag, attrs, ...children) {
-  const e = document.createElement(tag);
-  for (const k in (attrs||{})) {
-    if (k === 'class') e.className = attrs[k];
-    else if (k === 'html') e.innerHTML = attrs[k];
-    else if (k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
-    else if (attrs[k] !== null) e.setAttribute(k, attrs[k]);
-  }
-  children.flat().forEach(c => {
-    if (c == null) return;
-    e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
-  });
-  return e;
-}
-function svgIcon(paths, size, color) {
-  size = size || 18;
-  const wrap = document.createElement('span');
-  wrap.style.display = 'inline-flex';
-  wrap.innerHTML = '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+(color||'currentColor')+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg>';
-  return wrap;
-}
+  const ar = lang === 'ar';
+  const dir = ar ? 'rtl' : 'ltr';
+  const t = (en, a) => ar ? a : en;
 
-let allPositions = [];
-let positionsLoaded = false;
-let filterEntity = '';
-let filterSearch = '';
+  const L = {
+    navSub: t('','') ,
+    navPositions: t('Open Positions','الوظائف'),
+    navTrack: t('Track Application','تتبع طلبك'),
+    langLabel: ar ? 'English' : 'عربي',
+    heroEyebrow: t('We\'re Hiring','نحن نوظف'),
+    heroTitle1: t('Built on Momentum.','مبنيون على الزخم.'),
+    heroTitle2: t('Run by People Who Care.','يديرنا أشخاص يهتمون.'),
+    heroSub: t('At HiFive, we combine gold standard healthcare with rapid retail expansion. If you thrive in an active, high growth environment, you\'ll fit right in!','في هايفايف، نجمع بين الرعاية الصحية ذات المعايير الذهبية والتوسع السريع في التجزئة. إذا كنت تزدهر في بيئة نشطة وعالية النمو، فستجد مكانك هنا!'),
+    heroCtaPrimary: t('View Open Positions','عرض الوظائف'),
+    heroCtaSecondary: t('Track My Application','تتبع طلبي'),
+    uploadHint: t('Recommended: 1040 × 1280 px · PNG · portrait','يُفضّل: 1040 × 1280 بكسل · PNG · عمودي'),
+    allEntities: t('All Entities','جميع الجهات'),
+    findBtn: t('Find Roles','ابحث'),
+    searchPlaceholder: t('Search a role…','ابحث عن وظيفة…'),
+    statCardTitle: t('Find The Right Place','اعثر على مكانك'),
+    statCardDesc: t('We connect you with meaningful roles across our growing group.','نربطك بوظائف ذات معنى عبر مجموعتنا المتنامية.'),
+    statTeam: t('Professionals','محترفون'),
+    featuredLabel: t('Featured Opening','وظيفة مميزة'),
+    uaeFullTime: t('UAE · Full Time','الإمارات · دوام كامل'),
+    applyWord: t('Apply Now','تقدم الآن'),
+    entitiesLabel: t('Our Business Units','وحدات أعمالنا'),
+    posTitle: t('Open Positions','الوظائف المتاحة'),
+    posSub: t('Live openings, updated in real time','وظائف شاغرة تُحدَّث في الوقت الفعلي'),
+    loadingText: t('Loading positions…','جاري تحميل الوظائف…'),
+    errorText: t('Unable to load positions right now.','تعذر تحميل الوظائف حالياً.'),
+    emptyText: t('No positions match your filters.','لا توجد وظائف تطابق معاييرك.'),
+    whyTitle: t('Why Join HiFive?','لماذا تنضم إلى هايفايف؟'),
+    whySub: t('We grow together','ننمو معاً'),
+    why1Title: t('Gold-Standard Excellence','تميز بمعايير ذهبية'),
+    why1Desc: t('Practice your craft at the highest level within our accredited and licensed facilities.','مارس مهنتك بأعلى مستوى ضمن منشآتنا المعتمدة والمرخصة.'),
+    why2Title: t('Uncapped Career Growth','نمو وظيفي غير محدود'),
+    why2Desc: t('Elevate your professional journey through structured training, specialized certifications, and clear advancement pathways.','ارتقِ بمسارك المهني من خلال تدريب منظم وشهادات متخصصة ومسارات ترقٍّ واضحة.'),
+    why3Title: t('A Truly Global Team','فريق عالمي حقاً'),
+    why3Desc: t('Collaborate within a rich, inclusive community of 160+ professionals representing various nationalities.','تعاون ضمن مجتمع غني وشامل يضم أكثر من 160 محترفاً يمثلون جنسيات متنوعة.'),
+    why4Title: t('Nationwide Impact','تأثير على مستوى الدولة'),
+    why4Desc: t('Build your career with an expanding healthcare leader operating across UAE.','ابنِ مسيرتك المهنية مع رائد رعاية صحية متنامٍ يعمل في جميع أنحاء الإمارات.'),
+    trackTitle: t('Track Your Application','تتبع طلبك'),
+    trackSub: t('Enter the reference ID you received after submitting your CV to check your current status.','أدخل رقم المرجع الذي تلقيته بعد تقديم سيرتك الذاتية للتحقق من حالتك.'),
+    trackBtn: t('Track','تتبع'),
+    trackNotFound: t('No application found with this ID. Please check and try again.','لم يتم العثور على طلب بهذا الرقم. يرجى التحقق والمحاولة مرة أخرى.'),
+    posWord: t('Position','الوظيفة'),
+    entityWord: t('Entity','الجهة'),
+    appliedOn: t('Applied On','تاريخ التقديم'),
+    interviewDate: t('Interview Date','تاريخ المقابلة'),
+    progressLabel: t('Application Progress','تقدم الطلب'),
+    bulkTitle: t('Drop Your CV Directly','أرسل سيرتك مباشرة'),
+    bulkSub: t('Upload one or multiple CVs — no account needed. Files are saved securely and HR is notified instantly.','ارفع سيرة ذاتية أو أكثر — بدون حساب. تُحفظ الملفات بأمان وتُخطر الموارد البشرية فوراً.'),
+    dropTitle: t('Drop CVs here or click to browse','أسقط السير هنا أو انقر للتصفح'),
+    dropHint: t('PDF · Word · Image · Multiple files supported','PDF · Word · صورة · ملفات متعددة'),
+    candidateName: t('Candidate name *','اسم المرشح *'),
+    positionRequired: t('Position *','الوظيفة *'),
+    facilityRequired: t('Facility *','المنشأة *'),
+    selectPosition: t('Select position…','اختر وظيفة…'),
+    selectFacility: t('Select facility…','اختر منشأة…'),
+    uploadAll: t('Upload All CVs','رفع جميع السير'),
+    addMore: t('+ Add More','+ إضافة المزيد'),
+    doneTitle: t('All CVs uploaded!','تم رفع جميع السير!'),
+    doneSub: t('HR has been notified. You will be contacted if your profile matches.','تم إخطار الموارد البشرية. سنتواصل معك إذا تطابق ملفك.'),
+    modalSubtitle: t('Submit your CV and basic details. Our HR team will reach out within 3–5 business days.','أرسل سيرتك وتفاصيلك الأساسية. سيتواصل فريقنا خلال 3-5 أيام عمل.'),
+    fullName: t('Full Name *','الاسم الكامل *'),
+    phone: t('Phone *','رقم الهاتف *'),
+    email: t('Email *','البريد الإلكتروني *'),
+    nationality: t('Nationality *','الجنسية *'),
+    expSalary: t('Expected Salary (AED) *','الراتب المتوقع (درهم) *'),
+    cvLabel: t('CV (PDF/DOC) *','السيرة الذاتية *'),
+    cancelBtn: t('Cancel','إلغاء'),
+    successTitle: t('Application Submitted!','تم تقديم طلبك!'),
+    refLabel: t('Your reference number:','رقم مرجعك:'),
+    saveIdNote: t('Save this ID to track your application status above.','احفظ هذا الرقم لتتبع حالة طلبك أعلاه.'),
+    closeBtn: t('Close','إغلاق'),
+    footerNote: t('All content and trademarks on this page are the property of HiFive Holdings LLC and may not be reproduced without permission. By submitting your details you consent to their use solely for recruitment purposes under applicable UAE data protection law. HiFive Holdings never requests payment at any stage of recruitment; report any such request to ','جميع المحتويات والعلامات التجارية على هذه الصفحة ملك لشركة هايفايف القابضة ولا يجوز إعادة إنتاجها دون إذن. بإرسال بياناتك فإنك توافق على استخدامها حصراً لأغراض التوظيف وفقاً لقانون حماية البيانات الإماراتي. لا تطلب هايفايف أي مبالغ مالية في أي مرحلة من التوظيف؛ يرجى الإبلاغ عن أي طلب من هذا القبيل إلى '),
+  };
 
-async function loadPositions() {
-  try {
-    const res = await fetch(WORKER + '/get-open-positions');
-    const data = await res.json();
-    allPositions = (data.positions || []).map(p => Object.assign({}, p, { entity: fullEntityName(p.entity) }));
-  } catch (e) {
-    allPositions = [];
-  }
-  positionsLoaded = true;
-  renderApp();
-}
-
-function renderNav() {
-  return el('nav', { class: 'nav' },
-    el('div', { class: 'nav-left' },
-      el('div', { class: 'nav-logo' }, el('span', {}, 'H')),
-      el('span', { class: 'nav-name' }, 'HiFive Holdings Careers')
-    ),
-    el('div', { class: 'nav-links' },
-      el('button', { class: 'nav-btn', onclick: () => scrollToId('positions') }, L().navPositions),
-      el('button', { class: 'nav-btn', onclick: () => scrollToId('tracker') }, L().navTrack),
-      el('button', { class: 'toggle-lang', onclick: toggleLang }, LANG === 'en' ? 'العربية' : 'English')
-    )
-  );
-}
-
-function scrollToId(id) {
-  const target = document.getElementById(id);
-  if (target) {
-    const top = target.getBoundingClientRect().top + window.scrollY - 80;
-    window.scrollTo({ top: top, behavior: 'smooth' });
-  }
-}
-
-function toggleLang() {
-  LANG = LANG === 'en' ? 'ar' : 'en';
-  document.body.classList.toggle('ar', LANG === 'ar');
-  document.documentElement.lang = LANG;
-  renderApp();
-}
-
-function renderHero() {
-  let totalOpen = 0;
-  allPositions.forEach(p => { totalOpen += Math.max(0, (p.headcount||p.count||1) - (p.filledCount||0)); });
-  const unitsSet = new Set();
-  allPositions.forEach(p => { if (((p.headcount||p.count||1)-(p.filledCount||0)) > 0) unitsSet.add(p.entity); });
-  const unitsHiring = unitsSet.size || BUSINESS_UNITS.length;
-
-  return el('section', { class: 'hero' },
-    el('div', { class: 'hero-grid' },
-      el('div', {},
-        el('span', { class: 'hero-eyebrow' }, L().heroEyebrow),
-        el('h1', { class: 'hero-h1' },
-          el('span', { class: 'line1' }, L().heroLine1),
-          el('span', { class: 'line2' }, L().heroLine2)
-        ),
-        el('p', { class: 'hero-sub' }, L().heroSub),
-        el('div', { class: 'hero-ctas' },
-          el('button', { class: 'cta-primary', onclick: () => scrollToId('positions') },
-            L().heroCtaPrimary, svgIcon('<path d="M5 12h14M13 6l6 6-6 6"/>', 16)
-          ),
-          el('button', { class: 'cta-secondary', onclick: () => scrollToId('tracker') }, L().heroCtaSecondary)
-        ),
-        el('div', { class: 'hero-stats' },
-          renderStat(totalOpen, L().statPositionsLabel),
-          renderStat(unitsHiring, L().statUnitsLabel),
-          renderStat('160+', L().statTeamLabel)
-        )
-      ),
-      el('div', { class: 'hero-img-wrap' },
-        el('img', { src: '/hero.jpg', alt: 'HiFive Holdings team' })
-      )
-    )
-  );
-}
-function renderStat(val, label) {
-  return el('div', { class: 'stat' },
-    el('div', { class: 'stat-icon' }, svgIcon('<circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/>', 20, '#fff')),
-    el('div', {},
-      el('div', { class: 'stat-val' }, String(val)),
-      el('div', { class: 'stat-label' }, label)
-    )
-  );
-}
-
-function renderWhy() {
-  const items = [
-    { title: L().why1Title, desc: L().why1Desc, icon: '<path d="M8 2h8l4 6-8 14L4 8z"/><path d="M12 8v8M8.5 12h7"/>' },
-    { title: L().why2Title, desc: L().why2Desc, icon: '<path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/>' },
-    { title: L().why3Title, desc: L().why3Desc, icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/>' },
-    { title: L().why4Title, desc: L().why4Desc, icon: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>' },
-  ];
-  const grid = el('div', { class: 'why-grid' });
-  items.forEach((it,i) => grid.appendChild(el('div', { class: 'why-card' },
-    el('div', { class: 'why-icon' }, svgIcon(it.icon, 22)),
-    el('div', { class: 'why-num' }, String(i+1).padStart(2,'0')),
-    el('div', { class: 'why-card-title' }, it.title),
-    el('div', { class: 'why-card-desc' }, it.desc)
-  )));
-  return el('section', { class: 'section' },
-    el('div', { class: 'section-head' }, el('h2', { class: 'section-h2' }, L().whyTitle)),
-    grid
-  );
-}
-
-function renderPositions() {
-  const filtered = allPositions.filter(p => {
-    if (filterEntity && p.entity !== filterEntity) return false;
-    if (filterSearch) {
-      const hay = (p.position + ' ' + (p.customPosition||'') + ' ' + p.entity).toLowerCase();
-      if (hay.indexOf(filterSearch.toLowerCase()) === -1) return false;
-    }
-    return true;
-  });
-
-  const section = el('section', { id: 'positions', class: 'section' },
-    el('div', { class: 'section-head' },
-      el('span', { class: 'section-eyebrow' }, L().posEyebrow),
-      el('h2', { class: 'section-h2' }, L().posTitle),
-      el('p', { class: 'section-sub' }, L().posSub)
-    )
+  const totalOpenRoles = positions.reduce((sum, p) => sum + Math.max(0, (p.headcount||p.count||1) - (p.filledCount||0)), 0);
+  const unitsHiringCount = new Set(positions.filter(p => ((p.headcount||p.count||1)-(p.filledCount||0)) > 0).map(p => p.entity)).size;
+  const dynamicEyebrow = t(
+    unitsHiringCount > 0 ? `Now Hiring in ${unitsHiringCount} Unit${unitsHiringCount!==1?'s':''} · ${totalOpenRoles} Position${totalOpenRoles!==1?'s':''}` : "We're Hiring",
+    unitsHiringCount > 0 ? `نوظف الآن في ${unitsHiringCount} وحدة · ${totalOpenRoles} وظيفة` : 'نحن نوظف'
   );
 
-  const filterBar = el('div', { class: 'filter-bar' });
-  const entitySelect = el('select', { class: 'filter-select', onchange: (e) => { filterEntity = e.target.value; renderApp(); } });
-  entitySelect.appendChild(el('option', { value: '' }, L().filterEntity));
-  BUSINESS_UNITS.forEach(u => {
-    const opt = el('option', { value: u }, u);
-    if (filterEntity === u) opt.selected = true;
-    entitySelect.appendChild(opt);
-  });
-  const searchWrap = el('div', { class: 'filter-search' }, svgIcon('<circle cx="11" cy="11" r="8"/><path d="m20 20-3.2-3.2"/>', 15));
-  const searchInput = document.createElement('input');
-  searchInput.placeholder = L().filterSearch;
-  searchInput.value = filterSearch;
-  searchInput.addEventListener('input', (e) => { filterSearch = e.target.value; renderApp(); });
-  searchWrap.appendChild(searchInput);
-  filterBar.appendChild(entitySelect);
-  filterBar.appendChild(searchWrap);
-  section.appendChild(filterBar);
+  useEffect(() => {
+    fetch(`${WORKER}/get-open-positions`)
+      .then(r => r.json())
+      .then(d => {
+        const arr = d.positions || [];
+        setPositions(arr);
+        setLoading(false);
+      })
+      .catch(() => { setPositions([]); setLoading(false); });
+  }, []);
 
-  if (!positionsLoaded) {
-    section.appendChild(el('div', { class: 'loader-wrap' }, el('div', { class: 'loader loader-maroon' })));
-    return section;
-  }
+  useEffect(() => {
+    const target = 160, dur = 1200, t0 = performance.now();
+    let raf;
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - k, 3);
+      setStatCount(Math.round(target * eased));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
-  if (!filtered.length) {
-    section.appendChild(el('div', { class: 'no-positions' }, L().noPositions));
-    return section;
-  }
+  const scrollToId = (id) => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+  };
 
-  const grid = el('div', { class: 'positions-grid' });
-  filtered.forEach(p => {
-    const headcount = p.headcount || p.count || 1;
-    const filledCount = p.filledCount || 0;
-    const remaining = Math.max(0, headcount - filledCount);
-    const pct = Math.min(100, Math.round((filledCount/headcount)*100));
-    const isFull = remaining <= 0;
-    const title = p.customPosition || p.position;
+  const fmtDate = (val) => {
+    if (!val) return '';
+    const s = String(val).trim();
+    if (/^\d{2}-\d{2}-\d{4}$/.test(s)) return s;
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) { const [y,m,d] = s.split('T')[0].split('-'); return `${d}-${m}-${y}`; }
+    const n = parseFloat(s);
+    if (!isNaN(n) && n > 1000) { const dt = new Date(new Date(1899,11,30).getTime() + n*86400000); return `${String(dt.getDate()).padStart(2,'0')}-${String(dt.getMonth()+1).padStart(2,'0')}-${dt.getFullYear()}`; }
+    return s;
+  };
 
-    const card = el('div', { class: 'position-card', style: isFull ? 'opacity:.65' : '' },
-      el('div', { class: 'pos-entity' }, p.entity + (p.branch ? ' · ' + p.branch : '')),
-      el('div', { class: 'pos-title' }, title),
-      el('div', { class: 'pos-meta' }, t('UAE · Full Time','الإمارات · دوام كامل') + (p.experienceRequired ? ' · ' + p.experienceRequired : '') + (p.genderPreference && p.genderPreference!=='None' ? ' · ' + p.genderPreference : ''))
-    );
-    if (p.expectedJoining) {
-      card.appendChild(el('div', { class: 'pos-joining' }, '🗓 ' + t('Target joining','تاريخ الالتحاق') + ': ' + fmtDateDDMMYYYY(p.expectedJoining)));
-    }
-    const fillWrap = el('div', { class: 'pos-fill' },
-      el('div', { class: 'pos-fill-bar' }, el('div', { class: 'pos-fill-fill', style: 'width:'+pct+'%;background:'+(isFull?'#cf3552':pct>=50?'#d9912a':'#1f9d63') })),
-      el('div', { class: 'pos-fill-label', style: 'color:'+(isFull?'#cf3552':pct>=50?'#b3700f':'#1f8a5b') },
-        isFull ? t('Position Filled','تم الشغل') : (remaining + ' ' + t('of','من') + ' ' + headcount + ' ' + t('open','متاح'))
-      )
-    );
-    card.appendChild(fillWrap);
-
-    const bottom = el('div', { class: 'pos-bottom' },
-      el('span', { class: 'pos-badge' + (isFull?' pos-badge-full':'') }, isFull ? L().badgeFull : L().badgeOpen)
-    );
-    if (!isFull) {
-      bottom.appendChild(el('button', { class: 'pos-apply', onclick: () => openApplyModal(title, p.entity) }, L().applyBtn + ' →'));
-    }
-    card.appendChild(bottom);
-    grid.appendChild(card);
-  });
-  section.appendChild(grid);
-  return section;
-}
-
-function openApplyModal(position, entity) {
-  closeModal();
-  const overlay = el('div', { class: 'modal-overlay', id: 'applyModal', onclick: (e) => { if (e.target.id === 'applyModal') closeModal(); } });
-  const box = el('div', { class: 'modal-box' });
-  box.appendChild(el('div', { class: 'modal-head' },
-    el('div', { class: 'modal-title' }, position),
-    el('button', { class: 'modal-close', onclick: closeModal }, '✕')
-  ));
-  const body = el('div', { class: 'modal-body' });
-  body.appendChild(el('p', { style: 'font-size:13px;color:var(--ink2);margin-bottom:16px' },
-    t('Applying to ' + entity + '. Please drop your CV below.', 'التقديم إلى ' + entity + '. يرجى إرسال سيرتك الذاتية أدناه.')
-  ));
-  body.appendChild(buildCvForm({ presetPosition: position, presetFacility: entity }));
-  box.appendChild(body);
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-}
-function closeModal() {
-  const m = document.getElementById('applyModal');
-  if (m) m.remove();
-}
-
-function renderCvDrop() {
-  return el('section', { class: 'cv-drop-section' },
-    el('div', { class: 'cv-drop-inner' },
-      el('div', { class: 'section-head' },
-        el('span', { class: 'section-eyebrow' }, L().cvEyebrow),
-        el('h2', { class: 'section-h2' }, L().cvTitle),
-        el('p', { class: 'section-sub' }, L().cvSub)
-      ),
-      buildCvForm({})
-    )
-  );
-}
-
-function buildCvForm(opts) {
-  const wrap = el('div', { class: 'cv-form-wrap' });
-  let selectedFile = null;
-
-  function draw() {
-    wrap.innerHTML = '';
-
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.pdf,.doc,.docx,image/*';
-    fileInput.style.display = 'none';
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files[0]) { selectedFile = e.target.files[0]; draw(); }
+  const filteredPositions = useMemo(() => {
+    const s = search.toLowerCase().trim();
+    return positions.filter(p => {
+      const pos = (p.customPosition || p.position || '').toLowerCase();
+      return (!s || pos.includes(s)) && (!entity || p.entity === entity);
     });
+  }, [positions, search, entity]);
 
-    const dropZone = el('div', { class: 'drop-zone', onclick: () => fileInput.click() },
-      el('div', { class: 'drop-orb' }, svgIcon('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>', 30, '#fff')),
-      el('div', { class: 'drop-title' }, L().dropTitle),
-      el('div', { class: 'drop-sub' }, L().dropSub)
-    );
-    dropZone.appendChild(fileInput);
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#d6204a'; });
-    dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'rgba(214,32,74,.3)'; });
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.style.borderColor = 'rgba(214,32,74,.3)';
-      if (e.dataTransfer.files[0]) { selectedFile = e.dataTransfer.files[0]; draw(); }
-    });
-    wrap.appendChild(dropZone);
+  const posVM = (p) => {
+    const filled = p.filled || 0;
+    const total = p.headcount || p.count || 1;
+    const pct = Math.min(100, Math.round((filled / total) * 100));
+    const isFull = pct >= 100;
+    const isAlmost = pct >= 50 && pct < 100;
+    const barColor = isFull ? '#c0392b' : isAlmost ? '#d98a14' : '#1e8449';
+    const labelColor = isFull ? '#c0392b' : isAlmost ? '#b8740f' : '#1a7a42';
+    let meta = t('UAE · Full Time','الإمارات · دوام كامل');
+    if (p.experienceRequired) meta += ` · ${p.experienceRequired}`;
+    if (p.genderPreference && p.genderPreference !== 'None') meta += ` · ${p.genderPreference} ${t('preferred','مفضل')}`;
+    return {
+      title: p.customPosition || p.position,
+      entityLine: p.entity + (p.branch ? ` · ${p.branch}` : ''),
+      metaLine: meta,
+      hasJoining: !!p.expectedJoining,
+      joiningLine: p.expectedJoining ? `${t('Target joining','الالتحاق')}: ${fmtDate(p.expectedJoining)}` : '',
+      pct, isFull, isOpen: !isFull,
+      barColor,
+      fillLabel: isFull ? t('Position Filled','تم الشغل') : `${total - filled} ${t('of','من')} ${total} ${t('open','متاح')}`,
+      fillLabelStyle: { fontSize:'11.5px', fontWeight:'700', color:labelColor },
+      badgeText: isFull ? t('Filled','مكتمل') : t('Hiring Now','نوظف الآن'),
+      badgeFull: isFull,
+      locWord: t('UAE','الإمارات'),
+      applyText: isFull ? t('No vacancies','لا شواغر') : t('Apply','تقدم'),
+      onApply: () => openApply(p.position, p.entity),
+    };
+  };
 
-    if (selectedFile) {
-      wrap.appendChild(el('div', { class: 'file-list' },
-        el('div', { class: 'file-row' },
-          svgIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>', 16),
-          el('span', { class: 'file-row-name' }, selectedFile.name),
-          el('button', { class: 'file-rm', onclick: () => { selectedFile = null; draw(); } }, '✕')
-        )
-      ));
+  const allVMs = useMemo(() => positions.map(posVM), [positions, lang]);
+  const featured = useMemo(() => {
+    const open = allVMs.find(v => v.isOpen) || allVMs[0] || {
+      title: t('Multiple Openings','وظائف متعددة'), entityLine: 'HiFive Holdings',
+      metaTag: t('Across 5 units','عبر 5 وحدات'), onApply: () => scrollToId('positions'),
+    };
+    if (open) {
+      const parts = (open.metaLine || '').split(' · ');
+      const expLabel = parts.slice(2).find(p => /yr|year|exp/i.test(p)) || parts.slice(2).join(' · ');
+      const branchParts = (open.entityLine || '').split(' · ');
+      const branch = branchParts.length > 1 ? branchParts.slice(1).join(' · ') : '';
+      open.metaTag = expLabel || branch || open.fillLabel || t('Open now','متاح الآن');
     }
+    return open;
+  }, [allVMs, lang]);
 
-    const fields = el('div', { class: 'mandatory-fields' });
+  const openApply = (position, ent) => {
+    setModalOpen(true); setModalPosition(position); setModalEntity(ent);
+    setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormSalary('');
+  };
+  const closeModal = () => { setModalOpen(false); setSuccess(false); };
 
-    const nameField = el('div', {}, el('label', { class: 'field-label' }, L().fieldName + ' ', el('span', { class: 'field-req' }, '*')));
-    const nameInput = document.createElement('input');
-    nameInput.className = 'field-input';
-    nameField.appendChild(nameInput);
-    fields.appendChild(nameField);
-
-    const posField = el('div', {}, el('label', { class: 'field-label' }, L().fieldPosition + ' ', el('span', { class: 'field-req' }, '*')));
-    const posSelect = document.createElement('select');
-    posSelect.className = 'field-select';
-    posSelect.appendChild(el('option', { value: '' }, L().selectPosition));
-    const posSet = {};
-    allPositions.forEach(p => { posSet[p.customPosition || p.position] = true; });
-    if (opts.presetPosition) posSet[opts.presetPosition] = true;
-    Object.keys(posSet).sort().forEach(p => {
-      const opt = el('option', { value: p }, p);
-      if (opts.presetPosition === p) opt.selected = true;
-      posSelect.appendChild(opt);
-    });
-    posSelect.appendChild(el('option', { value: '__other__' }, t('Other / Not Listed','أخرى / غير مدرجة')));
-    posField.appendChild(posSelect);
-    fields.appendChild(posField);
-
-    const facField = el('div', {}, el('label', { class: 'field-label' }, L().fieldFacility + ' ', el('span', { class: 'field-req' }, '*')));
-    const facSelect = document.createElement('select');
-    facSelect.className = 'field-select';
-    facSelect.appendChild(el('option', { value: '' }, L().selectFacility));
-    BUSINESS_UNITS.forEach(u => {
-      const opt = el('option', { value: u }, u);
-      if (opts.presetFacility === u) opt.selected = true;
-      facSelect.appendChild(opt);
-    });
-    facField.appendChild(facSelect);
-    fields.appendChild(facField);
-
-    const phoneField = el('div', {}, el('label', { class: 'field-label' }, L().fieldPhone));
-    const phoneInput = document.createElement('input');
-    phoneInput.className = 'field-input';
-    phoneInput.placeholder = '971XXXXXXXXX';
-    phoneField.appendChild(phoneInput);
-    fields.appendChild(phoneField);
-
-    const emailField = el('div', {}, el('label', { class: 'field-label' }, L().fieldEmail));
-    const emailInput = document.createElement('input');
-    emailInput.className = 'field-input';
-    emailInput.type = 'email';
-    emailField.appendChild(emailInput);
-    fields.appendChild(emailField);
-
-    wrap.appendChild(fields);
-
-    const errorBox = el('div', { class: 'error-msg', style: 'display:none' });
-    wrap.appendChild(errorBox);
-
-    const submitBtn = el('button', { class: 'upload-btn' }, L().uploadBtn);
-    submitBtn.addEventListener('click', () => submitCv({
-      nameInput, posSelect, facSelect, phoneInput, emailInput, errorBox, wrap, draw,
-      getFile: () => selectedFile
-    }));
-    wrap.appendChild(submitBtn);
-  }
-
-  draw();
-  return wrap;
-}
-
-async function submitCv(refs) {
-  const nameInput = refs.nameInput, posSelect = refs.posSelect, facSelect = refs.facSelect;
-  const phoneInput = refs.phoneInput, emailInput = refs.emailInput, errorBox = refs.errorBox, wrap = refs.wrap;
-  const file = refs.getFile();
-  const name = nameInput.value.trim();
-  const position = posSelect.value === '__other__' ? 'Other' : posSelect.value;
-  const facility = facSelect.value;
-  const phone = phoneInput.value.trim();
-  const email = emailInput.value.trim();
-
-  errorBox.style.display = 'none';
-
-  if (!file) { showCvError(errorBox, t('Please attach your CV.','يرجى إرفاق سيرتك الذاتية.')); return; }
-  if (!name) { showCvError(errorBox, t('Please enter your full name.','يرجى إدخال اسمك الكامل.')); return; }
-  if (!position) { showCvError(errorBox, t('Please select a position.','يرجى اختيار وظيفة.')); return; }
-  if (!facility) { showCvError(errorBox, t('Please select a facility.','يرجى اختيار منشأة.')); return; }
-
-  const btn = wrap.querySelector('.upload-btn');
-  btn.disabled = true;
-  btn.textContent = L().uploadingBtn;
-
-  try {
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('name', name);
-    fd.append('position', position);
-    fd.append('facility', facility);
-    fd.append('phone', phone);
-    fd.append('email', email);
-
-    const res = await fetch(WORKER + '/upload-cv-public', { method: 'POST', body: fd });
-    const data = await res.json();
-    if (!data.success) throw new Error(data.error || 'Upload failed');
-
-    wrap.innerHTML = '';
-    wrap.appendChild(el('div', { class: 'success-box' },
-      el('div', { class: 'success-icon' }, svgIcon('<path d="M20 6 9 17l-5-5"/>', 32, '#fff')),
-      el('div', { style: 'font-family:"Playfair Display",serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:6px' }, L().cvSuccess),
-      el('div', { style: 'font-size:14px;color:var(--ink2)' }, L().cvSuccessSub + ' ', el('strong', {}, data.cvID))
-    ));
-  } catch (e) {
-    btn.disabled = false;
-    btn.textContent = L().uploadBtn;
-    showCvError(errorBox, e.message || t('Something went wrong. Please try again.','حدث خطأ ما. يرجى المحاولة مرة أخرى.'));
-  }
-}
-function showCvError(box, msg) {
-  box.textContent = msg;
-  box.style.display = 'block';
-}
-
-function renderTracker() {
-  const section = el('section', { id: 'tracker', class: 'section' },
-    el('div', { class: 'section-head' },
-      el('span', { class: 'section-eyebrow' }, L().trackEyebrow),
-      el('h2', { class: 'section-h2' }, L().trackTitle)
-    )
-  );
-
-  const card = el('div', { class: 'tracker-card' });
-  const fieldsRow = el('div', { class: 'tracker-fields' });
-
-  const firstNameField = el('div', {}, el('label', { class: 'field-label' }, L().trackFirstName + ' ', el('span', { class: 'field-req' }, '*')));
-  const firstNameInput = document.createElement('input');
-  firstNameInput.className = 'field-input';
-  firstNameField.appendChild(firstNameInput);
-
-  const idField = el('div', {}, el('label', { class: 'field-label' }, L().trackRefId + ' ', el('span', { class: 'field-req' }, '*')));
-  const idInput = document.createElement('input');
-  idInput.className = 'field-input';
-  idInput.placeholder = 'REC-0001';
-  idField.appendChild(idInput);
-
-  fieldsRow.appendChild(firstNameField);
-  fieldsRow.appendChild(idField);
-  card.appendChild(fieldsRow);
-
-  const errorBox = el('div', { class: 'error-msg', style: 'display:none' });
-  card.appendChild(errorBox);
-
-  const resultBox = el('div', { style: 'display:none' });
-  card.appendChild(resultBox);
-
-  const checkBtn = el('button', { class: 'tracker-btn' }, L().trackBtn);
-  checkBtn.addEventListener('click', async () => {
-    const firstName = firstNameInput.value.trim();
-    const id = idInput.value.trim().toUpperCase();
-    errorBox.style.display = 'none';
-    resultBox.style.display = 'none';
-    resultBox.innerHTML = '';
-
-    if (!firstName) { errorBox.textContent = t('Please enter your first name.','يرجى إدخال اسمك الأول.'); errorBox.style.display='block'; return; }
-    if (!id) { errorBox.textContent = t('Please enter your reference ID.','يرجى إدخال الرقم المرجعي.'); errorBox.style.display='block'; return; }
-
-    checkBtn.disabled = true;
-    checkBtn.textContent = '…';
+  const submitApplication = async () => {
+    const cvFile = cvRef.current?.files?.[0];
+    if (!formName || !formPhone || !formEmail || !formNat || !formSalary || !cvFile) {
+      alert(t('Please fill in all required fields and attach your CV.','يرجى ملء جميع الحقول المطلوبة وإرفاق سيرتك الذاتية.'));
+      return;
+    }
+    setSubmitting(true);
     try {
-      const res = await fetch(WORKER + '/track-status?id=' + encodeURIComponent(id) + '&firstName=' + encodeURIComponent(firstName));
+      const res = await fetch(`${WORKER}/add-candidate`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ name:formName, phone:formPhone, email:formEmail, nationality:formNat,
+          expectedSalary:formSalary, position:modalPosition, entity:modalEntity, source:'Careers Page', role:'recruiter' }),
+      });
       const data = await res.json();
-      if (!data.found) {
-        errorBox.textContent = L().trackNotFound;
-        errorBox.style.display = 'block';
-      } else {
-        resultBox.appendChild(el('div', { class: 'status-result' },
-          statusRow(L().statusPosition, data.position),
-          statusRow(L().statusEntity, fullEntityName(data.entity)),
-          statusRow(L().statusSubmitted, fmtDateDDMMYYYY(data.submittedDate)),
-          statusRow(L().statusCurrent, L().statusLabels[data.status] || data.status)
-        ));
-        resultBox.style.display = 'block';
-      }
+      if (!data.success) throw new Error(data.error || 'Submission failed');
+      const candID = data.candidateID;
+      const fd = new FormData();
+      fd.append('candidateID', candID);
+      fd.append('file', cvFile);
+      await fetch(`${WORKER}/upload-cv`, { method:'POST', headers:{'X-App-Key':''}, body:fd });
+      setSuccess(true); setSuccessRef(candID);
     } catch (e) {
-      errorBox.textContent = t('Something went wrong. Please try again.','حدث خطأ ما. يرجى المحاولة مرة أخرى.');
-      errorBox.style.display = 'block';
+      alert(t('Submission failed: ','فشل الإرسال: ') + e.message);
+    } finally { setSubmitting(false); }
+  };
+
+  const STATUS_STEPS = ['Active','Shortlisted','Offered','Joined'];
+  const statusLabel = (s) => {
+    const en = { Active:'Applied', Shortlisted:'Shortlisted', Offered:'Offer Extended', Joined:'Joined' };
+    const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', Offered:'تم إرسال العرض', Joined:'التحق' };
+    return (ar ? ara : en)[s] || s;
+  };
+  const statusBadgeStyle = (status) => {
+    const m = {
+      Active:{bg:'rgba(43,108,176,.18)',color:'#cfe6ff'}, Shortlisted:{bg:'rgba(216,138,20,.22)',color:'#ffd9a0'},
+      Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'}, Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
+      Rejected:{bg:'rgba(192,57,43,.24)',color:'#ffc2bb'}, 'On Hold':{bg:'rgba(108,52,131,.24)',color:'#e6c8f0'},
+    };
+    const {bg='rgba(255,255,255,.15)',color='#fff'} = m[status] || {};
+    return { fontSize:'12.5px', fontWeight:'700', padding:'6px 15px', borderRadius:'99px', background:bg, color };
+  };
+  const buildTimeline = (status) => {
+    const cur = STATUS_STEPS.indexOf(status);
+    const nodes = [];
+    STATUS_STEPS.forEach((s, i) => {
+      const done = i < cur, current = i === cur;
+      const dotBg = done ? '#1e8449' : current ? 'linear-gradient(135deg,#d6204a,#6e0b2a)' : 'rgba(255,255,255,.14)';
+      const dotColor = (done || current) ? '#fff' : 'rgba(255,255,255,.45)';
+      nodes.push({ isDot:true, isLine:false, dotText: done ? '✓' : String(i+1),
+        dotBg, dotColor, labelText: statusLabel(s),
+        labelColor: current?'#ff9fb2':done?'rgba(255,255,255,.7)':'rgba(255,255,255,.4)',
+        labelWeight: current?'700':'500' });
+      if (i < STATUS_STEPS.length-1) nodes.push({ isDot:false, isLine:true, lineBg: done?'#1e8449':'rgba(255,255,255,.14)' });
+    });
+    return nodes;
+  };
+
+  const onTrackKey = (e) => { if (e.key === 'Enter') doTrack(); };
+  const doTrack = async () => {
+    const id = trackInput.trim().toUpperCase();
+    setTrackErr(''); setTrackResult(null); setTrackNotFound(false);
+    if (!/^REC-\d{4}$/.test(id)) { setTrackErr(t('Please enter a valid reference ID (e.g. REC-0001)','يرجى إدخال رقم مرجع صحيح (مثال: REC-0001)')); return; }
+    setTrackLoading(true);
+    const firstName = trackFirstName.trim();
+    if (!firstName) { setTrackErr(t('Please enter your first name.','يرجى إدخال اسمك الأول.')); setTrackLoading(false); return; }
+    try {
+      const r = await fetch(`${WORKER}/track-status?id=${id}&firstName=${encodeURIComponent(firstName)}`);
+      const data = await r.json();
+      if (!data.found) { setTrackNotFound(true); return; }
+      setTrackResult(data);
+    } catch (e) { setTrackErr(t('Error checking status. Please try again.','خطأ في التحقق من الحالة. يرجى المحاولة مرة أخرى.')); }
+    finally { setTrackLoading(false); }
+  };
+
+  const guessName = (fn) => fn.replace(/\.(pdf|doc|docx|jpg|jpeg|png)$/i,'').replace(/[_\-.]+/g,' ')
+    .replace(/\b(cv|resume|application)\b/gi,'').trim()
+    .split(/\s+/).map(w => w ? w[0].toUpperCase()+w.slice(1).toLowerCase() : '').join(' ').trim();
+
+  const addBulk = (fileList) => {
+    const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', facility:'', status:'idle' }));
+    setBulkFiles(prev => [...prev, ...add]);
+    setBulkDone(false);
+  };
+  const setBulkField = (i, k, v) => setBulkFiles(prev => { const a=[...prev]; a[i]={...a[i],[k]:v}; return a; });
+  const removeBulk = (i) => setBulkFiles(prev => prev.filter((_,j) => j !== i));
+
+  const uploadAllBulk = async () => {
+    if (bulkUploading) return;
+    const snapshot = [...bulkFiles];
+    const pending = snapshot.filter(f => f.status === 'idle');
+    if (!pending.length) return;
+    const missing = pending.find(f => !f.name?.trim() || !f.position || !f.facility);
+    if (missing) { setBulkStatus(t('Please fill name, position and facility for every CV before uploading.','يرجى تعبئة الاسم والوظيفة والمنشأة لكل سيرة ذاتية قبل الرفع.')); return; }
+    setBulkUploading(true); setBulkProgress(0); setBulkStatus('');
+    let done = 0;
+    for (let i = 0; i < snapshot.length; i++) {
+      if (snapshot[i].status !== 'idle') continue;
+      setBulkField(i, 'status', 'loading');
+      try {
+        const f = snapshot[i];
+        const fd = new FormData();
+        fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', f.position||''); fd.append('facility', f.facility||''); fd.append('source','Careers Page');
+        const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error||'fail');
+        setBulkField(i, 'status', 'done'); done++;
+      } catch { setBulkField(i, 'status', 'error'); }
+      setBulkProgress(Math.round((done/pending.length)*100));
+      setBulkStatus(`${t('Uploaded','تم رفع')} ${done} ${t('of','من')} ${pending.length}…`);
     }
-    checkBtn.disabled = false;
-    checkBtn.textContent = L().trackBtn;
-  });
-  card.appendChild(checkBtn);
+    setBulkUploading(false);
+    setBulkFiles(prev => { if (prev.every(f=>f.status==='done') && prev.length) { setBulkDone(true); return []; } return prev; });
+  };
 
-  section.appendChild(card);
-  return section;
-}
-function statusRow(label, val) {
-  return el('div', { class: 'status-row' }, el('span', { style:'color:var(--muted)' }, label), el('strong', {}, val || '—'));
-}
+  const timelineNodes = trackResult ? buildTimeline(trackResult.status) : [];
 
-function renderFooter() {
-  return el('footer', { class: 'footer' },
-    el('img', { class: 'footer-logo', src: '/logo.png', alt: 'HiFive Holdings' }),
-    el('div', { class: 'footer-links' },
-      el('a', { href: 'mailto:' + CAREERS_EMAIL }, CAREERS_EMAIL),
-      el('a', { href: '#positions', onclick: (e)=>{e.preventDefault();scrollToId('positions');} }, L().navPositions),
-      el('a', { href: '#tracker', onclick: (e)=>{e.preventDefault();scrollToId('tracker');} }, L().navTrack)
-    ),
-    el('div', { class: 'footer-divider' }),
-    el('div', { class: 'footer-disclaimer' },
-      L().footerDisclaimer,
-      el('a', { href: 'mailto:' + CAREERS_EMAIL, style:'color:rgba(255,255,255,.6);text-decoration:underline' }, CAREERS_EMAIL),
-      '. © ' + new Date().getFullYear() + ' HiFive Holdings LLC. ' + t('All rights reserved.','جميع الحقوق محفوظة.')
-    )
+  return (
+    <div style={{position:'relative', minHeight:'100vh', overflow:'hidden', direction:dir}}>
+
+      {/* Ambient orbs */}
+      <div style={{position:'fixed',inset:0,zIndex:0,pointerEvents:'none',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:'-120px',left:'-80px',width:'520px',height:'520px',borderRadius:'50%',background:'radial-gradient(circle at 30% 30%,rgba(214,32,74,.22),transparent 65%)',filter:'blur(20px)',animation:'hf-drift 22s ease-in-out infinite'}}></div>
+        <div style={{position:'absolute',top:'30%',right:'-140px',width:'560px',height:'560px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(120,11,42,.16),transparent 66%)',filter:'blur(24px)',animation:'hf-drift 28s ease-in-out infinite reverse'}}></div>
+        <div style={{position:'absolute',bottom:'-160px',left:'25%',width:'480px',height:'480px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(196,150,120,.18),transparent 66%)',filter:'blur(22px)',animation:'hf-drift 26s ease-in-out infinite'}}></div>
+      </div>
+
+      <div style={{position:'relative',zIndex:2}}>
+
+        {/* NAV */}
+        <nav style={{position:'sticky',top:0,zIndex:60,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'20px',padding:'14px clamp(16px,4vw,48px)',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',borderBottom:'1px solid rgba(255,255,255,.6)'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
+            <img src="/logo.png" alt="HiFive" style={{height:'34px',width:'auto',display:'block'}} />
+            <div style={{display:'flex',flexDirection:'column',lineHeight:'1.1'}}>
+              <span data-r="navname" style={{fontWeight:'800',fontSize:'15px',letterSpacing:'-.01em',color:'#1c1b22'}}>HiFive Holdings</span>
+              <span data-r="navsub" style={{fontSize:'10.5px',letterSpacing:'.16em',textTransform:'uppercase',color:'#8a8590',fontWeight:'600'}}>{L.navSub}</span>
+            </div>
+          </div>
+          <div data-r="navbtns" style={{display:'flex',alignItems:'center',gap:'6px'}}>
+            <button className="hf-nav-btn" onClick={() => scrollToId('positions')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navPositions}</button>
+            <button className="hf-nav-btn" onClick={() => scrollToId('tracker')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navTrack}</button>
+            <button className="hf-lang-btn" onClick={() => setLang(l => l==='en'?'ar':'en')} style={{cursor:'pointer',fontFamily:'inherit',fontSize:'13px',fontWeight:'700',color:'#fff',padding:'9px 18px',borderRadius:'99px',border:'none',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 16px rgba(110,11,42,.28)',transition:'transform .2s'}}>{L.langLabel}</button>
+          </div>
+        </nav>
+
+        {/* HERO */}
+        <section style={{padding:'clamp(20px,3vw,40px) clamp(14px,3vw,40px) clamp(30px,4vw,56px)'}}>
+          <div style={{position:'relative',maxWidth:'1240px',margin:'0 auto',borderRadius:'34px',overflow:'hidden',background:'linear-gradient(152deg,#f4dce1 0%,#e9dcef 36%,#dfe7f4 66%,#f6ede3 100%)',boxShadow:'0 40px 90px -30px rgba(110,11,42,.32),0 8px 24px rgba(28,27,34,.06)',minHeight:'clamp(540px,62vw,620px)',animation:'hf-blurin 1s cubic-bezier(.2,.7,.2,1) both'}}>
+            {/* glints */}
+            <div style={{position:'absolute',top:'-60px',right:'8%',width:'340px',height:'340px',borderRadius:'50%',background:'radial-gradient(circle,rgba(255,255,255,.55),transparent 60%)',filter:'blur(10px)',pointerEvents:'none'}}></div>
+            <div style={{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'}}></div>
+
+            {/* Filter bar */}
+            <div data-r="filterbar" style={{position:'relative',zIndex:5,margin:'18px clamp(16px,3vw,26px) 0',display:'flex',flexWrap:'wrap',alignItems:'center',gap:'10px',padding:'10px',borderRadius:'99px',background:'rgba(255,255,255,.5)',backdropFilter:'blur(18px)',WebkitBackdropFilter:'blur(18px)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 10px 30px rgba(110,11,42,.10)',animation:'hf-up .8s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.15s'}}>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 20px',borderRadius:'99px',background:'#fff',fontSize:'13.5px',fontWeight:'700',color:'#b4123a',boxShadow:'0 2px 8px rgba(110,11,42,.10)'}}>
+                <span style={{width:'8px',height:'8px',borderRadius:'50%',background:'#d6204a',boxShadow:'0 0 0 4px rgba(214,32,74,.18)'}}></span>{dynamicEyebrow}
+              </span>
+              <div style={{display:'flex',alignItems:'center',gap:'8px',flex:'1',minWidth:'240px',justifyContent:'flex-end',flexWrap:'wrap'}}>
+                <div style={{display:'flex',alignItems:'center',gap:'8px',padding:'0 6px 0 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',minWidth:'150px'}}>
+                  <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 6px',cursor:'pointer',width:'100%'}}>
+                    <option value="">{L.allEntities}</option>
+                    <option value="APML">Accuracy Plus Medical Laboratory</option>
+                    <option value="Herbal Park">Herbal Park Ayurveda</option>
+                    <option value="Atomic Drugstore">Atomic Drugstore</option>
+                    <option value="Pine Pharmacy">Pine Group of Pharmacies</option>
+                    <option value="Al Jebal Opticals">Al Jebal Group of Opticals</option>
+                  </select>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <button className="hf-filter-btn" onClick={() => scrollToId('positions')} style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 22px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 20px rgba(110,11,42,.3)',transition:'transform .2s'}}>
+                  {L.findBtn}
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Icon rail */}
+            <div data-r="rail" style={{position:'absolute',left:'clamp(14px,2.2vw,26px)',top:'54%',transform:'translateY(-50%)',zIndex:6,display:'flex',flexDirection:'column',gap:'8px',padding:'9px',borderRadius:'99px',background:'rgba(255,255,255,.46)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.65)',boxShadow:'0 12px 30px rgba(110,11,42,.12)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.45s'}}>
+              <div style={{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.32)'}}>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+              </div>
+              {[
+                <><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></>,
+                <><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></>,
+                <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>,
+              ].map((icon, i) => (
+                <div key={i} className="hf-icon-btn" style={{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'#7a4a55',transition:'all .2s'}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">{icon}</svg>
+                </div>
+              ))}
+            </div>
+
+            {/* Two-column: content left, upload right */}
+            <div style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',alignItems:'stretch',gap:'clamp(14px,2vw,28px)'}}>
+
+              {/* Left column */}
+              <div style={{flex:'1 1 320px',minWidth:'280px',display:'flex',flexDirection:'column'}}>
+                {/* Headline */}
+                <div data-r="hpad" style={{position:'relative',zIndex:4,padding:'clamp(28px,5vw,52px) clamp(20px,4vw,56px) 0 clamp(100px,10vw,130px)',maxWidth:'760px'}}>
+                  <h1 data-r="hero-h1" style={{fontFamily:"'Playfair Display',serif",fontWeight:'500',fontSize:'clamp(44px,7.2vw,92px)',lineHeight:'.98',letterSpacing:'-.02em',color:'#23202b',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.25s'}}>
+                    {L.heroTitle1}<br/>
+                    <span style={{background:'linear-gradient(100deg,#d6204a,#6e0b2a 60%,#b4123a)',WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent',fontStyle:'italic',fontWeight:'600',display:'block'}}>{L.heroTitle2}</span>
+                  </h1>
+                  <p style={{marginTop:'18px',maxWidth:'420px',fontSize:'15.5px',lineHeight:'1.6',color:'#5b5560',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.4s'}}>{L.heroSub}</p>
+                  <div style={{marginTop:'26px',display:'flex',gap:'12px',flexWrap:'wrap',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.55s'}}>
+                    <button className="hf-cta-primary" onClick={() => scrollToId('positions')} style={{display:'inline-flex',alignItems:'center',gap:'9px',padding:'14px 26px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.32)',transition:'transform .2s,box-shadow .2s'}}>
+                      {L.heroCtaPrimary}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                    <button className="hf-cta-secondary" onClick={() => scrollToId('tracker')} style={{padding:'14px 24px',borderRadius:'99px',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'600',color:'#23202b',background:'rgba(255,255,255,.55)',backdropFilter:'blur(10px)',WebkitBackdropFilter:'blur(10px)',border:'1px solid rgba(255,255,255,.8)',transition:'all .2s'}}>{L.heroCtaSecondary}</button>
+                  </div>
+                </div>
+
+                {/* Floating glass cards */}
+                <div data-r="cpad" style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',gap:'22px',padding:'clamp(26px,4vw,40px) clamp(20px,4vw,56px) clamp(22px,3vw,32px) clamp(100px,10vw,130px)',alignItems:'flex-end'}}>
+                  {/* Stat card */}
+                  <div style={{flex:'1',minWidth:'230px',maxWidth:'310px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 18px 44px rgba(110,11,42,.14)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float 7s ease-in-out 1.4s infinite',animationDelay:'.65s',minHeight:'200px',alignSelf:'flex-end'}}>
+                    <div style={{fontWeight:'700',fontSize:'14.5px',color:'#23202b',marginBottom:'5px'}}>{L.statCardTitle}</div>
+                    <div style={{fontSize:'12.5px',lineHeight:'1.5',color:'#6b6670',marginBottom:'16px'}}>{L.statCardDesc}</div>
+                    <div style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',gap:'10px'}}>
+                      <div style={{minWidth:0}}>
+                        <div style={{fontFamily:"'Playfair Display',serif",fontSize:'38px',fontWeight:'700',lineHeight:'1',color:'#b4123a'}}>{statCount}+</div>
+                        <div style={{fontSize:'11.5px',letterSpacing:'.04em',color:'#8a8590',fontWeight:'600',marginTop:'3px'}}>{L.statTeam}</div>
+                      </div>
+                      <button className="hf-stat-btn" onClick={() => scrollToId('positions')} style={{width:'46px',height:'46px',flexShrink:0,borderRadius:'50%',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.32)',transition:'transform .2s'}}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Featured role card */}
+                  {featured && (
+                    <div style={{flex:'1.3',minWidth:'280px',maxWidth:'420px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.7)',backdropFilter:'blur(22px)',WebkitBackdropFilter:'blur(22px)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 20px 50px rgba(110,11,42,.18)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float2 8s ease-in-out 1.6s infinite',animationDelay:'.8s'}}>
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'12px',marginBottom:'12px'}}>
+                        <div>
+                          <div style={{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#d6204a',marginBottom:'6px'}}>{L.featuredLabel}</div>
+                          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'21px',fontWeight:'600',color:'#23202b',lineHeight:'1.15'}}>{featured.title}</div>
+                          <div style={{display:'flex',alignItems:'center',gap:'6px',marginTop:'6px',fontSize:'12.5px',color:'#6b6670'}}>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                            {featured.entityLine}
+                          </div>
+                        </div>
+                        <button className="hf-featured-apply" onClick={featured.onApply} style={{width:'42px',height:'42px',flexShrink:0,borderRadius:'50%',border:'1px solid rgba(180,18,58,.25)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'#fff',color:'#b4123a',transition:'all .2s'}}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                        </button>
+                      </div>
+                      <div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginBottom:'16px'}}>
+                        <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{L.uaeFullTime}</span>
+                        {featured.metaTag && <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{featured.metaTag}</span>}
+                      </div>
+                      <button className="hf-apply-btn" onClick={featured.onApply} style={{width:'100%',padding:'12px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.26)',transition:'transform .2s'}}>{L.applyWord} →</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Right: hero image upload */}
+              <div style={{flex:'0 1 360px',minWidth:'240px',display:'flex',flexDirection:'column',justifyContent:'center',padding:'clamp(16px,2.4vw,26px) clamp(18px,2.6vw,28px) clamp(22px,3vw,32px) 0',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.7s'}}>
+                <div style={{position:'relative',display:'flex'}}>
+                  <img src="/hero.jpg" alt="HiFive Holdings team" style={{display:'block',width:'100%',height:'100%',minHeight:'clamp(340px,40vw,500px)',borderRadius:'26px',objectFit:'cover',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 22px 54px rgba(110,11,42,.18)'}} />
+                  <div style={{position:'absolute',inset:0,borderRadius:'26px',pointerEvents:'none',background:'linear-gradient(to bottom,rgba(255,255,255,.09) 0%,transparent 28%,transparent 68%,rgba(110,11,42,.22) 100%)',boxShadow:'inset 0 0 0 1.5px rgba(255,255,255,.78),inset 0 4px 28px rgba(255,255,255,.38),inset 0 -58px 84px -38px rgba(110,11,42,.34),0 0 0 1px rgba(255,255,255,.32),0 10px 40px rgba(110,11,42,.14)'}}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ENTITIES STRIP */}
+        <section style={{maxWidth:'1240px',margin:'0 auto',padding:'6px clamp(16px,4vw,48px) 18px'}}>
+          <div style={{textAlign:'center',fontSize:'11px',letterSpacing:'.18em',textTransform:'uppercase',fontWeight:'700',color:'#a59b92',marginBottom:'16px'}}>{L.entitiesLabel}</div>
+          <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'10px'}}>
+            {['Accuracy Plus Medical Laboratory','Herbal Park Ayurveda','Atomic Drugstore','Pine Group of Pharmacies','Al Jebal Group of Opticals'].map((name, i) => (
+              <div key={i} style={{display:'inline-flex',alignItems:'center',gap:'9px',padding:'11px 20px',borderRadius:'99px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,.75)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',fontSize:'13px',fontWeight:'600',color:'#3a3640'}}>
+                <span style={{width:'7px',height:'7px',borderRadius:'50%',background:'#d6204a',flexShrink:0}}></span>{name}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* OPEN POSITIONS */}
+        <section id="positions" style={{maxWidth:'1240px',margin:'0 auto',padding:'clamp(40px,5vw,72px) clamp(16px,4vw,48px) clamp(30px,4vw,48px)',scrollMarginTop:'90px'}}>
+          <div style={{display:'flex',flexWrap:'wrap',alignItems:'flex-end',justifyContent:'space-between',gap:'18px',marginBottom:'26px'}}>
+            <div>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b',lineHeight:'1.05'}}>{L.posTitle}</h2>
+              <p style={{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'}}>{L.posSub}</p>
+            </div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'10px',alignItems:'center'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'9px',padding:'11px 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',minWidth:'220px'}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b08a90" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+                <input value={search} onInput={e => setSearch(e.target.value)} placeholder={L.searchPlaceholder} style={{border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',color:'#1c1b22',flex:'1',minWidth:'120px'}} />
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',padding:'0 14px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)'}}>
+                <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 4px',cursor:'pointer'}}>
+                  <option value="">{L.allEntities}</option>
+                  <option value="APML">Accuracy Plus Medical Laboratory</option>
+                  <option value="Herbal Park">Herbal Park Ayurveda</option>
+                  <option value="Atomic Drugstore">Atomic Drugstore</option>
+                  <option value="Pine Pharmacy">Pine Group of Pharmacies</option>
+                  <option value="Al Jebal Opticals">Al Jebal Group of Opticals</option>
+                </select>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          {loading && (
+            <div style={{textAlign:'center',padding:'60px 20px',color:'#8a8590',fontSize:'14.5px'}}>
+              <div className="hf-loader" style={{margin:'0 auto 14px'}}></div>
+              {L.loadingText}
+            </div>
+          )}
+          {!loading && filteredPositions.length === 0 && (
+            <div style={{textAlign:'center',padding:'50px 20px',color:'#8a8590',fontSize:'14.5px'}}>{L.emptyText}</div>
+          )}
+
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(310px,1fr))',gap:'18px'}}>
+            {filteredPositions.map((p, i) => {
+              const vm = posVM(p);
+              return (
+                <div key={i} className={vm.isOpen ? 'hf-pos-card-open' : ''} style={{padding:'22px',borderRadius:'22px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',opacity:vm.isFull?'0.72':'1',transition:'transform .25s,box-shadow .25s'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px',marginBottom:'12px'}}>
+                    <span style={{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'}}>{vm.entityLine}</span>
+                    <span style={{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background:vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color:vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em'}}>{vm.badgeText}</span>
+                  </div>
+                  <div style={{fontFamily:"'Playfair Display',serif",fontSize:'19px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'8px'}}>{vm.title}</div>
+                  <div style={{fontSize:'12.5px',color:'#6b6670',lineHeight:'1.5',marginBottom:'6px'}}>{vm.metaLine}</div>
+                  {vm.hasJoining && (
+                    <div style={{display:'inline-flex',alignItems:'center',gap:'6px',fontSize:'12px',fontWeight:'600',color:'#7a4a55',marginBottom:'4px'}}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                      {vm.joiningLine}
+                    </div>
+                  )}
+                  <div style={{marginTop:'14px'}}>
+                    <div style={{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.07)',overflow:'hidden',marginBottom:'6px'}}>
+                      <div style={{height:'100%',borderRadius:'99px',transition:'width .9s cubic-bezier(.2,.7,.2,1)',width:`${vm.pct}%`,background:vm.barColor}}></div>
+                    </div>
+                    <span style={vm.fillLabelStyle}>{vm.fillLabel}</span>
+                  </div>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'16px',paddingTop:'14px',borderTop:'1px solid rgba(28,27,34,.07)'}}>
+                    <span style={{fontSize:'12px',color:'#9a949e',fontWeight:'500'}}>{vm.locWord}</span>
+                    {vm.isOpen ? (
+                      <button className="hf-apply-btn" onClick={vm.onApply} style={{display:'inline-flex',alignItems:'center',gap:'7px',padding:'9px 18px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'12.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.24)',transition:'transform .2s'}}>
+                        {vm.applyText}
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                      </button>
+                    ) : (
+                      <span style={{fontSize:'12px',color:'#b6afa6',fontWeight:'600'}}>{vm.applyText}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* WHY HIFIVE */}
+        <section style={{maxWidth:'1240px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'}}>
+          <div style={{textAlign:'center',marginBottom:'34px'}}>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'}}>{L.whyTitle}</h2>
+            <p style={{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'}}>{L.whySub}</p>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:'18px'}}>
+            {[
+              { title: L.why1Title, desc: L.why1Desc, icon: <><path d="M8 2h8l4 6-8 14L4 8z"/><path d="M12 8v8M8.5 12h7"/></> },
+              { title: L.why2Title, desc: L.why2Desc, icon: <><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></> },
+              { title: L.why3Title, desc: L.why3Desc, icon: <><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></> },
+              { title: L.why4Title, desc: L.why4Desc, icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></> },
+            ].map((card, i) => (
+              <div key={i} className="hf-why-card" style={{padding:'28px 24px',borderRadius:'24px',background:'rgba(255,255,255,.6)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.78)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',transition:'transform .25s,box-shadow .25s'}}>
+                <div style={{width:'50px',height:'50px',borderRadius:'16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,rgba(214,32,74,.12),rgba(110,11,42,.1))',color:'#b4123a',marginBottom:'16px'}}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{card.icon}</svg>
+                </div>
+                <div style={{fontWeight:'700',fontSize:'15px',color:'#23202b',marginBottom:'6px'}}>{card.title}</div>
+                <div style={{fontSize:'13px',color:'#6b6670',lineHeight:'1.55'}}>{card.desc}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* TRACKER */}
+        <section id="tracker" style={{padding:'clamp(34px,4vw,60px) clamp(16px,4vw,48px)',scrollMarginTop:'90px'}}>
+          <div style={{maxWidth:'760px',margin:'0 auto',borderRadius:'30px',overflow:'hidden',position:'relative',background:'linear-gradient(150deg,#2a0a18 0%,#5c0a24 50%,#3a0a18 100%)',boxShadow:'0 30px 70px -24px rgba(110,11,42,.5)'}}>
+            <div style={{position:'absolute',top:'-80px',right:'-60px',width:'300px',height:'300px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.4),transparent 65%)',filter:'blur(10px)',pointerEvents:'none'}}></div>
+            <div style={{position:'relative',zIndex:2,padding:'clamp(34px,4vw,52px) clamp(22px,4vw,48px)',textAlign:'center'}}>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,38px)',fontWeight:'600',color:'#fff',letterSpacing:'-.01em'}}>{L.trackTitle}</h2>
+              <p style={{margin:'12px auto 0',maxWidth:'480px',fontSize:'14px',color:'rgba(255,255,255,.66)',lineHeight:'1.6'}}>{L.trackSub}</p>
+              <div style={{display:'flex',gap:'10px',maxWidth:'460px',margin:'26px auto 0',flexWrap:'wrap'}}>
+                <input value={trackFirstName} onInput={e => { setTrackFirstName(e.target.value); setTrackErr(''); setTrackNotFound(false); }} onKeyDown={onTrackKey} placeholder={t('First Name','الاسم الأول')} style={{flex:'1',minWidth:'140px',border:'1px solid rgba(255,255,255,.18)',borderRadius:'14px',padding:'15px 18px',fontFamily:'inherit',fontSize:'15px',fontWeight:'600',color:'#fff',background:'rgba(255,255,255,.08)',outline:'none'}} />
+                <input value={trackInput} onInput={e => { setTrackInput(e.target.value.toUpperCase()); setTrackErr(''); setTrackNotFound(false); }} onKeyDown={onTrackKey} placeholder="REC-0001" maxLength={8} style={{flex:'1',minWidth:'140px',border:'1px solid rgba(255,255,255,.18)',borderRadius:'14px',padding:'15px 18px',fontFamily:'inherit',fontSize:'15px',fontWeight:'600',letterSpacing:'.08em',textTransform:'uppercase',color:'#fff',background:'rgba(255,255,255,.08)',outline:'none'}} />
+                <button className="hf-track-btn" onClick={doTrack} style={{padding:'15px 28px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#9a0f33)',boxShadow:'0 10px 22px rgba(214,32,74,.4)',whiteSpace:'nowrap',transition:'transform .2s'}}>{trackLoading ? '…' : L.trackBtn}</button>
+              </div>
+              {trackErr && <div style={{color:'#ff8aa0',fontSize:'13.5px',marginTop:'14px'}}>{trackErr}</div>}
+              {trackNotFound && <div style={{color:'rgba(255,255,255,.7)',fontSize:'14px',marginTop:'18px'}}>{L.trackNotFound}</div>}
+
+              {trackResult && (
+                <div style={{marginTop:'26px',textAlign:'left',borderRadius:'20px',padding:'26px',background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.1)'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:'10px',marginBottom:'20px'}}>
+                    <div>
+                      <div style={{color:'#fff',fontSize:'18px',fontWeight:'700'}}>{trackResult.name}</div>
+                      <div style={{color:'rgba(255,255,255,.5)',fontSize:'13px',marginTop:'3px'}}>{trackResult.id}</div>
+                    </div>
+                    <span style={statusBadgeStyle(trackResult.status)}>{trackResult.status}</span>
+                  </div>
+                  <div data-r="trackgrid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.posWord}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.position}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.entityWord}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.entity}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.appliedOn}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.submittedDate ? fmtDate(trackResult.submittedDate) : '—'}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.interviewDate}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.interviewDate || '—'}</div></div>
+                  </div>
+                  <div style={{marginTop:'22px',paddingTop:'18px',borderTop:'1px solid rgba(255,255,255,.1)'}}>
+                    <div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'14px'}}>{L.progressLabel}</div>
+                    <div style={{display:'flex',alignItems:'flex-start'}}>
+                      {timelineNodes.map((n, i) => (
+                        <React.Fragment key={i}>
+                          {n.isDot && (
+                            <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:'7px',flex:'0 0 auto',width:'64px'}}>
+                              <div style={{width:'30px',height:'30px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12.5px',fontWeight:'700',background:n.dotBg,color:n.dotColor}}>{n.dotText}</div>
+                              <div style={{fontSize:'10px',textAlign:'center',lineHeight:'1.3',color:n.labelColor,fontWeight:n.labelWeight}}>{n.labelText}</div>
+                            </div>
+                          )}
+                          {n.isLine && <div style={{flex:'1',height:'2px',marginTop:'14px',borderRadius:'2px',background:n.lineBg}}></div>}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* BULK CV DROP */}
+        <section id="cvdrop" style={{maxWidth:'820px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'}}>
+          <div style={{textAlign:'center',marginBottom:'28px'}}>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'}}>{L.bulkTitle}</h2>
+            <p style={{marginTop:'8px',fontSize:'14px',color:'#6b6670',maxWidth:'520px',marginLeft:'auto',marginRight:'auto',lineHeight:'1.6'}}>{L.bulkSub}</p>
+          </div>
+
+          <div className="hf-bulk-zone" onClick={() => bulkInputRef.current?.click()} onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); addBulk(e.dataTransfer.files); }} style={{border:'2px dashed rgba(180,18,58,.3)',borderRadius:'26px',padding:'44px 24px',textAlign:'center',cursor:'pointer',background:'rgba(255,255,255,.5)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',transition:'all .25s'}}>
+            <input ref={bulkInputRef} type="file" multiple accept=".pdf,.doc,.docx,image/*" onChange={e => addBulk(e.target.files)} style={{display:'none'}} />
+            <div style={{width:'70px',height:'70px',borderRadius:'22px',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.3)'}}>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+            </div>
+            <div style={{fontSize:'17px',fontWeight:'700',color:'#23202b',marginBottom:'6px'}}>{L.dropTitle}</div>
+            <div style={{fontSize:'12.5px',color:'#9a949e'}}>{L.dropHint}</div>
+          </div>
+
+          {bulkFiles.length > 0 && (
+            <div style={{display:'flex',flexDirection:'column',gap:'9px',marginTop:'16px'}}>
+              {bulkFiles.map((f, i) => {
+                const stStyle = f.status==='done'?{marginLeft:'8px',color:'#1e8449',fontWeight:'700',fontSize:'11px'}:f.status==='error'?{marginLeft:'8px',color:'#c0392b',fontWeight:'700',fontSize:'11px'}:f.status==='loading'?{marginLeft:'8px',color:'#b4123a',fontSize:'11px'}:{display:'none'};
+                const stText = f.status==='done'?t('✓ Done','✓ تم'):f.status==='error'?t('✗ Failed','✗ فشل'):f.status==='loading'?t('Uploading…','جاري الرفع…'):'';
+                return (
+                  <div key={i} data-r="bulkrow" style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr auto',gap:'9px',alignItems:'center',padding:'12px 14px',borderRadius:'14px',background:'rgba(255,255,255,.62)',border:'1px solid rgba(255,255,255,.8)'}}>
+                    <div style={{gridColumn:'1/-1',fontSize:'12.5px',fontWeight:'600',color:'#3a3640',display:'flex',alignItems:'center',gap:'8px'}}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
+                      {f.fileName}<span style={stStyle}>{stText}</span>
+                    </div>
+                    <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} placeholder={L.candidateName} style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    <select value={f.position} onChange={e => setBulkField(i,'position',e.target.value)} disabled={f.status!=='idle'} style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}}>
+                      <option value="">{L.selectPosition}</option>
+                      {[...new Set(positions.map(p => p.customPosition || p.position))].sort().map(p => <option key={p} value={p}>{p}</option>)}
+                      <option value="Other">{t('Other / Not Listed','أخرى / غير مدرجة')}</option>
+                    </select>
+                    <select value={f.facility} onChange={e => setBulkField(i,'facility',e.target.value)} disabled={f.status!=='idle'} style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}}>
+                      <option value="">{L.selectFacility}</option>
+                      <option value="APML">Accuracy Plus Medical Laboratory</option>
+                      <option value="Herbal Park">Herbal Park Ayurveda</option>
+                      <option value="Atomic Drugstore">Atomic Drugstore</option>
+                      <option value="Pine Pharmacy">Pine Group of Pharmacies</option>
+                      <option value="Al Jebal Opticals">Al Jebal Group of Opticals</option>
+                    </select>
+                    {f.status === 'idle' && (
+                      <button onClick={() => removeBulk(i)} style={{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'}}>✕</button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {bulkUploading && (
+            <>
+              <div style={{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.08)',overflow:'hidden',margin:'14px 0 8px'}}>
+                <div style={{height:'100%',borderRadius:'99px',transition:'width .4s',width:`${bulkProgress}%`,background:'linear-gradient(90deg,#d6204a,#6e0b2a)'}}></div>
+              </div>
+              <div style={{fontSize:'12.5px',color:'#6b6670',textAlign:'center'}}>{bulkStatus}</div>
+            </>
+          )}
+
+          {bulkFiles.length > 0 && (
+            <div style={{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}>
+              <button onClick={uploadAllBulk} disabled={bulkUploading} style={{padding:'13px 26px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'}}>{L.uploadAll}</button>
+              <button onClick={() => bulkInputRef.current?.click()} style={{padding:'12px 22px',borderRadius:'14px',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'600',color:'#b4123a',background:'rgba(214,32,74,.08)',border:'1px solid rgba(180,18,58,.2)'}}>{L.addMore}</button>
+            </div>
+          )}
+
+          {bulkDone && (
+            <div style={{textAlign:'center',padding:'30px 0',marginTop:'16px'}}>
+              <div style={{width:'56px',height:'56px',borderRadius:'50%',margin:'0 auto 14px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)'}}>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </div>
+              <div style={{fontSize:'18px',fontWeight:'800',color:'#1e8449',marginBottom:'6px'}}>{L.doneTitle}</div>
+              <div style={{fontSize:'13px',color:'#6b6670'}}>{L.doneSub}</div>
+            </div>
+          )}
+        </section>
+
+        {/* FOOTER */}
+        <footer style={{marginTop:'30px',padding:'40px clamp(16px,4vw,48px)',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'}}>
+          <img src="/logo.png" alt="HiFive Holdings" style={{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1)',opacity:'0.95'}} />
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'18px',color:'#fff',fontWeight:'600',letterSpacing:'.02em',marginBottom:'10px'}}>HiFive Holdings</div>
+          <p style={{fontSize:'13px',color:'rgba(255,255,255,.5)',lineHeight:'1.7'}}>
+            © 2026 HiFive Holdings LLC<br/>
+            <a href="mailto:career@hifiveholding.ae" style={{color:'rgba(255,255,255,.78)',textDecoration:'none'}}>career@hifiveholding.ae</a> &nbsp;·&nbsp; {L.footerNote}
+          </p>
+        </footer>
+      </div>
+
+      {/* APPLY MODAL */}
+      {modalOpen && (
+        <div onClick={e => { if (e.target === e.currentTarget) closeModal(); }} style={{position:'fixed',inset:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'center',padding:'20px',background:'rgba(42,10,24,.5)',backdropFilter:'blur(6px)',WebkitBackdropFilter:'blur(6px)',animation:'hf-in .25s ease both',direction:dir}}>
+          <div style={{width:'100%',maxWidth:'520px',maxHeight:'92vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(255,255,255,.96)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'}}>
+            {success ? (
+              <div style={{textAlign:'center',padding:'14px 0'}}>
+                <div style={{width:'64px',height:'64px',borderRadius:'50%',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)',boxShadow:'0 12px 26px rgba(30,132,73,.34)'}}>
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'24px',fontWeight:'600',color:'#23202b',marginBottom:'8px'}}>{L.successTitle}</h3>
+                <p style={{fontSize:'13.5px',color:'#6b6670'}}>{L.refLabel}</p>
+                <div style={{margin:'14px auto',maxWidth:'240px',padding:'13px',borderRadius:'12px',background:'rgba(30,132,73,.1)',color:'#1e8449',fontSize:'16px',fontWeight:'800',letterSpacing:'.08em'}}>{successRef}</div>
+                <p style={{fontSize:'12.5px',color:'#9a949e',marginBottom:'18px'}}>{L.saveIdNote}</p>
+                <button onClick={closeModal} style={{padding:'13px 30px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)'}}>{L.closeBtn}</button>
+              </div>
+            ) : (
+              <div>
+                <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'23px',fontWeight:'600',color:'#23202b',lineHeight:'1.2'}}>{t('Apply — ','تقدم — ')}{modalPosition}</h3>
+                <p style={{fontSize:'13px',color:'#6b6670',margin:'8px 0 22px',lineHeight:'1.55'}}>{L.modalSubtitle}</p>
+                <div style={{display:'flex',flexDirection:'column',gap:'13px'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.fullName}</label>
+                    <input value={formName} onInput={e => setFormName(e.target.value)} placeholder="As per passport" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'13px'}}>
+                    <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                      <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.phone}</label>
+                      <input value={formPhone} onInput={e => setFormPhone(e.target.value)} placeholder="971XXXXXXXXX" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    </div>
+                    <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                      <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.nationality}</label>
+                      <input value={formNat} onInput={e => setFormNat(e.target.value)} style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    </div>
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.email}</label>
+                    <input value={formEmail} onInput={e => setFormEmail(e.target.value)} type="email" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.expSalary}</label>
+                    <input value={formSalary} onInput={e => setFormSalary(e.target.value)} type="number" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.cvLabel}</label>
+                    <input ref={cvRef} type="file" accept=".pdf,.doc,.docx" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'11px 12px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#6b6670'}} />
+                  </div>
+                </div>
+                <div style={{display:'flex',gap:'10px',marginTop:'22px'}}>
+                  <button onClick={submitApplication} disabled={submitting} style={{flex:'1',padding:'14px',borderRadius:'13px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'}}>{submitting ? t('Submitting…','جاري الإرسال…') : t('Submit Application','تقديم الطلب')}</button>
+                  <button onClick={closeModal} style={{padding:'14px 22px',borderRadius:'13px',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'600',color:'#6b6670',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'}}>{L.cancelBtn}</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
-function renderApp() {
-  const root = document.getElementById('root');
-  root.innerHTML = '';
-  root.appendChild(renderNav());
-  root.appendChild(renderHero());
-  root.appendChild(renderWhy());
-  root.appendChild(renderPositions());
-  root.appendChild(renderCvDrop());
-  root.appendChild(renderTracker());
-  root.appendChild(renderFooter());
+try {
+  ReactDOM.createRoot(document.getElementById('root')).render(<CareersPage />);
+} catch (e) {
+  document.getElementById('root').innerHTML = '<div style="padding:60px 20px;text-align:center;font-family:sans-serif;color:#b4123a">Something went wrong loading this page. Please refresh, or contact career@hifiveholding.ae if the issue continues.</div>';
+  console.error('CareersPage mount error:', e);
 }
-
-renderApp();
-loadPositions();
 </script>
 </body>
 </html>
