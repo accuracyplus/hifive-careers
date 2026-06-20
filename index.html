@@ -179,9 +179,9 @@ function CareersPage() {
     expSalary: t('Expected Salary (AED) *','الراتب المتوقع (درهم) *'),
     cvLabel: t('CV (PDF/DOC) *','السيرة الذاتية *'),
     cancelBtn: t('Cancel','إلغاء'),
-    successTitle: t('Application Submitted!','تم تقديم طلبك!'),
+    successTitle: t('CV Received!','تم استلام سيرتك الذاتية!'),
     refLabel: t('Your reference number:','رقم مرجعك:'),
-    saveIdNote: t('Save this ID to track your application status above.','احفظ هذا الرقم لتتبع حالة طلبك أعلاه.'),
+    saveIdNote: t('Your CV is in our talent database. Our HR team will review it and contact you if there is a match.','سيرتك الذاتية الآن في قاعدة بيانات المواهب لدينا. سيقوم فريق الموارد البشرية بمراجعتها والتواصل معك في حال وجود تطابق.'),
     closeBtn: t('Close','إغلاق'),
     footerNote: t('All content and trademarks on this page are the property of HiFive Holdings LLC and may not be reproduced without permission. By submitting your details you consent to their use solely for recruitment purposes under applicable UAE data protection law. HiFive Holdings never requests payment at any stage of recruitment; report any such request to ','جميع المحتويات والعلامات التجارية على هذه الصفحة ملك لشركة هايفايف القابضة ولا يجوز إعادة إنتاجها دون إذن. بإرسال بياناتك فإنك توافق على استخدامها حصراً لأغراض التوظيف وفقاً لقانون حماية البيانات الإماراتي. لا تطلب هايفايف أي مبالغ مالية في أي مرحلة من التوظيف؛ يرجى الإبلاغ عن أي طلب من هذا القبيل إلى '),
   };
@@ -299,34 +299,35 @@ function CareersPage() {
     }
     setSubmitting(true);
     try {
-      const res = await fetch(`${WORKER}/add-candidate`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ name:formName, phone:formPhone, email:formEmail, nationality:formNat,
-          expectedSalary:formSalary, position:modalPosition, entity:modalEntity, source:'Careers Page', role:'recruiter' }),
-      });
+      const fd = new FormData();
+      fd.append('file', cvFile);
+      fd.append('name', formName);
+      fd.append('position', modalPosition || '');
+      fd.append('facility', modalEntity || '');
+      fd.append('phone', formPhone);
+      fd.append('email', formEmail);
+      const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
       const data = await res.json();
       if (!data.success) throw new Error(data.error || 'Submission failed');
-      const candID = data.candidateID;
-      const fd = new FormData();
-      fd.append('candidateID', candID);
-      fd.append('file', cvFile);
-      await fetch(`${WORKER}/upload-cv`, { method:'POST', headers:{'X-App-Key':''}, body:fd });
-      setSuccess(true); setSuccessRef(candID);
+      setSuccess(true); setSuccessRef(data.cvID);
     } catch (e) {
       alert(t('Submission failed: ','فشل الإرسال: ') + e.message);
     } finally { setSubmitting(false); }
   };
 
-  const STATUS_STEPS = ['Active','Shortlisted','Offered','Joined'];
+  const STATUS_STEPS = ['Active','Shortlisted','Ops Cleared','Mgmt Cleared','Offered','Accepted','Joined'];
   const statusLabel = (s) => {
-    const en = { Active:'Applied', Shortlisted:'Shortlisted', Offered:'Offer Extended', Joined:'Joined' };
-    const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', Offered:'تم إرسال العرض', Joined:'التحق' };
+    const en = { Active:'Applied', Shortlisted:'Shortlisted', 'Ops Cleared':'Operations Cleared', 'Mgmt Cleared':'Management Cleared', 'Verbal Offered':'Offer Extended', Offered:'Offer Extended', Accepted:'Offer Accepted', Onboarding:'Onboarding', Joined:'Joined', Rejected:'Not Selected' };
+    const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', 'Ops Cleared':'اجتاز العمليات', 'Mgmt Cleared':'اجتاز الإدارة', 'Verbal Offered':'تم إرسال العرض', Offered:'تم إرسال العرض', Accepted:'تم قبول العرض', Onboarding:'التأهيل', Joined:'التحق', Rejected:'لم يتم الاختيار' };
     return (ar ? ara : en)[s] || s;
   };
   const statusBadgeStyle = (status) => {
     const m = {
       Active:{bg:'rgba(43,108,176,.18)',color:'#cfe6ff'}, Shortlisted:{bg:'rgba(216,138,20,.22)',color:'#ffd9a0'},
-      Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'}, Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
+      'Ops Cleared':{bg:'rgba(14,165,233,.22)',color:'#bae6fd'}, 'Mgmt Cleared':{bg:'rgba(16,185,129,.22)',color:'#a7f3d0'},
+      'Verbal Offered':{bg:'rgba(249,115,22,.22)',color:'#fed7aa'}, Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'},
+      Accepted:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'}, Onboarding:{bg:'rgba(99,102,241,.22)',color:'#c7d2fe'},
+      Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
       Rejected:{bg:'rgba(192,57,43,.24)',color:'#ffc2bb'}, 'On Hold':{bg:'rgba(108,52,131,.24)',color:'#e6c8f0'},
     };
     const {bg='rgba(255,255,255,.15)',color='#fff'} = m[status] || {};
