@@ -41,16 +41,21 @@
     /* Shimmer text — for hero headings & major section titles only */
     .hf-shimmer{
       position:relative;
-      background:linear-gradient(100deg,#6e0b2a 35%,#ff8aa8 50%,#6e0b2a 65%);
-      background-repeat:no-repeat;
-      background-size:220% 100%;
+      background:linear-gradient(to right, #6e0b2a 0, #ffc4d4 10%, #6e0b2a 20%, #6e0b2a 100%);
+      background-size:300% 100%;
+      background-position:0;
       -webkit-background-clip:text;
       background-clip:text;
       -webkit-text-fill-color:transparent;
       color:transparent;
-      animation:hf-shimmer-move 3.5s linear infinite;
+      animation:hf-shine 3s infinite linear;
+      animation-fill-mode:forwards;
     }
-    @keyframes hf-shimmer-move{0%{background-position:160% 0}100%{background-position:-60% 0}}
+    @keyframes hf-shine{
+      0%{background-position:0}
+      60%{background-position:180px}
+      100%{background-position:180px}
+    }
 
     .hf-loader{position:relative;width:64px;height:64px;border:3px solid rgba(180,18,58,.18);overflow:hidden;border-radius:50%;box-shadow:-3px -3px 5px rgba(255,255,255,.4),6px 6px 10px rgba(110,11,42,.12),inset -3px -3px 5px rgba(255,255,255,.4),inset 6px 6px 10px rgba(110,11,42,.10);margin:0 auto}
     .hf-loader:before{content:"";position:absolute;top:10px;left:10px;right:10px;bottom:10px;z-index:10;background:#efe9e1;border-radius:50%;border:1px solid rgba(180,18,58,.12);box-shadow:inset -1px -1px 4px rgba(255,255,255,.5),inset 2px 2px 5px rgba(110,11,42,.12)}
