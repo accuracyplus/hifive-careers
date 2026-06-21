@@ -158,7 +158,7 @@ const S = {
   modalOpen: false, modalPosition: '', modalEntity: '',
   jdModalOpen: false, jdTitle: '', jdEntity: '', jdText: '',
   submitting: false, success: false, successRef: '',
-  formName: '', formPhone: '', formEmail: '', formNat: '', formSalary: '',
+  formName: '', formPhone: '', formEmail: '',
   trackInput: '', trackFirstName: '', trackLoading: false, trackErr: '', trackResult: null, trackNotFound: false,
   bulkFiles: [], bulkUploading: false, bulkDone: false, bulkProgress: 0, bulkStatus: '',
 };
@@ -387,7 +387,7 @@ function featuredVM() {
 
 function openApply(position, entity) {
   setS({ modalOpen:true, modalPosition:position, modalEntity:entity, success:false,
-    formName:'', formPhone:'', formEmail:'', formNat:'', formSalary:'' });
+    formName:'', formPhone:'', formEmail:'' });
 }
 function closeModal() { setS({ modalOpen:false, success:false }); }
 function openJD(title, entity, jdText) { setS({ jdModalOpen:true, jdTitle:title, jdEntity:entity, jdText:jdText }); }
@@ -396,7 +396,7 @@ function closeJD() { setS({ jdModalOpen:false }); }
 let cvFileRef = null;
 
 async function submitApplication() {
-  if (!S.formName || !S.formPhone || !S.formEmail || !S.formNat || !S.formSalary || !cvFileRef) {
+  if (!S.formName || !S.formPhone || !S.formEmail || !cvFileRef) {
     alert(t('Please fill in all required fields and attach your CV.','يرجى ملء جميع الحقول المطلوبة وإرفاق سيرتك الذاتية.'));
     return;
   }
@@ -1050,14 +1050,8 @@ function renderApplyModal() {
 
     const formCol = el('div', { style:{display:'flex',flexDirection:'column',gap:'13px'} });
     formCol.appendChild(formField(f.fullName, 'text', 'formName', 'As per passport'));
-
-    const phoneNatRow = el('div', { style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'13px'} });
-    phoneNatRow.appendChild(formField(f.phone, 'text', 'formPhone', '971XXXXXXXXX'));
-    phoneNatRow.appendChild(formField(f.nationality, 'text', 'formNat', ''));
-    formCol.appendChild(phoneNatRow);
-
+    formCol.appendChild(formField(f.phone, 'text', 'formPhone', '971XXXXXXXXX'));
     formCol.appendChild(formField(f.email, 'email', 'formEmail', ''));
-    formCol.appendChild(formField(f.expSalary, 'number', 'formSalary', ''));
 
     const cvField = el('div', { style:{display:'flex',flexDirection:'column',gap:'5px'} },
       el('label', { style:{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'} }, f.cvLabel)
