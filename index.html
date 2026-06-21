@@ -469,7 +469,7 @@ function guessName(fn) {
     .split(/\s+/).map(w => w ? w[0].toUpperCase()+w.slice(1).toLowerCase() : '').join(' ').trim();
 }
 function addBulk(fileList) {
-  const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', customPosition:'', facility:'', status:'idle' }));
+  const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', customPosition:'', facility:'', email:'', phone:'', status:'idle' }));
   S.bulkFiles = [...S.bulkFiles, ...add];
   S.bulkDone = false;
   render();
@@ -493,7 +493,7 @@ async function uploadAllBulk() {
     try {
       const f = snapshot[i];
       const fd = new FormData();
-      fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', resolvedPosition(f)); fd.append('facility', f.facility||''); fd.append('source','Careers Page');
+      fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', resolvedPosition(f)); fd.append('facility', f.facility||''); fd.append('email', f.email||''); fd.append('phone', f.phone||''); fd.append('source','Careers Page');
       const res = await fetch(WORKER + '/upload-cv-public', { method:'POST', body:fd });
       const data = await res.json();
       if (!data.success) throw new Error(data.error||'fail');
@@ -902,7 +902,7 @@ function renderBulkDrop() {
         loading: {color:'#b4123a',text:t('Uploading…','جاري الرفع…')},
       };
       const st = stMap[bf.status];
-      const row = el('div', { 'data-r':'bulkrow', style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr auto',gap:'9px',alignItems:'center',padding:'12px 14px',borderRadius:'14px',background:'rgba(255,255,255,.62)',border:'1px solid rgba(255,255,255,.8)'} },
+      const row = el('div', { 'data-r':'bulkrow', style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'9px',alignItems:'center',padding:'12px 14px',borderRadius:'14px',background:'rgba(255,255,255,.62)',border:'1px solid rgba(255,255,255,.8)'} },
         el('div', { style:{gridColumn:'1/-1',fontSize:'12.5px',fontWeight:'600',color:'#3a3640',display:'flex',alignItems:'center',gap:'8px'} },
           svg('<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/>', {size:15,color:'#b4123a',sw:1.9}),
           bf.fileName,
@@ -916,6 +916,20 @@ function renderBulkDrop() {
       nameInput.addEventListener('input', e => setBulkField(i, 'name', e.target.value, true));
       row.appendChild(nameInput);
 
+      const emailInput = document.createElement('input');
+      emailInput.type = 'email';
+      emailInput.value = bf.email || ''; emailInput.placeholder = t('Email','البريد الإلكتروني'); emailInput.disabled = bf.status !== 'idle';
+      emailInput.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
+      emailInput.addEventListener('input', e => setBulkField(i, 'email', e.target.value, true));
+      row.appendChild(emailInput);
+
+      const phoneInput = document.createElement('input');
+      phoneInput.type = 'tel';
+      phoneInput.value = bf.phone || ''; phoneInput.placeholder = t('Mobile number','رقم الجوال'); phoneInput.disabled = bf.status !== 'idle';
+      phoneInput.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
+      phoneInput.addEventListener('input', e => setBulkField(i, 'phone', e.target.value, true));
+      row.appendChild(phoneInput);
+
       const posSelect = document.createElement('select');
       posSelect.disabled = bf.status !== 'idle';
       posSelect.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
@@ -928,8 +942,22 @@ function renderBulkDrop() {
       posSelect.addEventListener('change', e => setBulkField(i, 'position', e.target.value));
       row.appendChild(posSelect);
 
+      const facSelect = document.createElement('select');
+      facSelect.disabled = bf.status !== 'idle';
+      facSelect.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
+      facSelect.appendChild(el('option', { value:'' }, f.selectFacility));
+      ENTITY_OPTIONS.forEach(([k,v]) => { const o = el('option', { value:k }, v); if (bf.facility===k) o.selected = true; facSelect.appendChild(o); });
+      facSelect.addEventListener('change', e => setBulkField(i, 'facility', e.target.value));
+      row.appendChild(facSelect);
+
+      if (bf.status === 'idle') {
+        row.appendChild(el('button', { onclick:()=>removeBulk(i), style:{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'} }, '✕'));
+      } else {
+        row.appendChild(el('div', {}));
+      }
+
       if (bf.position === 'Other') {
-        const customWrap = el('div', { style:{gridColumn:'1/-1'} });
+        const customWrap = el('div', { style:{gridColumn:'1/3'} });
         const listId = 'hf-pos-suggest-' + i;
         const customInput = document.createElement('input');
         customInput.value = bf.customPosition || '';
@@ -949,19 +977,6 @@ function renderBulkDrop() {
         row.appendChild(customWrap);
       }
 
-      const facSelect = document.createElement('select');
-      facSelect.disabled = bf.status !== 'idle';
-      facSelect.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
-      facSelect.appendChild(el('option', { value:'' }, f.selectFacility));
-      ENTITY_OPTIONS.forEach(([k,v]) => { const o = el('option', { value:k }, v); if (bf.facility===k) o.selected = true; facSelect.appendChild(o); });
-      facSelect.addEventListener('change', e => setBulkField(i, 'facility', e.target.value));
-      row.appendChild(facSelect);
-
-      if (bf.status === 'idle') {
-        row.appendChild(el('button', { onclick:()=>removeBulk(i), style:{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'} }, '✕'));
-      } else {
-        row.appendChild(el('div', {}));
-      }
       list.appendChild(row);
     });
     section.appendChild(list);
