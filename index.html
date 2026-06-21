@@ -2,8 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Careers — HiFive Holdings</title>
+
+  <!-- PWA: installable, full-screen app behavior -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#6e0b2a">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- iOS: opens full-screen with no Safari chrome when added to Home Screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="HiFive Careers">
+
   <link rel="icon" type="image/png" href="/logo.png"/>
   <link rel="apple-touch-icon" href="/logo.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,8 +22,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:#efe9e1;color:#1c1b22;font-family:"Nunito",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    html{scroll-behavior:smooth;overscroll-behavior-y:none}
+    body{background:#efe9e1;color:#1c1b22;font-family:"Nunito",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
     ::selection{background:#b4123a;color:#fff}
     #root{min-height:100vh;position:relative}
     button{font-family:inherit}
@@ -1077,6 +1088,12 @@ try {
 } catch (e) {
   document.getElementById('root').innerHTML = '<div style="padding:60px 20px;text-align:center;font-family:sans-serif;color:#b4123a">Something went wrong loading this page. Please refresh, or contact career@hifiveholding.ae if the issue continues.</div>';
   console.error('CareersPage error:', e);
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
 }
 </script>
 </body>
