@@ -41,20 +41,19 @@
     /* Shimmer text — for hero headings & major section titles only */
     .hf-shimmer{
       position:relative;
-      background:linear-gradient(to right, #6e0b2a 0, #ffc4d4 10%, #6e0b2a 20%, #6e0b2a 100%);
-      background-size:300% 100%;
-      background-position:0;
+      background:linear-gradient(100deg, #6e0b2a 30%, #ffc4d4 45%, #fff 50%, #ffc4d4 55%, #6e0b2a 70%);
+      background-size:250% 100%;
+      background-position:200% 0;
       -webkit-background-clip:text;
       background-clip:text;
       -webkit-text-fill-color:transparent;
       color:transparent;
-      animation:hf-shine 3s infinite linear;
-      animation-fill-mode:forwards;
+      animation:hf-shine 2.8s ease-in-out infinite;
     }
     @keyframes hf-shine{
-      0%{background-position:0}
-      60%{background-position:180px}
-      100%{background-position:180px}
+      0%{background-position:200% 0}
+      55%{background-position:-50% 0}
+      100%{background-position:-50% 0}
     }
 
     .hf-loader{position:relative;width:64px;height:64px;border:3px solid rgba(180,18,58,.18);overflow:hidden;border-radius:50%;box-shadow:-3px -3px 5px rgba(255,255,255,.4),6px 6px 10px rgba(110,11,42,.12),inset -3px -3px 5px rgba(255,255,255,.4),inset 6px 6px 10px rgba(110,11,42,.10);margin:0 auto}
