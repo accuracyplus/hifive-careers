@@ -1,7 +1,7 @@
 // Minimal service worker for the HiFive Careers page — enables
 // "Add to Home Screen" install prompts and caches the page shell.
 // Live job listings and applications always go straight to the network.
-const CACHE_NAME = "hifive-careers-shell-v1";
+const CACHE_NAME = "hifive-careers-shell-v2";
 const SHELL_FILES = ["/", "/index.html", "/logo.png", "/hero.jpg", "/manifest.json"];
 
 self.addEventListener("install", (event) => {
