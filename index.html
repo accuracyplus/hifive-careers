@@ -35,6 +35,8 @@
     @keyframes hf-up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
     @keyframes hf-in{from{opacity:0}to{opacity:1}}
     @keyframes hf-blurin{from{opacity:0;filter:blur(14px);transform:translateY(14px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+    @keyframes hf-iconpulse{0%,100%{transform:scale(1);box-shadow:0 12px 26px rgba(110,11,42,.3)}50%{transform:scale(1.06);box-shadow:0 14px 32px rgba(110,11,42,.45)}}
+    .hf-upload-icon{animation:hf-iconpulse 2.2s ease-in-out infinite}
 
     /* Shimmer text — for hero headings & major section titles only */
     .hf-shimmer{
@@ -138,6 +140,7 @@
 const WORKER = "https://recruitment.sinusuresh.workers.dev";
 const CAREERS_EMAIL = "career@hifiveholding.ae";
 const ENTITY_OPTIONS = [
+  ["HiFive Holdings","HiFive Holdings"],
   ["APML","Accuracy Plus Medical Laboratory"],
   ["Herbal Park","Herbal Park Ayurveda"],
   ["Atomic Drugstore","Atomic Drugstore"],
@@ -212,7 +215,7 @@ function L() {
     candidateName: t('Candidate name *','اسم المرشح *'),
     selectPosition: t('Select position…','اختر وظيفة…'),
     selectFacility: t('Select facility…','اختر منشأة…'),
-    uploadAll: t('Upload All CVs','رفع جميع السير'),
+    uploadAll: t('Upload CVs','رفع السير'),
     addMore: t('+ Add More','+ إضافة المزيد'),
     doneTitle: t('All CVs uploaded!','تم رفع جميع السير!'),
     doneSub: t('HR has been notified. You will be contacted if your profile matches.','تم إخطار الموارد البشرية. سنتواصل معك إذا تطابق ملفك.'),
@@ -450,12 +453,12 @@ function guessName(fn) {
     .split(/\s+/).map(w => w ? w[0].toUpperCase()+w.slice(1).toLowerCase() : '').join(' ').trim();
 }
 function addBulk(fileList) {
-  const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', facility:'', status:'idle' }));
+  const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', customPosition:'', facility:'', status:'idle' }));
   S.bulkFiles = [...S.bulkFiles, ...add];
   S.bulkDone = false;
   render();
 }
-function setBulkField(i, k, v) { S.bulkFiles[i] = { ...S.bulkFiles[i], [k]: v }; render(); }
+function setBulkField(i, k, v, skipRender) { S.bulkFiles[i] = { ...S.bulkFiles[i], [k]: v }; if (!skipRender) render(); }
 function removeBulk(i) { S.bulkFiles = S.bulkFiles.filter((_,j) => j !== i); render(); }
 
 async function uploadAllBulk() {
@@ -463,7 +466,8 @@ async function uploadAllBulk() {
   const snapshot = [...S.bulkFiles];
   const pending = snapshot.filter(f => f.status === 'idle');
   if (!pending.length) return;
-  const missing = pending.find(f => !f.name?.trim() || !f.position || !f.facility);
+  const resolvedPosition = (f) => f.position === 'Other' ? (f.customPosition||'').trim() : f.position;
+  const missing = pending.find(f => !f.name?.trim() || !resolvedPosition(f) || !f.facility);
   if (missing) { setS({ bulkStatus: t('Please fill name, position and facility for every CV before uploading.','يرجى تعبئة الاسم والوظيفة والمنشأة لكل سيرة ذاتية قبل الرفع.') }); return; }
   setS({ bulkUploading:true, bulkProgress:0, bulkStatus:'' });
   let done = 0;
@@ -473,7 +477,7 @@ async function uploadAllBulk() {
     try {
       const f = snapshot[i];
       const fd = new FormData();
-      fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', f.position||''); fd.append('facility', f.facility||''); fd.append('source','Careers Page');
+      fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', resolvedPosition(f)); fd.append('facility', f.facility||''); fd.append('source','Careers Page');
       const res = await fetch(WORKER + '/upload-cv-public', { method:'POST', body:fd });
       const data = await res.json();
       if (!data.success) throw new Error(data.error||'fail');
@@ -514,7 +518,6 @@ function renderHero() {
 
   heroCard.appendChild(el('div', { style:{position:'absolute',top:'-60px',right:'8%',width:'340px',height:'340px',borderRadius:'50%',background:'radial-gradient(circle,rgba(255,255,255,.55),transparent 60%)',filter:'blur(10px)',pointerEvents:'none'} }));
   heroCard.appendChild(el('div', { style:{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'} }));
-  heroCard.appendChild(el('div', { id:'hf-strands-mount', style:{position:'absolute',inset:'0',zIndex:'1',opacity:'0.45',pointerEvents:'none'} }));
 
   const entitySelect = document.createElement('select');
   entitySelect.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:#1c1b22;padding:11px 6px;cursor:pointer;width:100%';
@@ -866,7 +869,7 @@ function renderBulkDrop() {
 
   const dropZone = el('div', { class:'hf-bulk-zone', onclick:()=>bulkInput.click(), ondragover:e=>e.preventDefault(), ondrop:e=>{e.preventDefault();addBulk(e.dataTransfer.files);}, style:{border:'2px dashed rgba(180,18,58,.3)',borderRadius:'26px',padding:'44px 24px',textAlign:'center',cursor:'pointer',background:'rgba(255,255,255,.5)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)'} },
     bulkInput,
-    el('div', { style:{width:'70px',height:'70px',borderRadius:'22px',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.3)'} },
+    el('div', { class:'hf-upload-icon', style:{width:'70px',height:'70px',borderRadius:'22px',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)'} },
       svg('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>', {size:30,color:'#fff',sw:1.8})
     ),
     el('div', { style:{fontSize:'17px',fontWeight:'700',color:'#23202b',marginBottom:'6px'} }, f.dropTitle),
@@ -894,7 +897,7 @@ function renderBulkDrop() {
       const nameInput = document.createElement('input');
       nameInput.value = bf.name; nameInput.placeholder = f.candidateName; nameInput.disabled = bf.status !== 'idle';
       nameInput.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
-      nameInput.addEventListener('input', e => setBulkField(i, 'name', e.target.value));
+      nameInput.addEventListener('input', e => setBulkField(i, 'name', e.target.value, true));
       row.appendChild(nameInput);
 
       const posSelect = document.createElement('select');
@@ -908,6 +911,24 @@ function renderBulkDrop() {
       posSelect.appendChild(otherOpt);
       posSelect.addEventListener('change', e => setBulkField(i, 'position', e.target.value));
       row.appendChild(posSelect);
+
+      if (bf.position === 'Other') {
+        const customWrap = el('div', { style:{gridColumn:'1/-1'} });
+        const listId = 'hf-pos-suggest-' + i;
+        const customInput = document.createElement('input');
+        customInput.value = bf.customPosition || '';
+        customInput.placeholder = t('Type the position…','اكتب الوظيفة…');
+        customInput.setAttribute('list', listId);
+        customInput.disabled = bf.status !== 'idle';
+        customInput.style.cssText = 'width:100%;border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
+        customInput.addEventListener('input', e => setBulkField(i, 'customPosition', e.target.value, true));
+        const datalist = document.createElement('datalist');
+        datalist.id = listId;
+        uniquePositions.forEach(p => { const o = document.createElement('option'); o.value = p; datalist.appendChild(o); });
+        customWrap.appendChild(customInput);
+        customWrap.appendChild(datalist);
+        row.appendChild(customWrap);
+      }
 
       const facSelect = document.createElement('select');
       facSelect.disabled = bf.status !== 'idle';
@@ -1101,116 +1122,5 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-<!-- Strands ambient background accent — isolated module, decoupled from the
-     main vanilla-JS app above. If this fails to load (e.g. WebGL unsupported,
-     CDN unreachable, low-power device), it silently does nothing and the
-     hero still looks complete without it — purely decorative, never required. -->
-<script type="module">
-  (async () => {
-    try {
-      // Skip entirely on devices that likely can't afford a WebGL background
-      // (older phones, reduced-motion preference) to keep the page light.
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const mount = document.getElementById('hf-strands-mount');
-      if (!mount) return;
-
-      const { Renderer, Program, Mesh, Triangle, Color } = await import('https://esm.sh/ogl@1.0.11');
-
-      const VERT = `#version 300 es
-        in vec2 position;
-        void main() { gl_Position = vec4(position, 0.0, 1.0); }
-      `;
-      const FRAG = `#version 300 es
-        precision highp float;
-        uniform float uTime;
-        uniform vec2 uResolution;
-        uniform vec3 uColors[3];
-        out vec4 fragColor;
-        const float PI = 3.14159265;
-        void main() {
-          vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
-          uv /= 1.5;
-          float env = pow(max(cos(uv.x * PI * 1.3), 0.0), 3.0);
-          vec3 col = vec3(0.0);
-          for (int i = 0; i < 3; i++) {
-            float fi = float(i);
-            float ph = fi * 1.7;
-            float freq = (2.0 + fi * 0.35) * 1.0;
-            float spd = 1.4 + fi * 1.2;
-            float tt = uTime * 0.35;
-            float w = sin(uv.x * freq + tt * spd + ph) * 0.6 + sin(uv.x * freq * 1.1 - tt * spd * 0.7 + ph * 1.7) * 0.4;
-            float amp = 0.12 * env;
-            float y = w * amp;
-            float d = abs(uv.y - y);
-            float thick = 0.012 * (0.35 + env);
-            float g = thick / (d + thick * 0.45);
-            g = g * g;
-            col += uColors[i] * g * env;
-          }
-          col = 1.0 - exp(-col * 1.8);
-          float lum = max(max(col.r, col.g), col.b);
-          float alpha = clamp(lum, 0.0, 1.0);
-          fragColor = vec4(col, alpha);
-        }
-      `;
-
-      const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true });
-      const gl = renderer.gl;
-      gl.clearColor(0, 0, 0, 0);
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-      gl.canvas.style.cssText = 'display:block;width:100%;height:100%';
-
-      const geometry = new Triangle(gl);
-      if (geometry.attributes.uv) delete geometry.attributes.uv;
-
-      const brandColors = ['#d6204a', '#6e0b2a', '#c9912a'].map(hex => {
-        const c = new Color(hex);
-        return [c.r, c.g, c.b];
-      });
-
-      const program = new Program(gl, {
-        vertex: VERT,
-        fragment: FRAG,
-        uniforms: {
-          uTime: { value: 0 },
-          uResolution: { value: [mount.offsetWidth || 1, mount.offsetHeight || 1] },
-          uColors: { value: brandColors },
-        },
-      });
-      const mesh = new Mesh(gl, { geometry, program });
-
-      mount.appendChild(gl.canvas);
-
-      function resize() {
-        const w = mount.offsetWidth, h = mount.offsetHeight;
-        if (!w || !h) return;
-        renderer.setSize(w, h);
-        program.uniforms.uResolution.value = [w, h];
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      let raf = 0;
-      const update = (t) => {
-        raf = requestAnimationFrame(update);
-        program.uniforms.uTime.value = t * 0.001;
-        renderer.render({ scene: mesh });
-      };
-      raf = requestAnimationFrame(update);
-
-      // Pause rendering when the tab isn't visible — saves battery/CPU
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { cancelAnimationFrame(raf); }
-        else { raf = requestAnimationFrame(update); }
-      });
-    } catch (e) {
-      // WebGL unsupported, CDN blocked, or any other failure — fail silently.
-      // The hero section looks complete without this purely decorative layer.
-      console.warn('Strands background skipped:', e);
-    }
-  })();
-</script>
 </body>
 </html>
