@@ -58,7 +58,9 @@
     @media(max-width:820px){
       [data-r="rail"]{display:none!important}
       [data-r="hpad"]{padding-left:clamp(20px,5vw,30px)!important;padding-right:clamp(20px,5vw,30px)!important}
-      [data-r="cpad"]{padding-left:clamp(20px,5vw,30px)!important;padding-right:clamp(20px,5vw,30px)!important}
+      [data-r="cpad"]{padding-left:clamp(20px,5vw,30px)!important;padding-right:clamp(20px,5vw,30px)!important;align-items:stretch!important}
+      [data-r="herocard"]{min-height:auto!important}
+      [data-r="heroimg"]{min-height:clamp(220px,55vw,340px)!important}
     }
     @media(max-width:600px){
       [data-r="navsub"]{display:none!important}
@@ -69,6 +71,7 @@
       [data-r="hero-h2"]{font-size:clamp(24px,7vw,34px)!important}
       [data-r="bulkrow"]{grid-template-columns:1fr!important}
       [data-r="trackgrid"]{grid-template-columns:1fr!important}
+      [data-r="statcard"]{min-height:auto!important;padding:18px 20px!important}
     }
     @media(max-width:400px){
       [data-r="navname"]{display:none!important}
@@ -507,7 +510,7 @@ function renderHero() {
   const featured = featuredVM();
 
   const heroSection = el('section', { style:{padding:'clamp(20px,3vw,40px) clamp(14px,3vw,40px) clamp(30px,4vw,56px)'} });
-  const heroCard = el('div', { style:{position:'relative',maxWidth:'1240px',margin:'0 auto',borderRadius:'34px',overflow:'hidden',background:'linear-gradient(152deg,#f4dce1 0%,#e9dcef 36%,#dfe7f4 66%,#f6ede3 100%)',boxShadow:'0 40px 90px -30px rgba(110,11,42,.32),0 8px 24px rgba(28,27,34,.06)',minHeight:'clamp(540px,62vw,620px)',animation:'hf-blurin 1s cubic-bezier(.2,.7,.2,1) both'} });
+  const heroCard = el('div', { 'data-r':'herocard', style:{position:'relative',maxWidth:'1240px',margin:'0 auto',borderRadius:'34px',overflow:'hidden',background:'linear-gradient(152deg,#f4dce1 0%,#e9dcef 36%,#dfe7f4 66%,#f6ede3 100%)',boxShadow:'0 40px 90px -30px rgba(110,11,42,.32),0 8px 24px rgba(28,27,34,.06)',minHeight:'clamp(540px,62vw,620px)',animation:'hf-blurin 1s cubic-bezier(.2,.7,.2,1) both'} });
 
   heroCard.appendChild(el('div', { style:{position:'absolute',top:'-60px',right:'8%',width:'340px',height:'340px',borderRadius:'50%',background:'radial-gradient(circle,rgba(255,255,255,.55),transparent 60%)',filter:'blur(10px)',pointerEvents:'none'} }));
   heroCard.appendChild(el('div', { style:{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'} }));
@@ -566,7 +569,7 @@ function renderHero() {
 
   const cardsRow = el('div', { 'data-r':'cpad', style:{position:'relative',zIndex:'4',display:'flex',flexWrap:'wrap',gap:'22px',padding:'clamp(26px,4vw,40px) clamp(20px,4vw,56px) clamp(22px,3vw,32px) clamp(100px,10vw,130px)',alignItems:'flex-end'} });
 
-  const statCard = el('div', { style:{flex:'1',minWidth:'230px',maxWidth:'310px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 18px 44px rgba(110,11,42,.14)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float 7s ease-in-out 1.4s infinite',animationDelay:'.65s',minHeight:'200px',alignSelf:'flex-end'} },
+  const statCard = el('div', { 'data-r':'statcard', style:{flex:'1',minWidth:'230px',maxWidth:'310px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 18px 44px rgba(110,11,42,.14)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float 7s ease-in-out 1.4s infinite',animationDelay:'.65s',minHeight:'200px',alignSelf:'flex-end'} },
     el('div', { style:{fontWeight:'700',fontSize:'14.5px',color:'#23202b',marginBottom:'5px'} }, f.statCardTitle),
     el('div', { style:{fontSize:'12.5px',lineHeight:'1.5',color:'#6b6670',marginBottom:'16px'} }, f.statCardDesc),
     el('div', { style:{display:'flex',alignItems:'flex-end',justifyContent:'space-between',gap:'10px'} },
@@ -609,7 +612,7 @@ function renderHero() {
 
   const rightCol = el('div', { style:{flex:'0 1 360px',minWidth:'240px',display:'flex',flexDirection:'column',justifyContent:'center',padding:'clamp(16px,2.4vw,26px) clamp(18px,2.6vw,28px) clamp(22px,3vw,32px) 0',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.7s'} },
     el('div', { style:{position:'relative',display:'flex'} },
-      el('img', { src:'/hero.jpg', alt:'HiFive Holdings team', style:{display:'block',width:'100%',height:'100%',minHeight:'clamp(340px,40vw,500px)',borderRadius:'26px',objectFit:'cover',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 22px 54px rgba(110,11,42,.18)'} }),
+      el('img', { src:'/hero.jpg', alt:'HiFive Holdings team', 'data-r':'heroimg', style:{display:'block',width:'100%',height:'100%',minHeight:'clamp(340px,40vw,500px)',borderRadius:'26px',objectFit:'cover',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 22px 54px rgba(110,11,42,.18)'} }),
       el('div', { style:{position:'absolute',inset:'0',borderRadius:'26px',pointerEvents:'none',background:'linear-gradient(to bottom,rgba(255,255,255,.09) 0%,transparent 28%,transparent 68%,rgba(110,11,42,.22) 100%)',boxShadow:'inset 0 0 0 1.5px rgba(255,255,255,.78),inset 0 4px 28px rgba(255,255,255,.38),inset 0 -58px 84px -38px rgba(110,11,42,.34),0 0 0 1px rgba(255,255,255,.32),0 10px 40px rgba(110,11,42,.14)'} })
     )
   );
