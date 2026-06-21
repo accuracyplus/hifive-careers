@@ -514,6 +514,7 @@ function renderHero() {
 
   heroCard.appendChild(el('div', { style:{position:'absolute',top:'-60px',right:'8%',width:'340px',height:'340px',borderRadius:'50%',background:'radial-gradient(circle,rgba(255,255,255,.55),transparent 60%)',filter:'blur(10px)',pointerEvents:'none'} }));
   heroCard.appendChild(el('div', { style:{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'} }));
+  heroCard.appendChild(el('div', { id:'hf-strands-mount', style:{position:'absolute',inset:'0',zIndex:'1',opacity:'0.45',pointerEvents:'none'} }));
 
   const entitySelect = document.createElement('select');
   entitySelect.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:#1c1b22;padding:11px 6px;cursor:pointer;width:100%';
@@ -1098,6 +1099,118 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }
+</script>
+
+<!-- Strands ambient background accent — isolated module, decoupled from the
+     main vanilla-JS app above. If this fails to load (e.g. WebGL unsupported,
+     CDN unreachable, low-power device), it silently does nothing and the
+     hero still looks complete without it — purely decorative, never required. -->
+<script type="module">
+  (async () => {
+    try {
+      // Skip entirely on devices that likely can't afford a WebGL background
+      // (older phones, reduced-motion preference) to keep the page light.
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const mount = document.getElementById('hf-strands-mount');
+      if (!mount) return;
+
+      const { Renderer, Program, Mesh, Triangle, Color } = await import('https://esm.sh/ogl@1.0.11');
+
+      const VERT = `#version 300 es
+        in vec2 position;
+        void main() { gl_Position = vec4(position, 0.0, 1.0); }
+      `;
+      const FRAG = `#version 300 es
+        precision highp float;
+        uniform float uTime;
+        uniform vec2 uResolution;
+        uniform vec3 uColors[3];
+        out vec4 fragColor;
+        const float PI = 3.14159265;
+        void main() {
+          vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+          uv /= 1.5;
+          float env = pow(max(cos(uv.x * PI * 1.3), 0.0), 3.0);
+          vec3 col = vec3(0.0);
+          for (int i = 0; i < 3; i++) {
+            float fi = float(i);
+            float ph = fi * 1.7;
+            float freq = (2.0 + fi * 0.35) * 1.0;
+            float spd = 1.4 + fi * 1.2;
+            float tt = uTime * 0.35;
+            float w = sin(uv.x * freq + tt * spd + ph) * 0.6 + sin(uv.x * freq * 1.1 - tt * spd * 0.7 + ph * 1.7) * 0.4;
+            float amp = 0.12 * env;
+            float y = w * amp;
+            float d = abs(uv.y - y);
+            float thick = 0.012 * (0.35 + env);
+            float g = thick / (d + thick * 0.45);
+            g = g * g;
+            col += uColors[i] * g * env;
+          }
+          col = 1.0 - exp(-col * 1.8);
+          float lum = max(max(col.r, col.g), col.b);
+          float alpha = clamp(lum, 0.0, 1.0);
+          fragColor = vec4(col, alpha);
+        }
+      `;
+
+      const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true });
+      const gl = renderer.gl;
+      gl.clearColor(0, 0, 0, 0);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.canvas.style.cssText = 'display:block;width:100%;height:100%';
+
+      const geometry = new Triangle(gl);
+      if (geometry.attributes.uv) delete geometry.attributes.uv;
+
+      const brandColors = ['#d6204a', '#6e0b2a', '#c9912a'].map(hex => {
+        const c = new Color(hex);
+        return [c.r, c.g, c.b];
+      });
+
+      const program = new Program(gl, {
+        vertex: VERT,
+        fragment: FRAG,
+        uniforms: {
+          uTime: { value: 0 },
+          uResolution: { value: [mount.offsetWidth || 1, mount.offsetHeight || 1] },
+          uColors: { value: brandColors },
+        },
+      });
+      const mesh = new Mesh(gl, { geometry, program });
+
+      mount.appendChild(gl.canvas);
+
+      function resize() {
+        const w = mount.offsetWidth, h = mount.offsetHeight;
+        if (!w || !h) return;
+        renderer.setSize(w, h);
+        program.uniforms.uResolution.value = [w, h];
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      let raf = 0;
+      const update = (t) => {
+        raf = requestAnimationFrame(update);
+        program.uniforms.uTime.value = t * 0.001;
+        renderer.render({ scene: mesh });
+      };
+      raf = requestAnimationFrame(update);
+
+      // Pause rendering when the tab isn't visible — saves battery/CPU
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { cancelAnimationFrame(raf); }
+        else { raf = requestAnimationFrame(update); }
+      });
+    } catch (e) {
+      // WebGL unsupported, CDN blocked, or any other failure — fail silently.
+      // The hero section looks complete without this purely decorative layer.
+      console.warn('Strands background skipped:', e);
+    }
+  })();
 </script>
 </body>
 </html>
