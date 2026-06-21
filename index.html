@@ -150,7 +150,7 @@ const ENTITY_OPTIONS = [
 const ENTITY_STRIP = ["Accuracy Plus Medical Laboratory","Herbal Park Ayurveda","Atomic Drugstore","Pine Group of Pharmacies","Al Jebal Group of Opticals"];
 
 const S = {
-  lang: 'en', positions: [], loading: true, search: '', entity: '', statCount: 0,
+  lang: 'en', positions: [], allPositions: [], loading: true, search: '', entity: '', statCount: 0,
   modalOpen: false, modalPosition: '', modalEntity: '',
   jdModalOpen: false, jdTitle: '', jdEntity: '', jdText: '',
   submitting: false, success: false, successRef: '',
@@ -258,6 +258,13 @@ function el(tag, attrs, ...children) {
     else if (k === 'html') e.innerHTML = attrs[k];
     else if (k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
     else if (k === 'style' && typeof attrs[k] === 'object') Object.assign(e.style, attrs[k]);
+    // Boolean HTML attributes (disabled, checked, readonly, etc.) — presence alone
+    // disables/enables the element regardless of string value, so set/remove the
+    // attribute itself rather than ever writing the string "false".
+    else if (typeof attrs[k] === 'boolean') {
+      if (attrs[k]) e.setAttribute(k, '');
+      else e.removeAttribute(k);
+    }
     else e.setAttribute(k, attrs[k]);
   }
   children.flat().forEach(c => {
@@ -290,6 +297,15 @@ async function loadPositions() {
     const data = await res.json();
     S.positions = data.positions || [];
   } catch (e) { S.positions = []; }
+
+  // Full master position list (for "Other / Not Listed" suggestions) — every
+  // position in the Config sheet, not just currently-open requisitions.
+  try {
+    const cfgRes = await fetch(WORKER + '/get-config');
+    const cfgData = await cfgRes.json();
+    S.allPositions = cfgData.positions || [];
+  } catch (e) { S.allPositions = []; }
+
   S.loading = false;
   render();
 }
@@ -924,7 +940,10 @@ function renderBulkDrop() {
         customInput.addEventListener('input', e => setBulkField(i, 'customPosition', e.target.value, true));
         const datalist = document.createElement('datalist');
         datalist.id = listId;
-        uniquePositions.forEach(p => { const o = document.createElement('option'); o.value = p; datalist.appendChild(o); });
+        // Suggest from the FULL position master list (Config sheet), not just
+        // currently-open roles — covers closed/filled/standard positions too.
+        const suggestSource = (S.allPositions && S.allPositions.length) ? S.allPositions : uniquePositions;
+        [...new Set(suggestSource)].sort().forEach(p => { const o = document.createElement('option'); o.value = p; datalist.appendChild(o); });
         customWrap.appendChild(customInput);
         customWrap.appendChild(datalist);
         row.appendChild(customWrap);
