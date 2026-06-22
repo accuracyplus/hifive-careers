@@ -1108,14 +1108,37 @@ function renderApplyModal() {
   return overlay;
 }
 function formField(label, type, stateKey, placeholder) {
+  // Per-field validators — run on every keystroke so feedback is immediate
+  const validators = {
+    formPhone: v => v && !/^[0-9+\s\-]{7,15}$/.test(v.trim()) ? 'Enter a valid phone number' : '',
+    formEmail: v => v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? 'Enter a valid email address' : '',
+  };
+  const required = ['formName','formPhone','formEmail'];
+
   const wrap = el('div', { style:{display:'flex',flexDirection:'column',gap:'5px'} },
     el('label', { style:{fontSize:'12.5px',fontWeight:'600',color:'var(--c-ink2)'} }, label)
   );
   const input = document.createElement('input');
   input.type = type; input.value = S[stateKey]; if (placeholder) input.placeholder = placeholder;
-  input.style.cssText = 'border:1px solid rgba(180,18,58,.18);border-radius:11px;padding:12px 14px;font-size:14px;outline:none;background:#fff;color:#1c1b22';
-  input.addEventListener('input', e => { S[stateKey] = e.target.value; });
+  input.style.cssText = 'border:1px solid rgba(180,18,58,.18);border-radius:11px;padding:12px 14px;font-size:14px;outline:none;background:#fff;color:#1c1b22;width:100%;box-sizing:border-box;transition:border-color .2s';
+
+  const hint = el('span', { style:{fontSize:'11.5px',fontWeight:'600',color:'#c0392b',display:'none'} });
+
+  const validate = (val, touched) => {
+    let msg = '';
+    if (touched && required.includes(stateKey) && !val.trim()) msg = label + ' is required';
+    else if (validators[stateKey]) msg = validators[stateKey](val);
+    hint.textContent = msg;
+    hint.style.display = msg ? 'block' : 'none';
+    input.style.borderColor = msg ? '#c0392b' : (val && !msg) ? 'rgba(30,132,73,.5)' : 'rgba(180,18,58,.18)';
+  };
+
+  input.addEventListener('input', e => { S[stateKey] = e.target.value; validate(e.target.value, false); });
+  input.addEventListener('blur',  e => { validate(e.target.value, true); });
+  input.addEventListener('focus', () => { input.style.borderColor = '#d6204a'; });
+
   wrap.appendChild(input);
+  wrap.appendChild(hint);
   return wrap;
 }
 
