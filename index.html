@@ -66,6 +66,17 @@
       100%{background-position:-50% 0}
     }
 
+    /* Background Beams — SVG paths animate with a travelling glow stroke */
+    @keyframes hf-beam{
+      0%{stroke-dashoffset:1000}
+      100%{stroke-dashoffset:-1000}
+    }
+    .hf-beam-path{
+      stroke-dasharray:80 920;
+      stroke-dashoffset:1000;
+      animation:hf-beam linear infinite;
+    }
+
     .hf-loader{position:relative;width:64px;height:64px;border:3px solid rgba(180,18,58,.18);overflow:hidden;border-radius:50%;box-shadow:-3px -3px 5px rgba(255,255,255,.4),6px 6px 10px rgba(110,11,42,.12),inset -3px -3px 5px rgba(255,255,255,.4),inset 6px 6px 10px rgba(110,11,42,.10);margin:0 auto}
     .hf-loader:before{content:"";position:absolute;top:10px;left:10px;right:10px;bottom:10px;z-index:10;background:#efe9e1;border-radius:50%;border:1px solid rgba(180,18,58,.12);box-shadow:inset -1px -1px 4px rgba(255,255,255,.5),inset 2px 2px 5px rgba(110,11,42,.12)}
     .hf-loader span{position:absolute;width:100%;height:100%;border-radius:50%;background-image:linear-gradient(-225deg,#d6204a 0%,#f5a623 50%,#ffe066 100%);filter:blur(11px);z-index:-1;animation:hf-loader-spin .9s linear infinite}
@@ -562,13 +573,13 @@ function renderHero() {
   heroCard.appendChild(el('div', { style:{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'} }));
 
   const entitySelect = document.createElement('select');
-  entitySelect.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:#1c1b22;padding:11px 6px;cursor:pointer;width:100%';
+  entitySelect.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:' + (S.darkMode ? '#fff' : '#1c1b22') + ';padding:11px 6px;cursor:pointer;width:100%';
   entitySelect.appendChild(el('option', { value:'' }, f.allEntities));
   ENTITY_OPTIONS.forEach(([k,v]) => { const o = el('option', { value:k }, v); if (S.entity===k) o.selected = true; entitySelect.appendChild(o); });
   entitySelect.addEventListener('change', e => setS({ entity:e.target.value }));
 
   const filterBar = el('div', { 'data-r':'filterbar', style:{position:'relative',zIndex:'5',margin:'18px clamp(16px,3vw,26px) 0',display:'flex',flexWrap:'wrap',alignItems:'center',gap:'10px',padding:'10px',borderRadius:'99px',background:'rgba(var(--c-glass),.5)',backdropFilter:'blur(18px)',WebkitBackdropFilter:'blur(18px)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 10px 30px rgba(110,11,42,.10)',animation:'hf-up .8s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.15s'} },
-    el('span', { style:{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 20px',borderRadius:'99px',background:'#fff',fontSize:'13.5px',fontWeight:'700',color:'#b4123a',boxShadow:'0 2px 8px rgba(110,11,42,.10)'} },
+    el('span', { style:{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 20px',borderRadius:'99px',background: S.darkMode ? 'transparent' : '#fff',fontSize:'13.5px',fontWeight:'700',color: S.darkMode ? '#fff' : '#b4123a',boxShadow: S.darkMode ? 'none' : '0 2px 8px rgba(110,11,42,.10)'} },
       el('span', { style:{width:'8px',height:'8px',borderRadius:'50%',background:'#d6204a',boxShadow:'0 0 0 4px rgba(214,32,74,.18)'} }),
       dynamicEyebrow()
     ),
@@ -603,7 +614,7 @@ function renderHero() {
   const headline = el('div', { 'data-r':'hpad', style:{position:'relative',zIndex:'4',padding:'clamp(28px,5vw,52px) clamp(20px,4vw,56px) 0 clamp(100px,10vw,130px)',maxWidth:'760px'} },
     el('h1', { 'data-r':'hero-h1', style:{fontFamily:"'Baloo 2',sans-serif",fontWeight:'700',fontSize:'clamp(28px,3.6vw,42px)',lineHeight:'1.18',letterSpacing:'-.02em',color:'var(--c-ink2)',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.25s',whiteSpace:'nowrap'} }, f.heroTitle1),
     el('div', { 'data-r':'hero-h2', class:'hf-shimmer', style:{fontFamily:"'Baloo 2',sans-serif",fontWeight:'700',fontSize:'clamp(24px,3.2vw,38px)',lineHeight:'1.2',letterSpacing:'-.02em',marginTop:'2px',whiteSpace:'nowrap',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both, hf-shine 2.8s ease-in-out .9s infinite'} }, f.heroTitle2),
-    el('p', { style:{marginTop:'18px',maxWidth:'420px',fontSize:'15.5px',lineHeight:'1.6',color:'#5b5560',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.4s'} }, f.heroSub),
+    el('p', { style:{marginTop:'18px',maxWidth:'420px',fontSize:'15.5px',lineHeight:'1.6',color: S.darkMode ? '#fff' : '#5b5560',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.4s'} }, f.heroSub),
     el('div', { style:{marginTop:'26px',display:'flex',gap:'12px',flexWrap:'wrap',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.55s'} },
       el('button', { class:'hf-cta-primary hf-tactile', onclick:()=>scrollToId('positions'), style:{display:'inline-flex',alignItems:'center',gap:'9px',padding:'14px 26px',borderRadius:'99px',border:'none',cursor:'pointer',fontSize:'14.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.32)'} },
         f.heroCtaPrimary, svg('<path d="M5 12h14M13 6l6 6-6 6"/>', {size:16,color:'#fff',sw:2.3})
@@ -698,14 +709,14 @@ function renderPositions() {
   );
   const searchInput = document.createElement('input');
   searchInput.value = S.search; searchInput.placeholder = f.searchPlaceholder;
-  searchInput.style.cssText = 'border:none;background:none;outline:none;font-size:13.5px;color:#1c1b22;flex:1;min-width:120px';
+  searchInput.style.cssText = 'border:none;background:none;outline:none;font-size:13.5px;color:' + (S.darkMode ? '#fff' : '#1c1b22') + ';flex:1;min-width:120px';
   searchInput.addEventListener('input', e => { S.search = e.target.value; renderPositionsListOnly(); });
   searchWrap.appendChild(searchInput);
   controls.appendChild(searchWrap);
 
   const entWrap = el('div', { style:{display:'flex',alignItems:'center',gap:'6px',padding:'0 14px',borderRadius:'99px',background:'rgba(var(--c-glass),.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)'} });
   const entSelect2 = document.createElement('select');
-  entSelect2.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:#1c1b22;padding:11px 4px;cursor:pointer';
+  entSelect2.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:' + (S.darkMode ? '#fff' : '#1c1b22') + ';padding:11px 4px;cursor:pointer';
   entSelect2.appendChild(el('option', { value:'' }, f.allEntities));
   ENTITY_OPTIONS.forEach(([k,v]) => { const o = el('option', { value:k }, v); if (S.entity===k) o.selected = true; entSelect2.appendChild(o); });
   entSelect2.addEventListener('change', e => setS({ entity:e.target.value }));
@@ -816,6 +827,7 @@ function renderTracker() {
   const f = L();
   const section = el('section', { id:'tracker', style:{padding:'clamp(34px,4vw,60px) clamp(16px,4vw,48px)',scrollMarginTop:'90px'} });
   const box = el('div', { style:{maxWidth:'760px',margin:'0 auto',borderRadius:'30px',overflow:'hidden',position:'relative',background:'linear-gradient(150deg,#2a0a18 0%,#5c0a24 50%,#3a0a18 100%)',boxShadow:'0 30px 70px -24px rgba(110,11,42,.5)'} });
+  box.appendChild(makeBeams(760, 400));
   box.appendChild(el('div', { style:{position:'absolute',top:'-80px',right:'-60px',width:'300px',height:'300px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.4),transparent 65%)',filter:'blur(10px)',pointerEvents:'none'} }));
 
   const inner = el('div', { style:{position:'relative',zIndex:'2',padding:'clamp(34px,4vw,52px) clamp(22px,4vw,48px)',textAlign:'center'} },
@@ -1124,6 +1136,135 @@ function renderJDModal() {
   );
   overlay.appendChild(box);
   return overlay;
+}
+
+// makeBeams(w, h) — builds an Aceternity-style Background Beams SVG.
+// Each beam is an animated SVG path that travels diagonally across the
+// container. The stroke colour is brand maroon fading to gold. The beams
+// fill whatever container they're placed inside (position:absolute, inset 0).
+function makeBeams(w, h) {
+  // 20 diagonal paths, each offset slightly, matching the Aceternity path set
+  const pathTemplates = [
+    [-380,-189,152,343,684,875],[-373,-197,159,335,691,867],
+    [-366,-205,166,327,698,859],[-359,-213,173,319,705,851],
+    [-352,-221,180,311,712,843],[-345,-229,187,303,719,835],
+    [-338,-237,194,295,726,827],[-331,-245,201,287,733,819],
+    [-324,-253,208,279,740,811],[-317,-261,215,271,747,803],
+    [-310,-269,222,263,754,795],[-303,-277,229,255,761,787],
+    [-296,-285,236,247,768,779],[-289,-293,243,239,775,771],
+    [-282,-301,250,231,782,763],[-275,-309,257,223,789,755],
+    [-268,-317,264,215,796,747],[-261,-325,271,207,803,739],
+    [-254,-333,278,199,810,731],[-247,-341,285,191,817,723],
+  ];
+
+  // Scale paths from the original 500×875 viewBox to the actual container
+  const vw = 500, vh = 875;
+  const scaleX = n => ((n + 380) / (vw + 380)) * (w || 760);
+  const scaleY = n => ((n + 341) / (vh + 341)) * (h || 400);
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('xmlns', svgNS);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '100%');
+  svg.setAttribute('viewBox', `0 0 ${w||760} ${h||400}`);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  svg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1';
+
+  const defs = document.createElementNS(svgNS, 'defs');
+
+  // Radial mask so beams fade out toward edges instead of hard-clipping
+  const mask = document.createElementNS(svgNS, 'radialGradient');
+  mask.setAttribute('id', 'hfb-mask');
+  mask.setAttribute('cx', '50%'); mask.setAttribute('cy', '50%');
+  mask.setAttribute('r', '50%'); mask.setAttribute('gradientUnits', 'userSpaceOnUse');
+  mask.setAttribute('gradientTransform', `translate(${(w||760)/2} ${(h||400)/2}) scale(${w||760} ${h||400}) translate(-0.5 -0.5)`);
+  [['0%','white','1'],['100%','white','0']].forEach(([offset, color, opacity]) => {
+    const stop = document.createElementNS(svgNS, 'stop');
+    stop.setAttribute('offset', offset);
+    stop.setAttribute('stop-color', color);
+    stop.setAttribute('stop-opacity', opacity);
+    mask.appendChild(stop);
+  });
+  defs.appendChild(mask);
+
+  // Linear gradient along each beam: maroon → gold → maroon
+  const beamGrad = document.createElementNS(svgNS, 'linearGradient');
+  beamGrad.setAttribute('id', 'hfb-grad');
+  beamGrad.setAttribute('gradientUnits', 'userSpaceOnUse');
+  beamGrad.setAttribute('x1', '0%'); beamGrad.setAttribute('y1', '0%');
+  beamGrad.setAttribute('x2', '100%'); beamGrad.setAttribute('y2', '100%');
+  [
+    ['0%',   'transparent',  '0'],
+    ['20%',  '#d6204a',      '0.12'],
+    ['50%',  '#f5a623',      '0.55'],
+    ['80%',  '#d6204a',      '0.12'],
+    ['100%', 'transparent',  '0'],
+  ].forEach(([offset, color, opacity]) => {
+    const s = document.createElementNS(svgNS, 'stop');
+    s.setAttribute('offset', offset);
+    s.setAttribute('stop-color', color);
+    s.setAttribute('stop-opacity', opacity);
+    beamGrad.appendChild(s);
+  });
+  defs.appendChild(beamGrad);
+
+  // Glow gradient (wider, softer — layered behind the main beam)
+  const glowGrad = document.createElementNS(svgNS, 'linearGradient');
+  glowGrad.setAttribute('id', 'hfb-glow');
+  glowGrad.setAttribute('gradientUnits', 'userSpaceOnUse');
+  glowGrad.setAttribute('x1', '0%'); glowGrad.setAttribute('y1', '0%');
+  glowGrad.setAttribute('x2', '100%'); glowGrad.setAttribute('y2', '100%');
+  [
+    ['0%',   'transparent', '0'],
+    ['20%',  '#6e0b2a',     '0.06'],
+    ['50%',  '#f5a623',     '0.25'],
+    ['80%',  '#6e0b2a',     '0.06'],
+    ['100%', 'transparent', '0'],
+  ].forEach(([offset, color, opacity]) => {
+    const s = document.createElementNS(svgNS, 'stop');
+    s.setAttribute('offset', offset);
+    s.setAttribute('stop-color', color);
+    s.setAttribute('stop-opacity', opacity);
+    glowGrad.appendChild(s);
+  });
+  defs.appendChild(glowGrad);
+
+  svg.appendChild(defs);
+
+  // Group masked to fade edges
+  const g = document.createElementNS(svgNS, 'g');
+  g.setAttribute('mask', 'url(#hfb-mask)');
+
+  pathTemplates.forEach(([x1,y1,mx,my,x2,y2], i) => {
+    // Convert from the original coordinate space
+    const d = `M${scaleX(x1)} ${scaleY(y1)}C${scaleX(x1)} ${scaleY(y1)} ${scaleX(mx)} ${scaleY(my)} ${scaleX(x2)} ${scaleY(y2)}`;
+
+    // Glow layer (thicker, softer, offset timing)
+    const glow = document.createElementNS(svgNS, 'path');
+    glow.setAttribute('d', d);
+    glow.setAttribute('stroke', 'url(#hfb-glow)');
+    glow.setAttribute('stroke-width', '6');
+    glow.setAttribute('fill', 'none');
+    glow.setAttribute('class', 'hf-beam-path');
+    glow.style.animationDuration = `${8 + (i % 7) * 1.4}s`;
+    glow.style.animationDelay = `${-(i * 1.1)}s`;
+    g.appendChild(glow);
+
+    // Main beam (sharp, bright)
+    const beam = document.createElementNS(svgNS, 'path');
+    beam.setAttribute('d', d);
+    beam.setAttribute('stroke', 'url(#hfb-grad)');
+    beam.setAttribute('stroke-width', '1.5');
+    beam.setAttribute('fill', 'none');
+    beam.setAttribute('class', 'hf-beam-path');
+    beam.style.animationDuration = `${8 + (i % 7) * 1.4}s`;
+    beam.style.animationDelay = `${-(i * 1.1)}s`;
+    g.appendChild(beam);
+  });
+
+  svg.appendChild(g);
+  return svg;
 }
 
 function toggleDark() {
