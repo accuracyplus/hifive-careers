@@ -175,7 +175,7 @@ const ENTITY_OPTIONS = [
 const ENTITY_STRIP = ["Accuracy Plus Medical Laboratory","Herbal Park Ayurveda","Atomic Drugstore","Pine Group of Pharmacies","Al Jebal Group of Opticals"];
 
 const S = {
-  lang: 'en', positions: [], allPositions: [], loading: true, search: '', entity: '', statCount: 0,
+  lang: 'en', positions: [], allPositions: [], loading: true, search: '', entity: '', statCount: 0, featuredIdx: 0,
   darkMode: (() => {
     try {
       const saved = localStorage.getItem('hf_careers_dark');
@@ -400,7 +400,8 @@ function dynamicEyebrow() {
 }
 function featuredVM() {
   const all = S.positions.map(posVM);
-  const open = all.find(v => v.isOpen) || all[0];
+  const openList = all.filter(v => v.isOpen);
+  const open = openList.length ? openList[S.featuredIdx % openList.length] : (all[0] || null);
   if (!open) {
     return { title: t('Multiple Openings','وظائف متعددة'), entityLine: 'HiFive Holdings', metaTag: t('Across 5 units','عبر 5 وحدات'), applyAction: () => scrollToId('positions') };
   }
@@ -752,7 +753,7 @@ function buildPositionsGrid() {
     const card = el('div', { class: vm.isOpen ? 'hf-pos-card-open' : '', style:{padding:'22px',borderRadius:'22px',background:'rgba(var(--c-glass),.62)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',opacity: vm.isFull?'0.72':'1'} },
       el('div', { style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px',marginBottom:'12px'} },
         el('span', { style:{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'} }, vm.entityLine),
-        el('span', { style:{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background: vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color: vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em'} }, vm.badgeText)
+        vm.badgeFull ? el('span', { style:{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background:'rgba(192,57,43,.1)',color:'#c0392b',letterSpacing:'.03em'} }, vm.badgeText) : null
       ),
       el('div', { style:{fontFamily:"'Baloo 2',sans-serif",fontSize:'19px',fontWeight:'700',color:'var(--c-ink2)',lineHeight:'1.2',marginBottom:'8px'} }, vm.title),
       el('div', { style:{fontSize:'12.5px',color:'var(--c-muted)',lineHeight:'1.5',marginBottom:'6px'} }, vm.metaLine)
@@ -1049,13 +1050,31 @@ function renderBulkDrop() {
 
 function renderFooter() {
   const f = L();
-  return el('footer', { style:{marginTop:'30px',padding:'40px clamp(16px,4vw,48px)',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'} },
-    el('img', { src:'/logo.png', alt:'HiFive Holdings', style:{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1)',opacity:'0.95'} }),
-    el('div', { style:{fontFamily:"'Baloo 2',sans-serif",fontSize:'18px',color:'#fff',fontWeight:'700',letterSpacing:'.02em',marginBottom:'10px'} }, 'HiFive Holdings'),
-    el('p', { style:{fontSize:'13px',color:'rgba(255,255,255,.5)',lineHeight:'1.7'} },
-      '© 2026 HiFive Holdings LLC', el('br'),
-      el('a', { href:'mailto:'+CAREERS_EMAIL, style:{color:'rgba(255,255,255,.78)',textDecoration:'none'} }, CAREERS_EMAIL),
-      ' · ' + f.footerNote
+  const ENTITIES = ['APML', 'Herbal Park Ayurvedic Health Center', 'Atomic Drugstore', 'Pine Pharmacy', 'Al Jebal Opticals'];
+  return el('footer', { style:{marginTop:'40px',background:'linear-gradient(160deg,#23202b,#1a0a12)',padding:'0'} },
+    // Main footer body
+    el('div', { style:{padding:'48px clamp(20px,5vw,60px) 32px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'40px',maxWidth:'900px',margin:'0 auto'} },
+      // Left: Brand block
+      el('div', {},
+        el('div', { style:{fontFamily:"'Baloo 2',sans-serif",fontSize:'22px',color:'#fff',fontWeight:'800',letterSpacing:'.02em',marginBottom:'8px'} }, 'HiFive Holdings'),
+        el('div', { style:{fontSize:'12.5px',color:'rgba(255,255,255,.5)',marginBottom:'16px',lineHeight:'1.6'} }, 'Healthcare & Retail Group, Abu Dhabi, UAE'),
+        el('a', { href:'mailto:'+CAREERS_EMAIL, style:{display:'inline-flex',alignItems:'center',gap:'7px',fontSize:'13px',color:'rgba(255,255,255,.8)',textDecoration:'none',fontWeight:'600'} },
+          svg('<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>', {size:14,color:'rgba(255,255,255,.6)',sw:1.8}),
+          CAREERS_EMAIL
+        )
+      ),
+      // Right: Our Units
+      el('div', {},
+        el('div', { style:{fontSize:'10.5px',fontWeight:'800',letterSpacing:'.1em',textTransform:'uppercase',color:'rgba(255,255,255,.4)',marginBottom:'12px'} }, 'Our Units'),
+        ...ENTITIES.map(name => el('div', { style:{fontSize:'12.5px',color:'rgba(255,255,255,.6)',marginBottom:'6px',lineHeight:'1.4'} }, name))
+      )
+    ),
+    // Divider
+    el('div', { style:{height:'1px',background:'rgba(255,255,255,.08)',maxWidth:'900px',margin:'0 auto'} }),
+    // Bottom bar
+    el('div', { style:{padding:'18px clamp(20px,5vw,60px)',display:'flex',flexWrap:'wrap',gap:'12px',justifyContent:'space-between',alignItems:'center',maxWidth:'900px',margin:'0 auto'} },
+      el('div', { style:{fontSize:'12px',color:'rgba(255,255,255,.4)'} }, '© 2026 HiFive Holdings LLC. All rights reserved.'),
+      el('div', { style:{fontSize:'11.5px',color:'rgba(255,255,255,.4)',lineHeight:'1.6',maxWidth:'480px'} }, f.footerNote + CAREERS_EMAIL)
     )
   );
 }
@@ -1149,9 +1168,22 @@ function renderJDModal() {
   const box = el('div', { style:{width:'100%',maxWidth:'560px',maxHeight:'82vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(var(--c-glass),.97)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'} },
     el('div', { style:{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a',marginBottom:'8px'} }, S.jdEntity),
     el('h3', { style:{fontFamily:"'Baloo 2',sans-serif",fontSize:'24px',fontWeight:'700',color:'var(--c-ink2)',lineHeight:'1.2',marginBottom:'18px'} }, S.jdTitle),
-    el('div', { style:{fontSize:'14px',lineHeight:'1.75',color:'var(--c-ink2)',whiteSpace:'pre-wrap',marginBottom:'24px'} },
-      S.jdText && S.jdText.trim() ? S.jdText : f.jdEmptyText
-    ),
+    (() => {
+      const jdDiv = el('div', { style:{fontSize:'14px',lineHeight:'1.75',color:'var(--c-ink2)',marginBottom:'24px'} });
+      if (S.jdText && S.jdText.trim()) {
+        // Support HTML rich text (bold, italic, lists) if stored as HTML, otherwise plain text
+        if (S.jdText.includes('<') && S.jdText.includes('>')) {
+          jdDiv.innerHTML = S.jdText;
+        } else {
+          jdDiv.style.whiteSpace = 'pre-wrap';
+          jdDiv.textContent = S.jdText;
+        }
+      } else {
+        jdDiv.textContent = f.jdEmptyText;
+        jdDiv.style.color = 'var(--c-muted)';
+      }
+      return jdDiv;
+    })(),
     el('div', { style:{display:'flex',gap:'10px'} },
       el('button', { onclick:()=>{ closeJD(); openApply(S.jdTitle.split(' · ')[0], S.jdEntity); }, style:{flex:'1',padding:'13px',borderRadius:'13px',border:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'} }, f.applyFromJD),
       el('button', { onclick:closeJD, style:{padding:'13px 22px',borderRadius:'13px',cursor:'pointer',fontSize:'13.5px',fontWeight:'600',color:'var(--c-muted)',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'} }, f.closeBtn)
@@ -1334,6 +1366,11 @@ function render() {
 
 try {
   render();
+// Rotate featured opening every 5 seconds
+setInterval(() => {
+  const openCount = S.positions.filter(p => ((p.headcount||p.count||1)-(p.filledCount||0)) > 0).length;
+  if (openCount > 1) { S.featuredIdx = (S.featuredIdx + 1) % openCount; render(); }
+}, 5000);
   loadPositions();
   animateStatCount();
 } catch (e) {
