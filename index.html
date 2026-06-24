@@ -88,6 +88,14 @@
 #hf-splash .sp-m{display:none}
 @media(min-width:768px){#hf-splash .sp-d{display:block}}
 @media(max-width:767px){#hf-splash .sp-m{display:block}}
+/* JD content — reset any pasted external styles */
+.hf-jd-body * { font-family: inherit !important; color: inherit !important; background: transparent !important; font-size: inherit !important; }
+.hf-jd-body p  { margin: 0 0 10px; line-height: 1.75; }
+.hf-jd-body b, .hf-jd-body strong { font-weight: 700; color: #23202b !important; }
+.hf-jd-body ul, .hf-jd-body ol { padding-left: 20px; margin: 8px 0 12px; }
+.hf-jd-body li { margin-bottom: 4px; }
+.hf-jd-body h1,.hf-jd-body h2,.hf-jd-body h3 { font-weight: 700; color: #23202b !important; margin: 14px 0 6px; }
+.hf-jd-body br + br { display: none; } /* collapse double line breaks */
 </style>
 </head>
 <body>
@@ -1028,9 +1036,27 @@ function renderJDModal() {
   const box = el('div', { style:{width:'100%',maxWidth:'560px',maxHeight:'82vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(255,255,255,.97)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'} },
     el('div', { style:{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a',marginBottom:'8px'} }, S.jdEntity),
     el('h3', { style:{fontFamily:"'Playfair Display',serif",fontSize:'24px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'18px'} }, S.jdTitle),
-    el('div', { style:{fontSize:'14px',lineHeight:'1.75',color:'#3a3640',whiteSpace:'pre-wrap',marginBottom:'24px'} },
-      S.jdText && S.jdText.trim() ? S.jdText : f.jdEmptyText
-    ),
+    (() => {
+      const jdDiv = el('div', { className:'hf-jd-body', style:{fontSize:'14px',lineHeight:'1.75',color:'#3a3640',marginBottom:'24px'} });
+      const text = S.jdText && S.jdText.trim() ? S.jdText : f.jdEmptyText;
+      if (text.includes('<') && text.includes('>')) {
+        // HTML content — strip all inline styles, fonts, colours from external paste
+        // then render as HTML so bold/lists/headings work properly
+        const clean = text
+          .replace(/\s*style="[^"]*"/gi, '')          // remove all style= attributes
+          .replace(/\s*class="[^"]*"/gi, '')           // remove class= attributes
+          .replace(/<font[^>]*>/gi, '').replace(/<\/font>/gi, '') // strip font tags
+          .replace(/&quot;/g, '"')                     // decode entities
+          .replace(/<br\s*\/?>/gi, '<br>')             // normalise br
+          .replace(/<p>\s*<\/p>/gi, '')                // remove empty paragraphs
+          .trim();
+        jdDiv.innerHTML = clean;
+      } else {
+        jdDiv.style.whiteSpace = 'pre-wrap';
+        jdDiv.textContent = text;
+      }
+      return jdDiv;
+    })(),
     el('div', { style:{display:'flex',gap:'10px'} },
       el('button', { onclick:()=>{ closeJD(); openApply(S.jdTitle.split(' · ')[0], S.jdEntity); }, style:{flex:'1',padding:'13px',borderRadius:'13px',border:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'} }, f.applyFromJD),
       el('button', { onclick:closeJD, style:{padding:'13px 22px',borderRadius:'13px',cursor:'pointer',fontSize:'13.5px',fontWeight:'600',color:'#6b6670',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'} }, f.closeBtn)
