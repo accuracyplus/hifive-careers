@@ -100,6 +100,30 @@ const ENTITY_OPTIONS = [
 ];
 const ENTITY_STRIP = ["Accuracy Plus Medical Laboratory","Herbal Park Ayurveda","Atomic Drugstore","Pine Group of Pharmacies","Al Jebal Group of Opticals"];
 
+// Normalise entity values coming from the worker — the Requisitions sheet stores
+// full facility names (e.g. "Accuracy Plus Medical Laboratory", "Herbal Park
+// Ayurvedic Health Center") while the filter keys are short names ("APML",
+// "Herbal Park"). This map covers both the full names AND the short keys so
+// filtering works regardless of what's stored in Excel.
+const ENTITY_NORM = {
+  // Full names from Excel → short filter key
+  "accuracy plus medical laboratory": "APML",
+  "herbal park ayurvedic health center": "Herbal Park",
+  "herbal park ayurveda": "Herbal Park",
+  "herbal park": "Herbal Park",
+  "atomic drugstore": "Atomic Drugstore",
+  "pine pharmacy": "Pine Pharmacy",
+  "pine group of pharmacies": "Pine Pharmacy",
+  "al jebal opticals": "Al Jebal Opticals",
+  "al jebal group of opticals": "Al Jebal Opticals",
+  // Short names already correct — identity mapping
+  "apml": "APML",
+};
+function normEntity(raw) {
+  if (!raw) return raw;
+  return ENTITY_NORM[raw.trim().toLowerCase()] || raw;
+}
+
 const S = {
   lang: 'en', positions: [], loading: true, search: '', entity: '', statCount: 0,
   modalOpen: false, modalPosition: '', modalEntity: '',
@@ -231,7 +255,9 @@ function scrollToId(id) {
   if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
 }
 function fullEntityName(short) {
-  const f = ENTITY_OPTIONS.find(([k]) => k === short);
+  // Input may be either a short key ("APML") or already a full name
+  const normed = normEntity(short);
+  const f = ENTITY_OPTIONS.find(([k]) => k === normed);
   return f ? f[1] : short;
 }
 
@@ -239,7 +265,9 @@ async function loadPositions() {
   try {
     const res = await fetch(WORKER + '/get-open-positions');
     const data = await res.json();
-    S.positions = data.positions || [];
+    // Normalise entity names from the worker so they match the short keys
+    // used in ENTITY_OPTIONS — e.g. "Accuracy Plus Medical Laboratory" → "APML"
+    S.positions = (data.positions || []).map(p => ({ ...p, entity: normEntity(p.entity) }));
   } catch (e) { S.positions = []; }
   S.loading = false;
   render();
