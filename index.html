@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Careers — HiFive Holdings</title>
-  <link rel="icon" type="image/png" href="/logo.png"/>
-  <link rel="apple-touch-icon" href="/logo.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -14,9 +12,7 @@
     html{scroll-behavior:smooth}
     body{background:#efe9e1;color:#1c1b22;font-family:"Inter",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
     ::selection{background:#b4123a;color:#fff}
-    #root{min-height:100vh;position:relative}
-    button{font-family:inherit}
-    a{text-decoration:none}
+    #root{min-height:100vh}
 
     @keyframes hf-drift{0%{transform:translate(0,0) scale(1)}33%{transform:translate(38px,-30px) scale(1.12)}66%{transform:translate(-28px,22px) scale(.94)}100%{transform:translate(0,0) scale(1)}}
     @keyframes hf-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
@@ -24,11 +20,7 @@
     @keyframes hf-up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
     @keyframes hf-in{from{opacity:0}to{opacity:1}}
     @keyframes hf-blurin{from{opacity:0;filter:blur(14px);transform:translateY(14px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
-
-    .hf-loader{position:relative;width:64px;height:64px;border:3px solid rgba(180,18,58,.18);overflow:hidden;border-radius:50%;box-shadow:-3px -3px 5px rgba(255,255,255,.4),6px 6px 10px rgba(110,11,42,.12),inset -3px -3px 5px rgba(255,255,255,.4),inset 6px 6px 10px rgba(110,11,42,.10);margin:0 auto}
-    .hf-loader:before{content:"";position:absolute;top:10px;left:10px;right:10px;bottom:10px;z-index:10;background:#efe9e1;border-radius:50%;border:1px solid rgba(180,18,58,.12);box-shadow:inset -1px -1px 4px rgba(255,255,255,.5),inset 2px 2px 5px rgba(110,11,42,.12)}
-    .hf-loader span{position:absolute;width:100%;height:100%;border-radius:50%;background-image:linear-gradient(-225deg,#d6204a 0%,#f5a623 50%,#ffe066 100%);filter:blur(11px);z-index:-1;animation:hf-loader-spin .9s linear infinite}
-    @keyframes hf-loader-spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    @keyframes hf-spin{to{transform:rotate(360deg)}}
 
     @media(max-width:820px){
       [data-r="rail"]{display:none!important}
@@ -40,8 +32,7 @@
       [data-r="navbtns"]{gap:4px!important}
       [data-r="navbtns"] button{font-size:12px!important;padding:8px 11px!important}
       [data-r="filterbar"]{border-radius:22px!important;padding:8px!important}
-      [data-r="hero-h1"]{font-size:clamp(30px,8vw,40px)!important}
-      [data-r="hero-h2"]{font-size:clamp(24px,7vw,34px)!important}
+      [data-r="hero-h1"]{font-size:clamp(40px,12vw,56px)!important}
       [data-r="bulkrow"]{grid-template-columns:1fr!important}
       [data-r="trackgrid"]{grid-template-columns:1fr!important}
     }
@@ -49,107 +40,92 @@
       [data-r="navname"]{display:none!important}
     }
 
-    .hf-nav-btn{transition:all .2s}
     .hf-nav-btn:hover{background:rgba(180,18,58,.08)!important;color:#b4123a!important}
-    .hf-lang-btn:hover{transform:translateY(-1px)}
-    .hf-cta-primary{transition:transform .2s,box-shadow .2s}
-    .hf-cta-primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(110,11,42,.4)!important}
-    .hf-cta-secondary{transition:all .2s}
+    .hf-lang-btn:hover{transform:translateY(-1px)!important}
+    .hf-cta-primary:hover{transform:translateY(-2px)!important;box-shadow:0 18px 36px rgba(110,11,42,.4)!important}
     .hf-cta-secondary:hover{background:#fff!important}
-    .hf-filter-btn{transition:transform .2s}
-    .hf-filter-btn:hover{transform:translateY(-1px)}
-    .hf-icon-btn{transition:all .2s}
+    .hf-filter-btn:hover{transform:translateY(-1px)!important}
     .hf-icon-btn:hover{background:rgba(255,255,255,.7)!important;color:#b4123a!important}
-    .hf-stat-btn{transition:transform .2s}
-    .hf-stat-btn:hover{transform:rotate(-12deg) scale(1.05)}
-    .hf-featured-apply{transition:all .2s}
-    .hf-featured-apply:hover{background:#b4123a!important;color:#fff!important}
-    .hf-apply-btn{transition:transform .2s}
-    .hf-apply-btn:hover{transform:translateY(-1px)}
-    .hf-jd-btn{transition:all .2s}
-    .hf-jd-btn:hover{background:rgba(180,18,58,.1)!important;color:#b4123a!important}
-    .hf-why-card{transition:transform .25s,box-shadow .25s}
-    .hf-why-card:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(110,11,42,.16)!important}
-    .hf-track-btn{transition:transform .2s}
-    .hf-track-btn:hover{transform:translateY(-1px)}
-    .hf-bulk-zone{transition:all .25s}
+    .hf-stat-btn:hover{transform:rotate(-12deg) scale(1.05)!important}
+    .hf-icon-btn{cursor:pointer}
+    .hf-icon-btn:hover{background:rgba(214,32,74,.10)!important;color:#b4123a!important;transform:scale(1.1)}
+    .hf-apply-btn:hover{transform:translateY(-1px)!important}
+    .hf-why-card:hover{transform:translateY(-4px)!important;box-shadow:0 22px 50px rgba(110,11,42,.16)!important}
+    .hf-track-btn:hover{transform:translateY(-1px)!important}
     .hf-bulk-zone:hover{border-color:#b4123a!important;background:rgba(255,255,255,.72)!important}
-    .hf-pos-card-open{transition:transform .25s,box-shadow .25s}
-    .hf-pos-card-open:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(110,11,42,.14)!important}
-
-    select{cursor:pointer}
-    input,select,textarea{font-family:inherit}
+    .hf-pos-card-open:hover{transform:translateY(-3px)!important;box-shadow:0 20px 48px rgba(110,11,42,.14)!important}
   </style>
 </head>
 <body>
-<div id="root">
-  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;color:#8a8590;font-size:14px">Loading…</div>
-</div>
+<div id="root"></div>
 
-<script>
-'use strict';
+<script src="project/image-slot.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js" crossorigin></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 const WORKER = "https://recruitment.sinusuresh.workers.dev";
-const CAREERS_EMAIL = "career@hifiveholding.ae";
-const ENTITY_OPTIONS = [
-  ["APML","Accuracy Plus Medical Laboratory"],
-  ["Herbal Park","Herbal Park Ayurveda"],
-  ["Atomic Drugstore","Atomic Drugstore"],
-  ["Pine Pharmacy","Pine Group of Pharmacies"],
-  ["Al Jebal Opticals","Al Jebal Group of Opticals"],
+
+const FALLBACK = [
+  { entity:'APML', branch:'Hamdan St', position:'Senior Medical Laboratory Technologist', experienceRequired:'3-5 yrs', expectedJoining:'2026-02-01', filled:1, headcount:3 },
+  { entity:'Pine Pharmacy', branch:'Dubai', position:'Registered Pharmacist', experienceRequired:'2+ yrs', genderPreference:'None', filled:0, headcount:2 },
+  { entity:'Al Jebal Opticals', branch:'Fujairah', position:'Optometrist', experienceRequired:'2-4 yrs', filled:0, headcount:1 },
+  { entity:'Herbal Park', branch:'Abu Dhabi', position:'Ayurveda Therapist', experienceRequired:'1-3 yrs', filled:2, headcount:2 },
+  { entity:'Atomic Drugstore', branch:'RAK', position:'Retail Supervisor', experienceRequired:'3+ yrs', expectedJoining:'2026-03-15', filled:0, headcount:1 },
+  { entity:'APML', branch:'Abu Dhabi', position:'Phlebotomist (Home Collection)', experienceRequired:'1+ yr', filled:1, headcount:4 },
 ];
-const ENTITY_STRIP = ["Accuracy Plus Medical Laboratory","Herbal Park Ayurveda","Atomic Drugstore","Pine Group of Pharmacies","Al Jebal Group of Opticals"];
 
-// Normalise entity values coming from the worker — the Requisitions sheet stores
-// full facility names (e.g. "Accuracy Plus Medical Laboratory", "Herbal Park
-// Ayurvedic Health Center") while the filter keys are short names ("APML",
-// "Herbal Park"). This map covers both the full names AND the short keys so
-// filtering works regardless of what's stored in Excel.
-const ENTITY_NORM = {
-  // Full names from Excel → short filter key
-  "accuracy plus medical laboratory": "APML",
-  "herbal park ayurvedic health center": "Herbal Park",
-  "herbal park ayurveda": "Herbal Park",
-  "herbal park": "Herbal Park",
-  "atomic drugstore": "Atomic Drugstore",
-  "pine pharmacy": "Pine Pharmacy",
-  "pine group of pharmacies": "Pine Pharmacy",
-  "al jebal opticals": "Al Jebal Opticals",
-  "al jebal group of opticals": "Al Jebal Opticals",
-  // Short names already correct — identity mapping
-  "apml": "APML",
-};
-function normEntity(raw) {
-  if (!raw) return raw;
-  return ENTITY_NORM[raw.trim().toLowerCase()] || raw;
-}
+function CareersPage() {
+  const [lang, setLang] = useState('en');
+  const [positions, setPositions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [entity, setEntity] = useState('');
+  const [statCount, setStatCount] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalPosition, setModalPosition] = useState('');
+  const [modalEntity, setModalEntity] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [successRef, setSuccessRef] = useState('');
+  const [formName, setFormName] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formNat, setFormNat] = useState('');
+  const [formSalary, setFormSalary] = useState('');
+  const [trackInput, setTrackInput] = useState('');
+  const [trackLoading, setTrackLoading] = useState(false);
+  const [trackErr, setTrackErr] = useState('');
+  const [trackResult, setTrackResult] = useState(null);
+  const [trackNotFound, setTrackNotFound] = useState(false);
+  const [bulkFiles, setBulkFiles] = useState([]);
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [bulkDone, setBulkDone] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState(0);
+  const [bulkStatus, setBulkStatus] = useState('');
 
-const S = {
-  lang: 'en', positions: [], loading: true, search: '', entity: '', statCount: 0,
-  modalOpen: false, modalPosition: '', modalEntity: '',
-  jdModalOpen: false, jdTitle: '', jdEntity: '', jdText: '',
-  submitting: false, success: false, successRef: '',
-  formName: '', formPhone: '', formEmail: '', formNat: '', formSalary: '',
-  trackInput: '', trackFirstName: '', trackLoading: false, trackErr: '', trackResult: null, trackNotFound: false,
-  bulkFiles: [], bulkUploading: false, bulkDone: false, bulkProgress: 0, bulkStatus: '',
-};
-function setS(patch) { Object.assign(S, patch); render(); }
+  const cvRef = useRef(null);
+  const bulkInputRef = useRef(null);
 
-function ar() { return S.lang === 'ar'; }
-function dir() { return ar() ? 'rtl' : 'ltr'; }
-function t(en, a) { return ar() ? a : en; }
+  const ar = lang === 'ar';
+  const dir = ar ? 'rtl' : 'ltr';
+  const t = (en, a) => ar ? a : en;
 
-function L() {
-  return {
+  const L = {
+    navSub: t('Healthcare & Retail Group','مجموعة الرعاية والتجزئة'),
     navPositions: t('Open Positions','الوظائف'),
     navTrack: t('Track Application','تتبع طلبك'),
-    langLabel: ar() ? 'English' : 'عربي',
-    heroEyebrowDefault: t("We're Hiring",'نحن نوظف'),
-    heroTitle1: t('Built on Momentum.','مبنيون على الزخم.'),
-    heroTitle2: t('Run by People Who Care.','يديرنا أشخاص يهتمون.'),
-    heroSub: t("At HiFive, we combine gold standard healthcare with rapid retail expansion. If you thrive in an active, high growth environment, you'll fit right in!",'في هايفايف، نجمع بين الرعاية الصحية ذات المعايير الذهبية والتوسع السريع في التجزئة. إذا كنت تزدهر في بيئة نشطة وعالية النمو، فستجد مكانك هنا!'),
+    langLabel: ar ? 'English' : 'عربي',
+    heroEyebrow: t('Now Hiring · 5 Units','نوظف الآن · 5 وحدات'),
+    heroTitle1: t('Build Your','ابنِ'),
+    heroTitle2: t('Career','مسيرتك'),
+    heroSub: t('Join a growing healthcare & retail group across Abu Dhabi, Dubai, Fujairah and beyond. We invest in people who care.','انضم إلى مجموعة متنامية في الرعاية الصحية والتجزئة عبر أبوظبي ودبي والفجيرة وما هو أبعد. نستثمر في من يهتمون.'),
     heroCtaPrimary: t('View Open Positions','عرض الوظائف'),
     heroCtaSecondary: t('Track My Application','تتبع طلبي'),
+    uploadHint: t('Recommended: 1040 × 1280 px · PNG · portrait','يُفضّل: 1040 × 1280 بكسل · PNG · عمودي'),
     allEntities: t('All Entities','جميع الجهات'),
     findBtn: t('Find Roles','ابحث'),
     searchPlaceholder: t('Search a role…','ابحث عن وظيفة…'),
@@ -163,17 +139,18 @@ function L() {
     posTitle: t('Open Positions','الوظائف المتاحة'),
     posSub: t('Live openings, updated in real time','وظائف شاغرة تُحدَّث في الوقت الفعلي'),
     loadingText: t('Loading positions…','جاري تحميل الوظائف…'),
+    errorText: t('Unable to load positions right now.','تعذر تحميل الوظائف حالياً.'),
     emptyText: t('No positions match your filters.','لا توجد وظائف تطابق معاييرك.'),
     whyTitle: t('Why Join HiFive?','لماذا تنضم إلى هايفايف؟'),
     whySub: t('We grow together','ننمو معاً'),
-    why1Title: t('Gold-Standard Excellence','تميز بمعايير ذهبية'),
-    why1Desc: t('Practice your craft at the highest level within our accredited and licensed facilities.','مارس مهنتك بأعلى مستوى ضمن منشآتنا المعتمدة والمرخصة.'),
-    why2Title: t('Uncapped Career Growth','نمو وظيفي غير محدود'),
-    why2Desc: t('Elevate your professional journey through structured training, specialized certifications, and clear advancement pathways.','ارتقِ بمسارك المهني من خلال تدريب منظم وشهادات متخصصة ومسارات ترقٍّ واضحة.'),
-    why3Title: t('A Truly Global Team','فريق عالمي حقاً'),
-    why3Desc: t('Collaborate within a rich, inclusive community of 160+ professionals representing various nationalities.','تعاون ضمن مجتمع غني وشامل يضم أكثر من 160 محترفاً يمثلون جنسيات متنوعة.'),
-    why4Title: t('Nationwide Impact','تأثير على مستوى الدولة'),
-    why4Desc: t('Build your career with an expanding healthcare leader operating across UAE.','ابنِ مسيرتك المهنية مع رائد رعاية صحية متنامٍ يعمل في جميع أنحاء الإمارات.'),
+    why1Title: t('Healthcare Leader','رائد في الرعاية'),
+    why1Desc: t('ISO 15189:2022 accredited laboratory and DOH-licensed clinics.','مختبر معتمد وعيادات مرخصة من دائرة الصحة.'),
+    why2Title: t('UAE-Wide Operations','عمليات في الإمارات'),
+    why2Desc: t('Branches across Abu Dhabi, Dubai, RAK and Fujairah.','فروع عبر أبوظبي ودبي ورأس الخيمة والفجيرة.'),
+    why3Title: t('Growth Culture','ثقافة النمو'),
+    why3Desc: t('Training, certifications and clear career progression.','تدريب وشهادات ومسارات ترقٍّ واضحة.'),
+    why4Title: t('Diverse Team','فريق متنوع'),
+    why4Desc: t('160+ professionals from 20+ nationalities.','أكثر من 160 محترفاً من أكثر من 20 جنسية.'),
     trackTitle: t('Track Your Application','تتبع طلبك'),
     trackSub: t('Enter the reference ID you received after submitting your CV to check your current status.','أدخل رقم المرجع الذي تلقيته بعد تقديم سيرتك الذاتية للتحقق من حالتك.'),
     trackBtn: t('Track','تتبع'),
@@ -188,8 +165,7 @@ function L() {
     dropTitle: t('Drop CVs here or click to browse','أسقط السير هنا أو انقر للتصفح'),
     dropHint: t('PDF · Word · Image · Multiple files supported','PDF · Word · صورة · ملفات متعددة'),
     candidateName: t('Candidate name *','اسم المرشح *'),
-    selectPosition: t('Select position…','اختر وظيفة…'),
-    selectFacility: t('Select facility…','اختر منشأة…'),
+    positionOptional: t('Position (optional)','الوظيفة (اختياري)'),
     uploadAll: t('Upload All CVs','رفع جميع السير'),
     addMore: t('+ Add More','+ إضافة المزيد'),
     doneTitle: t('All CVs uploaded!','تم رفع جميع السير!'),
@@ -202,883 +178,676 @@ function L() {
     expSalary: t('Expected Salary (AED) *','الراتب المتوقع (درهم) *'),
     cvLabel: t('CV (PDF/DOC) *','السيرة الذاتية *'),
     cancelBtn: t('Cancel','إلغاء'),
-    successTitle: t('CV Received!','تم استلام سيرتك الذاتية!'),
+    successTitle: t('Application Submitted!','تم تقديم طلبك!'),
     refLabel: t('Your reference number:','رقم مرجعك:'),
-    saveIdNote: t('Your CV is in our talent database. Our HR team will review it and contact you if there is a match.','سيرتك الذاتية الآن في قاعدة بيانات المواهب لدينا. سيقوم فريق الموارد البشرية بمراجعتها والتواصل معك في حال وجود تطابق.'),
+    saveIdNote: t('Save this ID to track your application status above.','احفظ هذا الرقم لتتبع حالة طلبك أعلاه.'),
     closeBtn: t('Close','إغلاق'),
-    viewJD: t('View Job Description','عرض الوصف الوظيفي'),
-    jdEmptyText: t('No detailed description has been added for this role yet. Apply and our HR team will share full details.','لم تتم إضافة وصف تفصيلي لهذا الدور بعد. تقدم وسيشاركك فريق الموارد البشرية بالتفاصيل الكاملة.'),
-    applyFromJD: t('Apply for this role','تقدم لهذا الدور'),
-    footerNote: t('All content and trademarks on this page are the property of HiFive Holdings LLC and may not be reproduced without permission. By submitting your details you consent to their use solely for recruitment purposes under applicable UAE data protection law. HiFive Holdings never requests payment at any stage of recruitment; report any such request to ','جميع المحتويات والعلامات التجارية على هذه الصفحة ملك لشركة هايفايف القابضة ولا يجوز إعادة إنتاجها دون إذن. بإرسال بياناتك فإنك توافق على استخدامها حصراً لأغراض التوظيف وفقاً لقانون حماية البيانات الإماراتي. لا تطلب هايفايف أي مبالغ مالية في أي مرحلة من التوظيف؛ يرجى الإبلاغ عن أي طلب من هذا القبيل إلى '),
+    footerNote: t('All positions subject to UAE Labour Law and visa eligibility.','جميع الوظائف خاضعة لقانون العمل الإماراتي وأهلية التأشيرة.'),
   };
-}
 
-function fmtDate(val) {
-  if (!val) return '';
-  const s = String(val).trim();
-  if (/^\d{2}-\d{2}-\d{4}$/.test(s)) return s;
-  if (/^\d{4}-\d{2}-\d{2}/.test(s)) { const p = s.split('T')[0].split('-'); return p[2]+'-'+p[1]+'-'+p[0]; }
-  const n = parseFloat(s);
-  if (!isNaN(n) && n > 1000) {
-    const dt = new Date(new Date(1899,11,30).getTime() + n*86400000);
-    return String(dt.getDate()).padStart(2,'0')+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+dt.getFullYear();
-  }
-  return s;
-}
-function el(tag, attrs, ...children) {
-  const e = document.createElement(tag);
-  for (const k in (attrs||{})) {
-    if (attrs[k] == null) continue;
-    if (k === 'class') e.className = attrs[k];
-    else if (k === 'html') e.innerHTML = attrs[k];
-    else if (k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
-    else if (k === 'style' && typeof attrs[k] === 'object') Object.assign(e.style, attrs[k]);
-    else e.setAttribute(k, attrs[k]);
-  }
-  children.flat().forEach(c => {
-    if (c == null || c === false) return;
-    e.appendChild(typeof c === 'string' || typeof c === 'number' ? document.createTextNode(c) : c);
-  });
-  return e;
-}
-function svg(paths, attrs) {
-  attrs = attrs || {};
-  const w = attrs.size || 18, stroke = attrs.color || 'currentColor', sw = attrs.sw || 2;
-  const wrap = document.createElement('span');
-  wrap.style.display = 'inline-flex';
-  wrap.style.flexShrink = '0';
-  wrap.innerHTML = '<svg width="'+w+'" height="'+w+'" viewBox="0 0 24 24" fill="none" stroke="'+stroke+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg>';
-  return wrap;
-}
-function scrollToId(id) {
-  const target = document.getElementById(id);
-  if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-}
-function fullEntityName(short) {
-  // Input may be either a short key ("APML") or already a full name
-  const normed = normEntity(short);
-  const f = ENTITY_OPTIONS.find(([k]) => k === normed);
-  return f ? f[1] : short;
-}
+  useEffect(() => {
+    fetch(`${WORKER}/get-open-positions`)
+      .then(r => r.json())
+      .then(d => {
+        const arr = d.positions || [];
+        setPositions(arr.length ? arr : FALLBACK);
+        setLoading(false);
+      })
+      .catch(() => { setPositions(FALLBACK); setLoading(false); });
+  }, []);
 
-async function loadPositions() {
-  try {
-    const res = await fetch(WORKER + '/get-open-positions');
-    const data = await res.json();
-    // Normalise entity names from the worker so they match the short keys
-    // used in ENTITY_OPTIONS — e.g. "Accuracy Plus Medical Laboratory" → "APML"
-    S.positions = (data.positions || []).map(p => ({ ...p, entity: normEntity(p.entity) }));
-  } catch (e) { S.positions = []; }
-  S.loading = false;
-  render();
-}
+  useEffect(() => {
+    const target = 160, dur = 1200, t0 = performance.now();
+    let raf;
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - k, 3);
+      setStatCount(Math.round(target * eased));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
-function animateStatCount() {
-  const target = 160, dur = 1200, t0 = performance.now();
-  function tick(now) {
-    const k = Math.min(1, (now - t0) / dur);
-    const eased = 1 - Math.pow(1 - k, 3);
-    S.statCount = Math.round(target * eased);
-    const elS = document.getElementById('statCountVal');
-    if (elS) elS.textContent = S.statCount + '+';
-    if (k < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-
-function filteredPositions() {
-  const s = S.search.toLowerCase().trim();
-  return S.positions.filter(p => {
-    const pos = (p.customPosition || p.position || '').toLowerCase();
-    return (!s || pos.includes(s)) && (!S.entity || p.entity === S.entity);
-  });
-}
-function posVM(p) {
-  const filled = p.filled || p.filledCount || 0;
-  const total = p.headcount || p.count || 1;
-  const pct = Math.min(100, Math.round((filled/total)*100));
-  const isFull = pct >= 100;
-  const isAlmost = pct >= 50 && pct < 100;
-  const barColor = isFull ? '#c0392b' : isAlmost ? '#d98a14' : '#1e8449';
-  const labelColor = isFull ? '#c0392b' : isAlmost ? '#b8740f' : '#1a7a42';
-  let meta = t('UAE · Full Time','الإمارات · دوام كامل');
-  if (p.experienceRequired) meta += ' · ' + p.experienceRequired;
-  if (p.genderPreference && p.genderPreference !== 'None') meta += ' · ' + p.genderPreference + ' ' + t('preferred','مفضل');
-  return {
-    title: p.customPosition || p.position,
-    entityLine: fullEntityName(p.entity) + (p.branch ? ' · '+p.branch : ''),
-    metaLine: meta,
-    hasJoining: !!p.expectedJoining,
-    joiningLine: p.expectedJoining ? t('Target joining','الالتحاق')+': '+fmtDate(p.expectedJoining) : '',
-    pct, isFull, isOpen: !isFull, barColor, labelColor,
-    fillLabel: isFull ? t('Position Filled','تم الشغل') : (total-filled)+' '+t('of','من')+' '+total+' '+t('open','متاح'),
-    badgeText: isFull ? t('Filled','مكتمل') : t('Hiring Now','نوظف الآن'),
-    badgeFull: isFull,
-    locWord: t('UAE','الإمارات'),
-    applyText: isFull ? t('No vacancies','لا شواغر') : t('Apply','تقدم'),
-    rawPosition: p.position, rawEntity: p.entity,
-    jobDescription: p.jobDescription || '',
+  const scrollToId = (id) => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
   };
-}
-function dynamicEyebrow() {
-  // Use filtered positions for the eyebrow stat when an entity filter is active
-  const src = S.entity ? filteredPositions() : S.positions;
-  const totalOpen = src.reduce((sum,p) => sum + Math.max(0, (p.headcount||p.count||1)-(p.filledCount||0)), 0);
-  const unitsHiring = new Set(src.filter(p => ((p.headcount||p.count||1)-(p.filledCount||0))>0).map(p=>p.entity)).size;
-  if (unitsHiring > 0) {
-    return t('Now Hiring in '+unitsHiring+' Unit'+(unitsHiring!==1?'s':'')+' · '+totalOpen+' Position'+(totalOpen!==1?'s':''),
-      'نوظف الآن في '+unitsHiring+' وحدة · '+totalOpen+' وظيفة');
-  }
-  return L().heroEyebrowDefault;
-}
-function featuredVM() {
-  // Use filtered list when entity filter is active so the hero card reflects
-  // the selected entity, not always the first position across all entities.
-  const source = S.entity ? filteredPositions() : S.positions;
-  const all = source.map(posVM);
-  const open = all.find(v => v.isOpen) || all[0];
-  if (!open) {
-    return { title: t('Multiple Openings','وظائف متعددة'), entityLine: 'HiFive Holdings', metaTag: t('Across 5 units','عبر 5 وحدات'), applyAction: () => scrollToId('positions') };
-  }
-  const parts = (open.metaLine||'').split(' · ');
-  const expLabel = parts.slice(2).find(p => /yr|year|exp/i.test(p)) || parts.slice(2).join(' · ');
-  const branchParts = (open.entityLine||'').split(' · ');
-  const branch = branchParts.length>1 ? branchParts.slice(1).join(' · ') : '';
-  open.metaTag = expLabel || branch || open.fillLabel || t('Open now','متاح الآن');
-  open.applyAction = () => openApply(open.rawPosition, open.rawEntity);
-  return open;
-}
 
-function openApply(position, entity) {
-  setS({ modalOpen:true, modalPosition:position, modalEntity:entity, success:false,
-    formName:'', formPhone:'', formEmail:'', formNat:'', formSalary:'' });
-}
-function closeModal() { setS({ modalOpen:false, success:false }); }
-function openJD(title, entity, jdText) { setS({ jdModalOpen:true, jdTitle:title, jdEntity:entity, jdText:jdText }); }
-function closeJD() { setS({ jdModalOpen:false }); }
-
-let cvFileRef = null;
-
-async function submitApplication() {
-  if (!S.formName || !S.formPhone || !S.formEmail || !S.formNat || !S.formSalary || !cvFileRef) {
-    alert(t('Please fill in all required fields and attach your CV.','يرجى ملء جميع الحقول المطلوبة وإرفاق سيرتك الذاتية.'));
-    return;
-  }
-  setS({ submitting:true });
-  try {
-    const fd = new FormData();
-    fd.append('file', cvFileRef);
-    fd.append('name', S.formName);
-    fd.append('position', S.modalPosition || '');
-    fd.append('facility', S.modalEntity || '');
-    fd.append('phone', S.formPhone);
-    fd.append('email', S.formEmail);
-    const res = await fetch(WORKER + '/upload-cv-public', { method:'POST', body:fd });
-    const data = await res.json();
-    if (!data.success) throw new Error(data.error || 'Submission failed');
-    setS({ success:true, successRef:data.cvID, submitting:false });
-  } catch (e) {
-    setS({ submitting:false });
-    alert(t('Submission failed: ','فشل الإرسال: ') + e.message);
-  }
-}
-
-const STATUS_STEPS = ['Active','Shortlisted','Ops Cleared','Mgmt Cleared','Offered','Accepted','Joined'];
-function statusLabel(s) {
-  const en = { Active:'Applied', Shortlisted:'Shortlisted', 'Ops Cleared':'Operations Cleared', 'Mgmt Cleared':'Management Cleared', 'Verbal Offered':'Offer Extended', Offered:'Offer Extended', Accepted:'Offer Accepted', Onboarding:'Onboarding', Joined:'Joined', Rejected:'Not Selected' };
-  const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', 'Ops Cleared':'اجتاز العمليات', 'Mgmt Cleared':'اجتاز الإدارة', 'Verbal Offered':'تم إرسال العرض', Offered:'تم إرسال العرض', Accepted:'تم قبول العرض', Onboarding:'التأهيل', Joined:'التحق', Rejected:'لم يتم الاختيار' };
-  return (ar() ? ara : en)[s] || s;
-}
-function statusBadgeStyle(status) {
-  const m = {
-    Active:{bg:'rgba(43,108,176,.18)',color:'#cfe6ff'}, Shortlisted:{bg:'rgba(216,138,20,.22)',color:'#ffd9a0'},
-    'Ops Cleared':{bg:'rgba(14,165,233,.22)',color:'#bae6fd'}, 'Mgmt Cleared':{bg:'rgba(16,185,129,.22)',color:'#a7f3d0'},
-    'Verbal Offered':{bg:'rgba(249,115,22,.22)',color:'#fed7aa'}, Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'},
-    Accepted:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'}, Onboarding:{bg:'rgba(99,102,241,.22)',color:'#c7d2fe'},
-    Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
-    Rejected:{bg:'rgba(192,57,43,.24)',color:'#ffc2bb'}, 'On Hold':{bg:'rgba(108,52,131,.24)',color:'#e6c8f0'},
+  const fmtDate = (val) => {
+    if (!val) return '';
+    const s = String(val).trim();
+    if (/^\d{2}-\d{2}-\d{4}$/.test(s)) return s;
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) { const [y,m,d] = s.split('T')[0].split('-'); return `${d}-${m}-${y}`; }
+    const n = parseFloat(s);
+    if (!isNaN(n) && n > 1000) { const dt = new Date(new Date(1899,11,30).getTime() + n*86400000); return `${String(dt.getDate()).padStart(2,'0')}-${String(dt.getMonth()+1).padStart(2,'0')}-${dt.getFullYear()}`; }
+    return s;
   };
-  const x = m[status] || { bg:'rgba(255,255,255,.15)', color:'#fff' };
-  return { fontSize:'12.5px', fontWeight:'700', padding:'6px 15px', borderRadius:'99px', background:x.bg, color:x.color };
-}
-function buildTimeline(status) {
-  const cur = STATUS_STEPS.indexOf(status);
-  const nodes = [];
-  STATUS_STEPS.forEach((s, i) => {
-    const done = i < cur, current = i === cur;
-    const dotBg = done ? '#1e8449' : current ? 'linear-gradient(135deg,#d6204a,#6e0b2a)' : 'rgba(255,255,255,.14)';
-    const dotColor = (done||current) ? '#fff' : 'rgba(255,255,255,.45)';
-    nodes.push({ isDot:true, dotText: done?'✓':String(i+1), dotBg, dotColor, labelText: statusLabel(s),
-      labelColor: current?'#ff9fb2':done?'rgba(255,255,255,.7)':'rgba(255,255,255,.4)', labelWeight: current?'700':'500' });
-    if (i < STATUS_STEPS.length-1) nodes.push({ isLine:true, lineBg: done?'#1e8449':'rgba(255,255,255,.14)' });
-  });
-  return nodes;
-}
-async function doTrack() {
-  const id = S.trackInput.trim().toUpperCase();
-  setS({ trackErr:'', trackResult:null, trackNotFound:false });
-  if (!/^REC-\d{4}$/.test(id)) { setS({ trackErr: t('Please enter a valid reference ID (e.g. REC-0001)','يرجى إدخال رقم مرجع صحيح (مثال: REC-0001)') }); return; }
-  const firstName = S.trackFirstName.trim();
-  if (!firstName) { setS({ trackErr: t('Please enter your first name.','يرجى إدخال اسمك الأول.') }); return; }
-  setS({ trackLoading:true });
-  try {
-    const r = await fetch(WORKER + '/track-status?id=' + id + '&firstName=' + encodeURIComponent(firstName));
-    const data = await r.json();
-    if (!data.found) { setS({ trackNotFound:true, trackLoading:false }); return; }
-    setS({ trackResult:data, trackLoading:false });
-  } catch (e) {
-    setS({ trackErr: t('Error checking status. Please try again.','خطأ في التحقق من الحالة. يرجى المحاولة مرة أخرى.'), trackLoading:false });
-  }
-}
 
-function guessName(fn) {
-  return fn.replace(/\.(pdf|doc|docx|jpg|jpeg|png)$/i,'').replace(/[_\-.]+/g,' ')
+  const filteredPositions = useMemo(() => {
+    const s = search.toLowerCase().trim();
+    return positions.filter(p => {
+      const pos = (p.customPosition || p.position || '').toLowerCase();
+      return (!s || pos.includes(s)) && (!entity || p.entity === entity);
+    });
+  }, [positions, search, entity]);
+
+  const posVM = (p) => {
+    const filled = p.filled || 0;
+    const total = p.headcount || p.count || 1;
+    const pct = Math.min(100, Math.round((filled / total) * 100));
+    const isFull = pct >= 100;
+    const isAlmost = pct >= 50 && pct < 100;
+    const barColor = isFull ? '#c0392b' : isAlmost ? '#d98a14' : '#1e8449';
+    const labelColor = isFull ? '#c0392b' : isAlmost ? '#b8740f' : '#1a7a42';
+    let meta = t('UAE · Full Time','الإمارات · دوام كامل');
+    if (p.experienceRequired) meta += ` · ${p.experienceRequired}`;
+    if (p.genderPreference && p.genderPreference !== 'None') meta += ` · ${p.genderPreference} ${t('preferred','مفضل')}`;
+    return {
+      title: p.customPosition || p.position,
+      entityLine: p.entity + (p.branch ? ` · ${p.branch}` : ''),
+      metaLine: meta,
+      hasJoining: !!p.expectedJoining,
+      joiningLine: p.expectedJoining ? `${t('Target joining','الالتحاق')}: ${fmtDate(p.expectedJoining)}` : '',
+      pct, isFull, isOpen: !isFull,
+      barColor,
+      fillLabel: isFull ? t('Position Filled','تم الشغل') : `${total - filled} ${t('of','من')} ${total} ${t('open','متاح')}`,
+      fillLabelStyle: { fontSize:'11.5px', fontWeight:'700', color:labelColor },
+      badgeText: isFull ? t('Filled','مكتمل') : t('Hiring Now','نوظف الآن'),
+      badgeFull: isFull,
+      locWord: t('UAE','الإمارات'),
+      applyText: isFull ? t('No vacancies','لا شواغر') : t('Apply','تقدم'),
+      onApply: () => openApply(p.position, p.entity),
+    };
+  };
+
+  const allVMs = useMemo(() => positions.map(posVM), [positions, lang]);
+  const featured = useMemo(() => {
+    const open = allVMs.find(v => v.isOpen) || allVMs[0] || {
+      title: t('Multiple Openings','وظائف متعددة'), entityLine: 'HiFive Holdings',
+      metaTag: t('Across 5 units','عبر 5 وحدات'), onApply: () => scrollToId('positions'),
+    };
+    if (open) {
+      const parts = (open.metaLine || '').split(' · ');
+      const expLabel = parts.slice(2).find(p => /yr|year|exp/i.test(p)) || parts.slice(2).join(' · ');
+      const branchParts = (open.entityLine || '').split(' · ');
+      const branch = branchParts.length > 1 ? branchParts.slice(1).join(' · ') : '';
+      open.metaTag = expLabel || branch || open.fillLabel || t('Open now','متاح الآن');
+    }
+    return open;
+  }, [allVMs, lang]);
+
+  const openApply = (position, ent) => {
+    setModalOpen(true); setModalPosition(position); setModalEntity(ent);
+    setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormSalary('');
+  };
+  const closeModal = () => { setModalOpen(false); setSuccess(false); };
+
+  const submitApplication = async () => {
+    const cvFile = cvRef.current?.files?.[0];
+    if (!formName || !formPhone || !formEmail || !formNat || !formSalary || !cvFile) {
+      alert(t('Please fill in all required fields and attach your CV.','يرجى ملء جميع الحقول المطلوبة وإرفاق سيرتك الذاتية.'));
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${WORKER}/add-candidate`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ name:formName, phone:formPhone, email:formEmail, nationality:formNat,
+          expectedSalary:formSalary, position:modalPosition, entity:modalEntity, source:'Careers Page', role:'recruiter' }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Submission failed');
+      const candID = data.candidateID;
+      const fd = new FormData();
+      fd.append('candidateID', candID);
+      fd.append('file', cvFile);
+      await fetch(`${WORKER}/upload-cv`, { method:'POST', headers:{'X-App-Key':''}, body:fd });
+      setSuccess(true); setSuccessRef(candID);
+    } catch (e) {
+      alert(t('Submission failed: ','فشل الإرسال: ') + e.message);
+    } finally { setSubmitting(false); }
+  };
+
+  const STATUS_STEPS = ['Active','Shortlisted','Offered','Joined'];
+  const statusLabel = (s) => {
+    const en = { Active:'Applied', Shortlisted:'Shortlisted', Offered:'Offer Extended', Joined:'Joined' };
+    const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', Offered:'تم إرسال العرض', Joined:'التحق' };
+    return (ar ? ara : en)[s] || s;
+  };
+  const statusBadgeStyle = (status) => {
+    const m = {
+      Active:{bg:'rgba(43,108,176,.18)',color:'#cfe6ff'}, Shortlisted:{bg:'rgba(216,138,20,.22)',color:'#ffd9a0'},
+      Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'}, Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
+      Rejected:{bg:'rgba(192,57,43,.24)',color:'#ffc2bb'}, 'On Hold':{bg:'rgba(108,52,131,.24)',color:'#e6c8f0'},
+    };
+    const {bg='rgba(255,255,255,.15)',color='#fff'} = m[status] || {};
+    return { fontSize:'12.5px', fontWeight:'700', padding:'6px 15px', borderRadius:'99px', background:bg, color };
+  };
+  const buildTimeline = (status) => {
+    const cur = STATUS_STEPS.indexOf(status);
+    const nodes = [];
+    STATUS_STEPS.forEach((s, i) => {
+      const done = i < cur, current = i === cur;
+      const dotBg = done ? '#1e8449' : current ? 'linear-gradient(135deg,#d6204a,#6e0b2a)' : 'rgba(255,255,255,.14)';
+      const dotColor = (done || current) ? '#fff' : 'rgba(255,255,255,.45)';
+      nodes.push({ isDot:true, isLine:false, dotText: done ? '✓' : String(i+1),
+        dotBg, dotColor, labelText: statusLabel(s),
+        labelColor: current?'#ff9fb2':done?'rgba(255,255,255,.7)':'rgba(255,255,255,.4)',
+        labelWeight: current?'700':'500' });
+      if (i < STATUS_STEPS.length-1) nodes.push({ isDot:false, isLine:true, lineBg: done?'#1e8449':'rgba(255,255,255,.14)' });
+    });
+    return nodes;
+  };
+
+  const onTrackKey = (e) => { if (e.key === 'Enter') doTrack(); };
+  const doTrack = async () => {
+    const id = trackInput.trim().toUpperCase();
+    setTrackErr(''); setTrackResult(null); setTrackNotFound(false);
+    if (!/^REC-\d{4}$/.test(id)) { setTrackErr(t('Please enter a valid reference ID (e.g. REC-0001)','يرجى إدخال رقم مرجع صحيح (مثال: REC-0001)')); return; }
+    setTrackLoading(true);
+    try {
+      const r = await fetch(`${WORKER}/track-status?id=${id}`);
+      const data = await r.json();
+      if (!data.found) { setTrackNotFound(true); return; }
+      setTrackResult(data);
+    } catch (e) { setTrackErr(t('Error checking status. Please try again.','خطأ في التحقق من الحالة. يرجى المحاولة مرة أخرى.')); }
+    finally { setTrackLoading(false); }
+  };
+
+  const guessName = (fn) => fn.replace(/\.(pdf|doc|docx|jpg|jpeg|png)$/i,'').replace(/[_\-.]+/g,' ')
     .replace(/\b(cv|resume|application)\b/gi,'').trim()
     .split(/\s+/).map(w => w ? w[0].toUpperCase()+w.slice(1).toLowerCase() : '').join(' ').trim();
-}
-function addBulk(fileList) {
-  const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', facility:'', status:'idle' }));
-  S.bulkFiles = [...S.bulkFiles, ...add];
-  S.bulkDone = false;
-  render();
-}
-function setBulkField(i, k, v) { S.bulkFiles[i] = { ...S.bulkFiles[i], [k]: v }; render(); }
-function removeBulk(i) { S.bulkFiles = S.bulkFiles.filter((_,j) => j !== i); render(); }
 
-async function uploadAllBulk() {
-  if (S.bulkUploading) return;
-  const snapshot = [...S.bulkFiles];
-  const pending = snapshot.filter(f => f.status === 'idle');
-  if (!pending.length) return;
-  const missing = pending.find(f => !f.name?.trim() || !f.position || !f.facility);
-  if (missing) { setS({ bulkStatus: t('Please fill name, position and facility for every CV before uploading.','يرجى تعبئة الاسم والوظيفة والمنشأة لكل سيرة ذاتية قبل الرفع.') }); return; }
-  setS({ bulkUploading:true, bulkProgress:0, bulkStatus:'' });
-  let done = 0;
-  for (let i = 0; i < snapshot.length; i++) {
-    if (snapshot[i].status !== 'idle') continue;
-    setBulkField(i, 'status', 'loading');
-    try {
-      const f = snapshot[i];
-      const fd = new FormData();
-      fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', f.position||''); fd.append('facility', f.facility||''); fd.append('source','Careers Page');
-      const res = await fetch(WORKER + '/upload-cv-public', { method:'POST', body:fd });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error||'fail');
-      setBulkField(i, 'status', 'done'); done++;
-    } catch(e) { setBulkField(i, 'status', 'error'); }
-    S.bulkProgress = Math.round((done/pending.length)*100);
-    S.bulkStatus = t('Uploaded','تم رفع')+' '+done+' '+t('of','من')+' '+pending.length+'…';
-    render();
-  }
-  S.bulkUploading = false;
-  if (S.bulkFiles.every(f=>f.status==='done') && S.bulkFiles.length) { S.bulkDone = true; S.bulkFiles = []; }
-  render();
-}
+  const addBulk = (fileList) => {
+    const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', status:'idle' }));
+    setBulkFiles(prev => [...prev, ...add]);
+    setBulkDone(false);
+  };
+  const setBulkField = (i, k, v) => setBulkFiles(prev => { const a=[...prev]; a[i]={...a[i],[k]:v}; return a; });
+  const removeBulk = (i) => setBulkFiles(prev => prev.filter((_,j) => j !== i));
 
-function renderNav() {
-  const f = L();
-  return el('nav', { style:{position:'sticky',top:'0',zIndex:'60',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'20px',padding:'14px clamp(16px,4vw,48px)',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',borderBottom:'1px solid rgba(255,255,255,.6)'} },
-    el('div', { style:{display:'flex',alignItems:'center',gap:'12px'} },
-      el('img', { src:'/logo.png', alt:'HiFive', style:{height:'34px',width:'auto',display:'block'} }),
-      el('div', { style:{display:'flex',flexDirection:'column',lineHeight:'1.1'} },
-        el('span', { 'data-r':'navname', style:{fontWeight:'800',fontSize:'15px',letterSpacing:'-.01em',color:'#1c1b22'} }, 'HiFive Holdings')
-      )
-    ),
-    el('div', { 'data-r':'navbtns', style:{display:'flex',alignItems:'center',gap:'6px'} },
-      el('button', { class:'hf-nav-btn', onclick:()=>scrollToId('positions'), style:{border:'none',background:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px'} }, f.navPositions),
-      el('button', { class:'hf-nav-btn', onclick:()=>scrollToId('tracker'), style:{border:'none',background:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px'} }, f.navTrack),
-      el('button', { class:'hf-lang-btn', onclick:()=>setS({lang: S.lang==='en'?'ar':'en'}), style:{cursor:'pointer',fontSize:'13px',fontWeight:'700',color:'#fff',padding:'9px 18px',borderRadius:'99px',border:'none',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 16px rgba(110,11,42,.28)'} }, f.langLabel)
-    )
-  );
-}
-
-function renderHero() {
-  const f = L();
-  const featured = featuredVM();
-
-  const heroSection = el('section', { style:{padding:'clamp(20px,3vw,40px) clamp(14px,3vw,40px) clamp(30px,4vw,56px)'} });
-  const heroCard = el('div', { style:{position:'relative',maxWidth:'1240px',margin:'0 auto',borderRadius:'34px',overflow:'hidden',background:'linear-gradient(152deg,#f4dce1 0%,#e9dcef 36%,#dfe7f4 66%,#f6ede3 100%)',boxShadow:'0 40px 90px -30px rgba(110,11,42,.32),0 8px 24px rgba(28,27,34,.06)',minHeight:'clamp(540px,62vw,620px)',animation:'hf-blurin 1s cubic-bezier(.2,.7,.2,1) both'} });
-
-  heroCard.appendChild(el('div', { style:{position:'absolute',top:'-60px',right:'8%',width:'340px',height:'340px',borderRadius:'50%',background:'radial-gradient(circle,rgba(255,255,255,.55),transparent 60%)',filter:'blur(10px)',pointerEvents:'none'} }));
-  heroCard.appendChild(el('div', { style:{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'} }));
-
-  const entitySelect = document.createElement('select');
-  entitySelect.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:#1c1b22;padding:11px 6px;cursor:pointer;width:100%';
-  entitySelect.appendChild(el('option', { value:'' }, f.allEntities));
-  ENTITY_OPTIONS.forEach(([k,v]) => { const o = el('option', { value:k }, v); if (S.entity===k) o.selected = true; entitySelect.appendChild(o); });
-  entitySelect.addEventListener('change', e => setS({ entity:e.target.value }));
-
-  const filterBar = el('div', { 'data-r':'filterbar', style:{position:'relative',zIndex:'5',margin:'18px clamp(16px,3vw,26px) 0',display:'flex',flexWrap:'wrap',alignItems:'center',gap:'10px',padding:'10px',borderRadius:'99px',background:'rgba(255,255,255,.5)',backdropFilter:'blur(18px)',WebkitBackdropFilter:'blur(18px)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 10px 30px rgba(110,11,42,.10)',animation:'hf-up .8s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.15s'} },
-    el('span', { style:{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 20px',borderRadius:'99px',background:'#fff',fontSize:'13.5px',fontWeight:'700',color:'#b4123a',boxShadow:'0 2px 8px rgba(110,11,42,.10)'} },
-      el('span', { style:{width:'8px',height:'8px',borderRadius:'50%',background:'#d6204a',boxShadow:'0 0 0 4px rgba(214,32,74,.18)'} }),
-      dynamicEyebrow()
-    ),
-    el('div', { style:{display:'flex',alignItems:'center',gap:'8px',flex:'1',minWidth:'240px',justifyContent:'flex-end',flexWrap:'wrap'} },
-      el('div', { style:{display:'flex',alignItems:'center',gap:'8px',padding:'0 6px 0 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',minWidth:'150px'} },
-        entitySelect,
-        svg('<path d="m6 9 6 6 6-6"/>', {size:14,color:'#b4123a',sw:2.2})
-      ),
-      el('button', { class:'hf-filter-btn', onclick:()=>scrollToId('positions'), style:{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 22px',borderRadius:'99px',border:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 20px rgba(110,11,42,.3)'} },
-        f.findBtn, svg('<path d="M7 17 17 7M9 7h8v8"/>', {size:15,color:'#fff',sw:2.4})
-      )
-    )
-  );
-  heroCard.appendChild(filterBar);
-
-  const railIcons = [
-    '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>',
-    '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
-    '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
-  ];
-  const rail = el('div', { 'data-r':'rail', style:{position:'absolute',left:'clamp(14px,2.2vw,26px)',top:'54%',transform:'translateY(-50%)',zIndex:'6',display:'flex',flexDirection:'column',gap:'8px',padding:'9px',borderRadius:'99px',background:'rgba(255,255,255,.46)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.65)',boxShadow:'0 12px 30px rgba(110,11,42,.12)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.45s'} },
-    el('div', { style:{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.32)'} },
-      svg('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/>', {size:19,color:'#fff',sw:1.9})
-    )
-  );
-  railIcons.forEach(p => rail.appendChild(el('div', { class:'hf-icon-btn', style:{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'#7a4a55'} }, svg(p, {size:18,sw:1.9}))));
-  heroCard.appendChild(rail);
-
-  const twoCol = el('div', { style:{position:'relative',zIndex:'4',display:'flex',flexWrap:'wrap',alignItems:'stretch',gap:'clamp(14px,2vw,28px)'} });
-  const leftCol = el('div', { style:{flex:'1 1 320px',minWidth:'280px',display:'flex',flexDirection:'column'} });
-
-  const headline = el('div', { 'data-r':'hpad', style:{position:'relative',zIndex:'4',padding:'clamp(28px,5vw,52px) clamp(20px,4vw,56px) 0 clamp(100px,10vw,130px)',maxWidth:'760px'} },
-    el('h1', { 'data-r':'hero-h1', style:{fontFamily:"'Playfair Display',serif",fontWeight:'500',fontSize:'clamp(28px,3.6vw,42px)',lineHeight:'1.18',letterSpacing:'-.02em',color:'#23202b',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.25s',whiteSpace:'nowrap'} }, f.heroTitle1),
-    el('div', { 'data-r':'hero-h2', style:{fontFamily:"'Playfair Display',serif",fontWeight:'600',fontSize:'clamp(24px,3.2vw,38px)',lineHeight:'1.2',letterSpacing:'-.02em',marginTop:'2px',whiteSpace:'nowrap',background:'linear-gradient(100deg,#d6204a,#6e0b2a 60%,#b4123a)',WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent',fontStyle:'italic',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.3s'} }, f.heroTitle2),
-    el('p', { style:{marginTop:'18px',maxWidth:'420px',fontSize:'15.5px',lineHeight:'1.6',color:'#5b5560',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.4s'} }, f.heroSub),
-    el('div', { style:{marginTop:'26px',display:'flex',gap:'12px',flexWrap:'wrap',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.55s'} },
-      el('button', { class:'hf-cta-primary', onclick:()=>scrollToId('positions'), style:{display:'inline-flex',alignItems:'center',gap:'9px',padding:'14px 26px',borderRadius:'99px',border:'none',cursor:'pointer',fontSize:'14.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.32)'} },
-        f.heroCtaPrimary, svg('<path d="M5 12h14M13 6l6 6-6 6"/>', {size:16,color:'#fff',sw:2.3})
-      ),
-      el('button', { class:'hf-cta-secondary', onclick:()=>scrollToId('tracker'), style:{padding:'14px 24px',borderRadius:'99px',cursor:'pointer',fontSize:'14.5px',fontWeight:'600',color:'#23202b',background:'rgba(255,255,255,.55)',backdropFilter:'blur(10px)',WebkitBackdropFilter:'blur(10px)',border:'1px solid rgba(255,255,255,.8)'} }, f.heroCtaSecondary)
-    )
-  );
-  leftCol.appendChild(headline);
-
-  const cardsRow = el('div', { 'data-r':'cpad', style:{position:'relative',zIndex:'4',display:'flex',flexWrap:'wrap',gap:'22px',padding:'clamp(26px,4vw,40px) clamp(20px,4vw,56px) clamp(22px,3vw,32px) clamp(100px,10vw,130px)',alignItems:'flex-end'} });
-
-  const statCard = el('div', { style:{flex:'1',minWidth:'230px',maxWidth:'310px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 18px 44px rgba(110,11,42,.14)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float 7s ease-in-out 1.4s infinite',animationDelay:'.65s',minHeight:'200px',alignSelf:'flex-end'} },
-    el('div', { style:{fontWeight:'700',fontSize:'14.5px',color:'#23202b',marginBottom:'5px'} }, f.statCardTitle),
-    el('div', { style:{fontSize:'12.5px',lineHeight:'1.5',color:'#6b6670',marginBottom:'16px'} }, f.statCardDesc),
-    el('div', { style:{display:'flex',alignItems:'flex-end',justifyContent:'space-between',gap:'10px'} },
-      el('div', { style:{minWidth:'0'} },
-        el('div', { id:'statCountVal', style:{fontFamily:"'Playfair Display',serif",fontSize:'38px',fontWeight:'700',lineHeight:'1',color:'#b4123a'} }, S.statCount+'+'),
-        el('div', { style:{fontSize:'11.5px',letterSpacing:'.04em',color:'#8a8590',fontWeight:'600',marginTop:'3px'} }, f.statTeam)
-      ),
-      el('button', { class:'hf-stat-btn', onclick:()=>scrollToId('positions'), style:{width:'46px',height:'46px',flexShrink:'0',borderRadius:'50%',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.32)'} },
-        svg('<path d="M7 17 17 7M9 7h8v8"/>', {size:18,color:'#fff',sw:2.3})
-      )
-    )
-  );
-  cardsRow.appendChild(statCard);
-
-  if (featured) {
-    const fc = el('div', { style:{flex:'1.3',minWidth:'280px',maxWidth:'420px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.7)',backdropFilter:'blur(22px)',WebkitBackdropFilter:'blur(22px)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 20px 50px rgba(110,11,42,.18)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float2 8s ease-in-out 1.6s infinite',animationDelay:'.8s'} },
-      el('div', { style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'12px',marginBottom:'12px'} },
-        el('div', {},
-          el('div', { style:{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#d6204a',marginBottom:'6px'} }, f.featuredLabel),
-          el('div', { style:{fontFamily:"'Playfair Display',serif",fontSize:'21px',fontWeight:'600',color:'#23202b',lineHeight:'1.15'} }, featured.title),
-          el('div', { style:{display:'flex',alignItems:'center',gap:'6px',marginTop:'6px',fontSize:'12.5px',color:'#6b6670'} },
-            svg('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>', {size:13,color:'#b4123a',sw:2}),
-            featured.entityLine
-          )
-        ),
-        el('button', { class:'hf-featured-apply', onclick:featured.applyAction, style:{width:'42px',height:'42px',flexShrink:'0',borderRadius:'50%',border:'1px solid rgba(180,18,58,.25)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'#fff',color:'#b4123a'} },
-          svg('<path d="M7 17 17 7M9 7h8v8"/>', {size:16,sw:2.3})
-        )
-      ),
-      el('div', { style:{display:'flex',flexWrap:'wrap',gap:'7px',marginBottom:'16px'} },
-        el('span', { style:{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'} }, f.uaeFullTime),
-        featured.metaTag ? el('span', { style:{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'} }, featured.metaTag) : null
-      ),
-      el('button', { class:'hf-apply-btn', onclick:featured.applyAction, style:{width:'100%',padding:'12px',borderRadius:'14px',border:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.26)'} }, f.applyWord+' →')
-    );
-    cardsRow.appendChild(fc);
-  }
-  leftCol.appendChild(cardsRow);
-  twoCol.appendChild(leftCol);
-
-  const rightCol = el('div', { style:{flex:'0 1 360px',minWidth:'240px',display:'flex',flexDirection:'column',justifyContent:'center',padding:'clamp(16px,2.4vw,26px) clamp(18px,2.6vw,28px) clamp(22px,3vw,32px) 0',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.7s'} },
-    el('div', { style:{position:'relative',display:'flex'} },
-      el('img', { src:'/hero.jpg', alt:'HiFive Holdings team', style:{display:'block',width:'100%',height:'100%',minHeight:'clamp(340px,40vw,500px)',borderRadius:'26px',objectFit:'cover',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 22px 54px rgba(110,11,42,.18)'} }),
-      el('div', { style:{position:'absolute',inset:'0',borderRadius:'26px',pointerEvents:'none',background:'linear-gradient(to bottom,rgba(255,255,255,.09) 0%,transparent 28%,transparent 68%,rgba(110,11,42,.22) 100%)',boxShadow:'inset 0 0 0 1.5px rgba(255,255,255,.78),inset 0 4px 28px rgba(255,255,255,.38),inset 0 -58px 84px -38px rgba(110,11,42,.34),0 0 0 1px rgba(255,255,255,.32),0 10px 40px rgba(110,11,42,.14)'} })
-    )
-  );
-  twoCol.appendChild(rightCol);
-
-  heroCard.appendChild(twoCol);
-  heroSection.appendChild(heroCard);
-  return heroSection;
-}
-
-function renderEntitiesStrip() {
-  const f = L();
-  return el('section', { style:{maxWidth:'1240px',margin:'0 auto',padding:'6px clamp(16px,4vw,48px) 18px'} },
-    el('div', { style:{textAlign:'center',fontSize:'11px',letterSpacing:'.18em',textTransform:'uppercase',fontWeight:'700',color:'#a59b92',marginBottom:'16px'} }, f.entitiesLabel),
-    el('div', { style:{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'10px'} },
-      ...ENTITY_STRIP.map(name => el('div', { style:{display:'inline-flex',alignItems:'center',gap:'9px',padding:'11px 20px',borderRadius:'99px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,.75)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',fontSize:'13px',fontWeight:'600',color:'#3a3640'} },
-        el('span', { style:{width:'7px',height:'7px',borderRadius:'50%',background:'#d6204a',flexShrink:'0'} }), name
-      ))
-    )
-  );
-}
-
-function renderPositions() {
-  const f = L();
-  const section = el('section', { id:'positions', style:{maxWidth:'1240px',margin:'0 auto',padding:'clamp(40px,5vw,72px) clamp(16px,4vw,48px) clamp(30px,4vw,48px)',scrollMarginTop:'90px'} });
-
-  const head = el('div', { style:{display:'flex',flexWrap:'wrap',alignItems:'flex-end',justifyContent:'space-between',gap:'18px',marginBottom:'26px'} },
-    el('div', {},
-      el('h2', { style:{fontFamily:"'Playfair Display',serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b',lineHeight:'1.05'} }, f.posTitle),
-      el('p', { style:{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'} }, f.posSub)
-    )
-  );
-
-  const controls = el('div', { style:{display:'flex',flexWrap:'wrap',gap:'10px',alignItems:'center'} });
-  const searchWrap = el('div', { style:{display:'flex',alignItems:'center',gap:'9px',padding:'11px 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',minWidth:'220px'} },
-    svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>', {size:16,color:'#b08a90',sw:2})
-  );
-  const searchInput = document.createElement('input');
-  searchInput.value = S.search; searchInput.placeholder = f.searchPlaceholder;
-  searchInput.style.cssText = 'border:none;background:none;outline:none;font-size:13.5px;color:#1c1b22;flex:1;min-width:120px';
-  searchInput.addEventListener('input', e => { S.search = e.target.value; renderPositionsListOnly(); });
-  searchWrap.appendChild(searchInput);
-  controls.appendChild(searchWrap);
-
-  const entWrap = el('div', { style:{display:'flex',alignItems:'center',gap:'6px',padding:'0 14px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)'} });
-  const entSelect2 = document.createElement('select');
-  entSelect2.style.cssText = 'appearance:none;border:none;background:none;outline:none;font-size:13.5px;font-weight:600;color:#1c1b22;padding:11px 4px;cursor:pointer';
-  entSelect2.appendChild(el('option', { value:'' }, f.allEntities));
-  ENTITY_OPTIONS.forEach(([k,v]) => { const o = el('option', { value:k }, v); if (S.entity===k) o.selected = true; entSelect2.appendChild(o); });
-  entSelect2.addEventListener('change', e => setS({ entity:e.target.value }));
-  entWrap.appendChild(entSelect2);
-  entWrap.appendChild(svg('<path d="m6 9 6 6 6-6"/>', {size:13,color:'#b4123a',sw:2.2}));
-  controls.appendChild(entWrap);
-
-  head.appendChild(controls);
-  section.appendChild(head);
-
-  const listWrap = el('div', { id:'positionsListWrap' });
-  listWrap.appendChild(buildPositionsGrid());
-  section.appendChild(listWrap);
-
-  return section;
-}
-
-function buildPositionsGrid() {
-  const f = L();
-  if (S.loading) {
-    return el('div', { style:{textAlign:'center',padding:'60px 20px',color:'#8a8590',fontSize:'14.5px'} },
-      el('div', { class:'hf-loader', style:{marginBottom:'14px'} }, el('span', {})),
-      f.loadingText
-    );
-  }
-  const list = filteredPositions();
-  if (!list.length) {
-    return el('div', { style:{textAlign:'center',padding:'50px 20px',color:'#8a8590',fontSize:'14.5px'} }, f.emptyText);
-  }
-  const grid = el('div', { style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(310px,1fr))',gap:'18px'} });
-  list.forEach(p => {
-    const vm = posVM(p);
-    const card = el('div', { class: vm.isOpen ? 'hf-pos-card-open' : '', style:{padding:'22px',borderRadius:'22px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',opacity: vm.isFull?'0.72':'1'} },
-      el('div', { style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px',marginBottom:'12px'} },
-        el('span', { style:{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'} }, vm.entityLine),
-        el('span', { style:{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background: vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color: vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em'} }, vm.badgeText)
-      ),
-      el('div', { style:{fontFamily:"'Playfair Display',serif",fontSize:'19px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'8px'} }, vm.title),
-      el('div', { style:{fontSize:'12.5px',color:'#6b6670',lineHeight:'1.5',marginBottom:'6px'} }, vm.metaLine)
-    );
-    if (vm.hasJoining) {
-      card.appendChild(el('div', { style:{display:'inline-flex',alignItems:'center',gap:'6px',fontSize:'12px',fontWeight:'600',color:'#7a4a55',marginBottom:'4px'} },
-        svg('<rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/>', {size:13,sw:2}), vm.joiningLine
-      ));
+  const uploadAllBulk = async () => {
+    if (bulkUploading) return;
+    const snapshot = [...bulkFiles];
+    const pending = snapshot.filter(f => f.status === 'idle');
+    if (!pending.length) return;
+    setBulkUploading(true); setBulkProgress(0); setBulkStatus('');
+    let done = 0;
+    for (let i = 0; i < snapshot.length; i++) {
+      if (snapshot[i].status !== 'idle') continue;
+      setBulkField(i, 'status', 'loading');
+      try {
+        const f = snapshot[i];
+        const fd = new FormData();
+        fd.append('file', f.file); fd.append('name', f.name||'Unknown'); fd.append('position', f.position||''); fd.append('source','Careers Page');
+        const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error||'fail');
+        setBulkField(i, 'status', 'done'); done++;
+      } catch { setBulkField(i, 'status', 'error'); }
+      setBulkProgress(Math.round((done/pending.length)*100));
+      setBulkStatus(`${t('Uploaded','تم رفع')} ${done} ${t('of','من')} ${pending.length}…`);
     }
-    const progressWrap = el('div', { style:{marginTop:'14px'} },
-      el('div', { style:{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.07)',overflow:'hidden',marginBottom:'6px'} },
-        el('div', { style:{height:'100%',borderRadius:'99px',transition:'width .9s cubic-bezier(.2,.7,.2,1)',width:vm.pct+'%',background:vm.barColor} })
-      ),
-      el('span', { style:{fontSize:'11.5px',fontWeight:'700',color:vm.labelColor} }, vm.fillLabel)
-    );
-    card.appendChild(progressWrap);
+    setBulkUploading(false);
+    setBulkFiles(prev => { if (prev.every(f=>f.status==='done') && prev.length) { setBulkDone(true); return []; } return prev; });
+  };
 
-    const jdRow = el('div', { style:{marginTop:'12px'} },
-      el('button', { class:'hf-jd-btn', onclick:()=>openJD(vm.title, vm.entityLine, vm.jobDescription), style:{display:'inline-flex',alignItems:'center',gap:'6px',padding:'7px 14px',borderRadius:'99px',border:'1px solid rgba(180,18,58,.2)',cursor:'pointer',fontSize:'11.5px',fontWeight:'700',color:'#7a4a55',background:'rgba(255,255,255,.5)'} },
-        svg('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>', {size:13,sw:1.9}),
-        f.viewJD
-      )
-    );
-    card.appendChild(jdRow);
+  const timelineNodes = trackResult ? buildTimeline(trackResult.status) : [];
 
-    const bottomRow = el('div', { style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'14px',paddingTop:'14px',borderTop:'1px solid rgba(28,27,34,.07)'} },
-      el('span', { style:{fontSize:'12px',color:'#9a949e',fontWeight:'500'} }, vm.locWord)
-    );
-    if (vm.isOpen) {
-      bottomRow.appendChild(el('button', { class:'hf-apply-btn', onclick:()=>openApply(vm.rawPosition, vm.rawEntity), style:{display:'inline-flex',alignItems:'center',gap:'7px',padding:'9px 18px',borderRadius:'99px',border:'none',cursor:'pointer',fontSize:'12.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.24)'} },
-        vm.applyText, svg('<path d="M5 12h14M13 6l6 6-6 6"/>', {size:13,color:'#fff',sw:2.4})
-      ));
-    } else {
-      bottomRow.appendChild(el('span', { style:{fontSize:'12px',color:'#b6afa6',fontWeight:'600'} }, vm.applyText));
-    }
-    card.appendChild(bottomRow);
-    grid.appendChild(card);
-  });
-  return grid;
-}
-function renderPositionsListOnly() {
-  const wrap = document.getElementById('positionsListWrap');
-  if (!wrap) return;
-  wrap.innerHTML = '';
-  wrap.appendChild(buildPositionsGrid());
-}
+  return (
+    <div style={{position:'relative', minHeight:'100vh', overflow:'hidden', direction:dir}}>
 
-function renderWhy() {
-  const f = L();
-  const cards = [
-    { title:f.why1Title, desc:f.why1Desc, icon:'<path d="M8 2h8l4 6-8 14L4 8z"/><path d="M12 8v8M8.5 12h7"/>' },
-    { title:f.why2Title, desc:f.why2Desc, icon:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>' },
-    { title:f.why3Title, desc:f.why3Desc, icon:'<path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/>' },
-    { title:f.why4Title, desc:f.why4Desc, icon:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/>' },
-  ];
-  return el('section', { style:{maxWidth:'1240px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'} },
-    el('div', { style:{textAlign:'center',marginBottom:'34px'} },
-      el('h2', { style:{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'} }, f.whyTitle),
-      el('p', { style:{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'} }, f.whySub)
-    ),
-    el('div', { style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:'18px'} },
-      ...cards.map(c => el('div', { class:'hf-why-card', style:{padding:'28px 24px',borderRadius:'24px',background:'rgba(255,255,255,.6)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.78)',boxShadow:'0 12px 34px rgba(110,11,42,.09)'} },
-        el('div', { style:{width:'50px',height:'50px',borderRadius:'16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,rgba(214,32,74,.12),rgba(110,11,42,.1))',color:'#b4123a',marginBottom:'16px'} }, svg(c.icon,{size:24,sw:1.8})),
-        el('div', { style:{fontWeight:'700',fontSize:'15px',color:'#23202b',marginBottom:'6px'} }, c.title),
-        el('div', { style:{fontSize:'13px',color:'#6b6670',lineHeight:'1.55'} }, c.desc)
-      ))
-    )
+      {/* Ambient orbs */}
+      <div style={{position:'fixed',inset:0,zIndex:0,pointerEvents:'none',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:'-120px',left:'-80px',width:'520px',height:'520px',borderRadius:'50%',background:'radial-gradient(circle at 30% 30%,rgba(214,32,74,.22),transparent 65%)',filter:'blur(20px)',animation:'hf-drift 22s ease-in-out infinite'}}></div>
+        <div style={{position:'absolute',top:'30%',right:'-140px',width:'560px',height:'560px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(120,11,42,.16),transparent 66%)',filter:'blur(24px)',animation:'hf-drift 28s ease-in-out infinite reverse'}}></div>
+        <div style={{position:'absolute',bottom:'-160px',left:'25%',width:'480px',height:'480px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(196,150,120,.18),transparent 66%)',filter:'blur(22px)',animation:'hf-drift 26s ease-in-out infinite'}}></div>
+      </div>
+
+      <div style={{position:'relative',zIndex:2}}>
+
+        {/* NAV */}
+        <nav style={{position:'sticky',top:0,zIndex:60,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'20px',padding:'14px clamp(16px,4vw,48px)',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',borderBottom:'1px solid rgba(255,255,255,.6)'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
+            <img src="project/assets/hifive-mark.png" alt="HiFive" style={{height:'34px',width:'auto',display:'block'}} />
+            <div style={{display:'flex',flexDirection:'column',lineHeight:'1.1'}}>
+              <span data-r="navname" style={{fontWeight:'800',fontSize:'15px',letterSpacing:'-.01em',color:'#1c1b22'}}>HiFive Holdings</span>
+              <span data-r="navsub" style={{fontSize:'10.5px',letterSpacing:'.16em',textTransform:'uppercase',color:'#8a8590',fontWeight:'600'}}>{L.navSub}</span>
+            </div>
+          </div>
+          <div data-r="navbtns" style={{display:'flex',alignItems:'center',gap:'6px'}}>
+            <button className="hf-nav-btn" onClick={() => scrollToId('positions')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navPositions}</button>
+            <button className="hf-nav-btn" onClick={() => scrollToId('tracker')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navTrack}</button>
+            <button className="hf-lang-btn" onClick={() => setLang(l => l==='en'?'ar':'en')} style={{cursor:'pointer',fontFamily:'inherit',fontSize:'13px',fontWeight:'700',color:'#fff',padding:'9px 18px',borderRadius:'99px',border:'none',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 16px rgba(110,11,42,.28)',transition:'transform .2s'}}>{L.langLabel}</button>
+          </div>
+        </nav>
+
+        {/* HERO */}
+        <section style={{padding:'clamp(20px,3vw,40px) clamp(14px,3vw,40px) clamp(30px,4vw,56px)'}}>
+          <div style={{position:'relative',maxWidth:'1240px',margin:'0 auto',borderRadius:'34px',overflow:'hidden',background:'linear-gradient(152deg,#f4dce1 0%,#e9dcef 36%,#dfe7f4 66%,#f6ede3 100%)',boxShadow:'0 40px 90px -30px rgba(110,11,42,.32),0 8px 24px rgba(28,27,34,.06)',minHeight:'clamp(540px,62vw,620px)',animation:'hf-blurin 1s cubic-bezier(.2,.7,.2,1) both'}}>
+            {/* glints */}
+            <div style={{position:'absolute',top:'-60px',right:'8%',width:'340px',height:'340px',borderRadius:'50%',background:'radial-gradient(circle,rgba(255,255,255,.55),transparent 60%)',filter:'blur(10px)',pointerEvents:'none'}}></div>
+            <div style={{position:'absolute',bottom:'-80px',left:'-40px',width:'360px',height:'360px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.16),transparent 62%)',filter:'blur(14px)',pointerEvents:'none'}}></div>
+
+            {/* Filter bar */}
+            <div data-r="filterbar" style={{position:'relative',zIndex:5,margin:'18px clamp(16px,3vw,26px) 0',display:'flex',flexWrap:'wrap',alignItems:'center',gap:'10px',padding:'10px',borderRadius:'99px',background:'rgba(255,255,255,.5)',backdropFilter:'blur(18px)',WebkitBackdropFilter:'blur(18px)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 10px 30px rgba(110,11,42,.10)',animation:'hf-up .8s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.15s'}}>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 20px',borderRadius:'99px',background:'#fff',fontSize:'13.5px',fontWeight:'700',color:'#b4123a',boxShadow:'0 2px 8px rgba(110,11,42,.10)'}}>
+                <span style={{width:'8px',height:'8px',borderRadius:'50%',background:'#d6204a',boxShadow:'0 0 0 4px rgba(214,32,74,.18)'}}></span>{L.heroEyebrow}
+              </span>
+              <div style={{display:'flex',alignItems:'center',gap:'8px',flex:'1',minWidth:'240px',justifyContent:'flex-end',flexWrap:'wrap'}}>
+                <div style={{display:'flex',alignItems:'center',gap:'8px',padding:'0 6px 0 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',minWidth:'150px'}}>
+                  <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 6px',cursor:'pointer',width:'100%'}}>
+                    <option value="">{L.allEntities}</option>
+                    <option value="APML">APML</option>
+                    <option value="Herbal Park">Herbal Park</option>
+                    <option value="Atomic Drugstore">Atomic Drugstore</option>
+                    <option value="Pine Pharmacy">Pine Pharmacy</option>
+                    <option value="Al Jebal Opticals">Al Jebal Opticals</option>
+                  </select>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <button className="hf-filter-btn" onClick={() => scrollToId('positions')} style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'11px 22px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 20px rgba(110,11,42,.3)',transition:'transform .2s'}}>
+                  {L.findBtn}
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Icon rail */}
+            <div data-r="rail" style={{position:'absolute',left:'clamp(14px,2.2vw,26px)',top:'54%',transform:'translateY(-50%)',zIndex:6,display:'flex',flexDirection:'column',gap:'8px',padding:'9px',borderRadius:'99px',background:'rgba(255,255,255,.46)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.65)',boxShadow:'0 12px 30px rgba(110,11,42,.12)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.45s'}}>
+              {/* Home — scroll to top */}
+              <div onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} title="Home"
+                style={{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.32)',cursor:'pointer'}}>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+              </div>
+              {[
+                { icon: <><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></>, title:"Search jobs", action:()=>{ scrollToId('positions'); setTimeout(()=>{ const inp=document.querySelector('#positions input[type=text]'); if(inp){inp.focus();inp.scrollIntoView({behavior:'smooth',block:'center'});} },400); } },
+                { icon: <><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></>, title:"Browse positions", action:()=>scrollToId('positions') },
+                { icon: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>, title:"Track my application", action:()=>scrollToId('tracker') },
+              ].map(({icon, title, action}, i) => (
+                <div key={i} className="hf-icon-btn" onClick={action} title={title}
+                  style={{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'#7a4a55',transition:'all .2s',cursor:'pointer'}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">{icon}</svg>
+                </div>
+              ))}
+            </div>
+
+            {/* Two-column: content left, upload right */}
+            <div style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',alignItems:'stretch',gap:'clamp(14px,2vw,28px)'}}>
+
+              {/* Left column */}
+              <div style={{flex:'1 1 320px',minWidth:'280px',display:'flex',flexDirection:'column'}}>
+                {/* Headline */}
+                <div data-r="hpad" style={{position:'relative',zIndex:4,padding:'clamp(28px,5vw,52px) clamp(20px,4vw,56px) 0 clamp(100px,10vw,130px)',maxWidth:'760px'}}>
+                  <h1 data-r="hero-h1" style={{fontFamily:"'Playfair Display',serif",fontWeight:'500',fontSize:'clamp(44px,7.2vw,92px)',lineHeight:'.98',letterSpacing:'-.02em',color:'#23202b',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.25s'}}>
+                    {L.heroTitle1}<br/>
+                    <span style={{background:'linear-gradient(100deg,#d6204a,#6e0b2a 60%,#b4123a)',WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent',fontStyle:'italic',fontWeight:'600',display:'block'}}>{L.heroTitle2}</span>
+                  </h1>
+                  <p style={{marginTop:'18px',maxWidth:'420px',fontSize:'15.5px',lineHeight:'1.6',color:'#5b5560',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.4s'}}>{L.heroSub}</p>
+                  <div style={{marginTop:'26px',display:'flex',gap:'12px',flexWrap:'wrap',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.55s'}}>
+                    <button className="hf-cta-primary" onClick={() => scrollToId('positions')} style={{display:'inline-flex',alignItems:'center',gap:'9px',padding:'14px 26px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'700',whiteSpace:'nowrap',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.32)',transition:'transform .2s,box-shadow .2s'}}>
+                      {L.heroCtaPrimary}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                    <button className="hf-cta-secondary" onClick={() => scrollToId('tracker')} style={{padding:'14px 24px',borderRadius:'99px',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'600',color:'#23202b',background:'rgba(255,255,255,.55)',backdropFilter:'blur(10px)',WebkitBackdropFilter:'blur(10px)',border:'1px solid rgba(255,255,255,.8)',transition:'all .2s'}}>{L.heroCtaSecondary}</button>
+                  </div>
+                </div>
+
+                {/* Floating glass cards */}
+                <div data-r="cpad" style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',gap:'22px',padding:'clamp(26px,4vw,40px) clamp(20px,4vw,56px) clamp(22px,3vw,32px) clamp(100px,10vw,130px)',alignItems:'flex-end'}}>
+                  {/* Stat card */}
+                  <div style={{flex:'1',minWidth:'230px',maxWidth:'310px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 18px 44px rgba(110,11,42,.14)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float 7s ease-in-out 1.4s infinite',animationDelay:'.65s',minHeight:'200px',alignSelf:'flex-end'}}>
+                    <div style={{fontWeight:'700',fontSize:'14.5px',color:'#23202b',marginBottom:'5px'}}>{L.statCardTitle}</div>
+                    <div style={{fontSize:'12.5px',lineHeight:'1.5',color:'#6b6670',marginBottom:'16px'}}>{L.statCardDesc}</div>
+                    <div style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',gap:'10px'}}>
+                      <div style={{minWidth:0}}>
+                        <div style={{fontFamily:"'Playfair Display',serif",fontSize:'38px',fontWeight:'700',lineHeight:'1',color:'#b4123a'}}>{statCount}+</div>
+                        <div style={{fontSize:'11.5px',letterSpacing:'.04em',color:'#8a8590',fontWeight:'600',marginTop:'3px'}}>{L.statTeam}</div>
+                      </div>
+                      <button className="hf-stat-btn" onClick={() => scrollToId('positions')} style={{width:'46px',height:'46px',flexShrink:0,borderRadius:'50%',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.32)',transition:'transform .2s'}}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Featured role card */}
+                  {featured && (
+                    <div style={{flex:'1.3',minWidth:'280px',maxWidth:'420px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.7)',backdropFilter:'blur(22px)',WebkitBackdropFilter:'blur(22px)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 20px 50px rgba(110,11,42,.18)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float2 8s ease-in-out 1.6s infinite',animationDelay:'.8s'}}>
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'12px',marginBottom:'12px'}}>
+                        <div>
+                          <div style={{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#d6204a',marginBottom:'6px'}}>{L.featuredLabel}</div>
+                          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'21px',fontWeight:'600',color:'#23202b',lineHeight:'1.15'}}>{featured.title}</div>
+                          <div style={{display:'flex',alignItems:'center',gap:'6px',marginTop:'6px',fontSize:'12.5px',color:'#6b6670'}}>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                            {featured.entityLine}
+                          </div>
+                        </div>
+                        <button className="hf-featured-apply" onClick={featured.onApply} style={{width:'42px',height:'42px',flexShrink:0,borderRadius:'50%',border:'1px solid rgba(180,18,58,.25)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'#fff',color:'#b4123a',transition:'all .2s'}}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                        </button>
+                      </div>
+                      <div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginBottom:'16px'}}>
+                        <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{L.uaeFullTime}</span>
+                        {featured.metaTag && <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{featured.metaTag}</span>}
+                      </div>
+                      <button className="hf-apply-btn" onClick={featured.onApply} style={{width:'100%',padding:'12px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.26)',transition:'transform .2s'}}>{L.applyWord} →</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Right: hero image upload */}
+              <div style={{flex:'0 1 360px',minWidth:'240px',display:'flex',flexDirection:'column',justifyContent:'center',padding:'clamp(16px,2.4vw,26px) clamp(18px,2.6vw,28px) clamp(22px,3vw,32px) 0',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.7s'}}>
+                <div style={{position:'relative',display:'flex'}}>
+                  <image-slot id="heroImage" shape="rounded" radius="26" fit="cover" placeholder="Drop your hero PNG here" style={{display:'block',width:'100%',height:'100%',minHeight:'clamp(340px,40vw,500px)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'0 22px 54px rgba(110,11,42,.18)'}}></image-slot>
+                  <div style={{position:'absolute',inset:0,borderRadius:'26px',pointerEvents:'none',background:'linear-gradient(to bottom,rgba(255,255,255,.09) 0%,transparent 28%,transparent 68%,rgba(110,11,42,.22) 100%)',boxShadow:'inset 0 0 0 1.5px rgba(255,255,255,.78),inset 0 4px 28px rgba(255,255,255,.38),inset 0 -58px 84px -38px rgba(110,11,42,.34),0 0 0 1px rgba(255,255,255,.32),0 10px 40px rgba(110,11,42,.14)'}}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ENTITIES STRIP */}
+        <section style={{maxWidth:'1240px',margin:'0 auto',padding:'6px clamp(16px,4vw,48px) 18px'}}>
+          <div style={{textAlign:'center',fontSize:'11px',letterSpacing:'.18em',textTransform:'uppercase',fontWeight:'700',color:'#a59b92',marginBottom:'16px'}}>{L.entitiesLabel}</div>
+          <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'10px'}}>
+            {['APML — Medical Laboratory','Herbal Park — Ayurveda','Atomic Drugstore','Pine Pharmacy','Al Jebal Opticals'].map((name, i) => (
+              <div key={i} style={{display:'inline-flex',alignItems:'center',gap:'9px',padding:'11px 20px',borderRadius:'99px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,.75)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',fontSize:'13px',fontWeight:'600',color:'#3a3640'}}>
+                <span style={{width:'7px',height:'7px',borderRadius:'50%',background:'#d6204a',flexShrink:0}}></span>{name}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* OPEN POSITIONS */}
+        <section id="positions" style={{maxWidth:'1240px',margin:'0 auto',padding:'clamp(40px,5vw,72px) clamp(16px,4vw,48px) clamp(30px,4vw,48px)',scrollMarginTop:'90px'}}>
+          <div style={{display:'flex',flexWrap:'wrap',alignItems:'flex-end',justifyContent:'space-between',gap:'18px',marginBottom:'26px'}}>
+            <div>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b',lineHeight:'1.05'}}>{L.posTitle}</h2>
+              <p style={{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'}}>{L.posSub}</p>
+            </div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'10px',alignItems:'center'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'9px',padding:'11px 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',minWidth:'220px'}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b08a90" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+                <input value={search} onInput={e => setSearch(e.target.value)} placeholder={L.searchPlaceholder} style={{border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',color:'#1c1b22',flex:'1',minWidth:'120px'}} />
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',padding:'0 14px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)'}}>
+                <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 4px',cursor:'pointer'}}>
+                  <option value="">{L.allEntities}</option>
+                  <option value="APML">APML</option>
+                  <option value="Herbal Park">Herbal Park</option>
+                  <option value="Atomic Drugstore">Atomic Drugstore</option>
+                  <option value="Pine Pharmacy">Pine Pharmacy</option>
+                  <option value="Al Jebal Opticals">Al Jebal Opticals</option>
+                </select>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          {loading && (
+            <div style={{textAlign:'center',padding:'60px 20px',color:'#8a8590',fontSize:'14.5px'}}>
+              <div style={{width:'34px',height:'34px',margin:'0 auto 14px',borderRadius:'50%',border:'3px solid rgba(180,18,58,.18)',borderTopColor:'#b4123a',animation:'hf-spin .8s linear infinite'}}></div>
+              {L.loadingText}
+            </div>
+          )}
+          {!loading && filteredPositions.length === 0 && (
+            <div style={{textAlign:'center',padding:'50px 20px',color:'#8a8590',fontSize:'14.5px'}}>{L.emptyText}</div>
+          )}
+
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(310px,1fr))',gap:'18px'}}>
+            {filteredPositions.map((p, i) => {
+              const vm = posVM(p);
+              return (
+                <div key={i} className={vm.isOpen ? 'hf-pos-card-open' : ''} style={{padding:'22px',borderRadius:'22px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',opacity:vm.isFull?'0.72':'1',transition:'transform .25s,box-shadow .25s'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px',marginBottom:'12px'}}>
+                    <span style={{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'}}>{vm.entityLine}</span>
+                    <span style={{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background:vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color:vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em'}}>{vm.badgeText}</span>
+                  </div>
+                  <div style={{fontFamily:"'Playfair Display',serif",fontSize:'19px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'8px'}}>{vm.title}</div>
+                  <div style={{fontSize:'12.5px',color:'#6b6670',lineHeight:'1.5',marginBottom:'6px'}}>{vm.metaLine}</div>
+                  {vm.hasJoining && (
+                    <div style={{display:'inline-flex',alignItems:'center',gap:'6px',fontSize:'12px',fontWeight:'600',color:'#7a4a55',marginBottom:'4px'}}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                      {vm.joiningLine}
+                    </div>
+                  )}
+                  <div style={{marginTop:'14px'}}>
+                    <div style={{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.07)',overflow:'hidden',marginBottom:'6px'}}>
+                      <div style={{height:'100%',borderRadius:'99px',transition:'width .9s cubic-bezier(.2,.7,.2,1)',width:`${vm.pct}%`,background:vm.barColor}}></div>
+                    </div>
+                    <span style={vm.fillLabelStyle}>{vm.fillLabel}</span>
+                  </div>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'16px',paddingTop:'14px',borderTop:'1px solid rgba(28,27,34,.07)'}}>
+                    <span style={{fontSize:'12px',color:'#9a949e',fontWeight:'500'}}>{vm.locWord}</span>
+                    {vm.isOpen ? (
+                      <button className="hf-apply-btn" onClick={vm.onApply} style={{display:'inline-flex',alignItems:'center',gap:'7px',padding:'9px 18px',borderRadius:'99px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'12.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.24)',transition:'transform .2s'}}>
+                        {vm.applyText}
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                      </button>
+                    ) : (
+                      <span style={{fontSize:'12px',color:'#b6afa6',fontWeight:'600'}}>{vm.applyText}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* WHY HIFIVE */}
+        <section style={{maxWidth:'1240px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'}}>
+          <div style={{textAlign:'center',marginBottom:'34px'}}>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'}}>{L.whyTitle}</h2>
+            <p style={{marginTop:'8px',fontSize:'14.5px',color:'#6b6670'}}>{L.whySub}</p>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:'18px'}}>
+            {[
+              { title: L.why1Title, desc: L.why1Desc, icon: <><path d="M8 2h8l4 6-8 14L4 8z"/><path d="M12 8v8M8.5 12h7"/></> },
+              { title: L.why2Title, desc: L.why2Desc, icon: <><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></> },
+              { title: L.why3Title, desc: L.why3Desc, icon: <><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></> },
+              { title: L.why4Title, desc: L.why4Desc, icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></> },
+            ].map((card, i) => (
+              <div key={i} className="hf-why-card" style={{padding:'28px 24px',borderRadius:'24px',background:'rgba(255,255,255,.6)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.78)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',transition:'transform .25s,box-shadow .25s'}}>
+                <div style={{width:'50px',height:'50px',borderRadius:'16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,rgba(214,32,74,.12),rgba(110,11,42,.1))',color:'#b4123a',marginBottom:'16px'}}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{card.icon}</svg>
+                </div>
+                <div style={{fontWeight:'700',fontSize:'15px',color:'#23202b',marginBottom:'6px'}}>{card.title}</div>
+                <div style={{fontSize:'13px',color:'#6b6670',lineHeight:'1.55'}}>{card.desc}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* TRACKER */}
+        <section id="tracker" style={{padding:'clamp(34px,4vw,60px) clamp(16px,4vw,48px)',scrollMarginTop:'90px'}}>
+          <div style={{maxWidth:'760px',margin:'0 auto',borderRadius:'30px',overflow:'hidden',position:'relative',background:'linear-gradient(150deg,#2a0a18 0%,#5c0a24 50%,#3a0a18 100%)',boxShadow:'0 30px 70px -24px rgba(110,11,42,.5)'}}>
+            <div style={{position:'absolute',top:'-80px',right:'-60px',width:'300px',height:'300px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.4),transparent 65%)',filter:'blur(10px)',pointerEvents:'none'}}></div>
+            <div style={{position:'relative',zIndex:2,padding:'clamp(34px,4vw,52px) clamp(22px,4vw,48px)',textAlign:'center'}}>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,38px)',fontWeight:'600',color:'#fff',letterSpacing:'-.01em'}}>{L.trackTitle}</h2>
+              <p style={{margin:'12px auto 0',maxWidth:'480px',fontSize:'14px',color:'rgba(255,255,255,.66)',lineHeight:'1.6'}}>{L.trackSub}</p>
+              <div style={{display:'flex',gap:'10px',maxWidth:'460px',margin:'26px auto 0',flexWrap:'wrap'}}>
+                <input value={trackInput} onInput={e => { setTrackInput(e.target.value.toUpperCase()); setTrackErr(''); setTrackNotFound(false); }} onKeyDown={onTrackKey} placeholder="REC-0001" maxLength={8} style={{flex:'1',minWidth:'180px',border:'1px solid rgba(255,255,255,.18)',borderRadius:'14px',padding:'15px 18px',fontFamily:'inherit',fontSize:'15px',fontWeight:'600',letterSpacing:'.08em',textTransform:'uppercase',color:'#fff',background:'rgba(255,255,255,.08)',outline:'none'}} />
+                <button className="hf-track-btn" onClick={doTrack} style={{padding:'15px 28px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#9a0f33)',boxShadow:'0 10px 22px rgba(214,32,74,.4)',whiteSpace:'nowrap',transition:'transform .2s'}}>{trackLoading ? '…' : L.trackBtn}</button>
+              </div>
+              {trackErr && <div style={{color:'#ff8aa0',fontSize:'13.5px',marginTop:'14px'}}>{trackErr}</div>}
+              {trackNotFound && <div style={{color:'rgba(255,255,255,.7)',fontSize:'14px',marginTop:'18px'}}>{L.trackNotFound}</div>}
+
+              {trackResult && (
+                <div style={{marginTop:'26px',textAlign:'left',borderRadius:'20px',padding:'26px',background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.1)'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:'10px',marginBottom:'20px'}}>
+                    <div>
+                      <div style={{color:'#fff',fontSize:'18px',fontWeight:'700'}}>{trackResult.name}</div>
+                      <div style={{color:'rgba(255,255,255,.5)',fontSize:'13px',marginTop:'3px'}}>{trackResult.id}</div>
+                    </div>
+                    <span style={statusBadgeStyle(trackResult.status)}>{trackResult.status}</span>
+                  </div>
+                  <div data-r="trackgrid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.posWord}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.position}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.entityWord}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.entity}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.appliedOn}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.submittedDate || '—'}</div></div>
+                    <div><div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'}}>{L.interviewDate}</div><div style={{color:'#fff',fontSize:'13.5px',fontWeight:'600'}}>{trackResult.interviewDate || '—'}</div></div>
+                  </div>
+                  <div style={{marginTop:'22px',paddingTop:'18px',borderTop:'1px solid rgba(255,255,255,.1)'}}>
+                    <div style={{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'14px'}}>{L.progressLabel}</div>
+                    <div style={{display:'flex',alignItems:'flex-start'}}>
+                      {timelineNodes.map((n, i) => (
+                        <React.Fragment key={i}>
+                          {n.isDot && (
+                            <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:'7px',flex:'0 0 auto',width:'64px'}}>
+                              <div style={{width:'30px',height:'30px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12.5px',fontWeight:'700',background:n.dotBg,color:n.dotColor}}>{n.dotText}</div>
+                              <div style={{fontSize:'10px',textAlign:'center',lineHeight:'1.3',color:n.labelColor,fontWeight:n.labelWeight}}>{n.labelText}</div>
+                            </div>
+                          )}
+                          {n.isLine && <div style={{flex:'1',height:'2px',marginTop:'14px',borderRadius:'2px',background:n.lineBg}}></div>}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* BULK CV DROP */}
+        <section id="cvdrop" style={{maxWidth:'820px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'}}>
+          <div style={{textAlign:'center',marginBottom:'28px'}}>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'}}>{L.bulkTitle}</h2>
+            <p style={{marginTop:'8px',fontSize:'14px',color:'#6b6670',maxWidth:'520px',marginLeft:'auto',marginRight:'auto',lineHeight:'1.6'}}>{L.bulkSub}</p>
+          </div>
+
+          <div className="hf-bulk-zone" onClick={() => bulkInputRef.current?.click()} onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); addBulk(e.dataTransfer.files); }} style={{border:'2px dashed rgba(180,18,58,.3)',borderRadius:'26px',padding:'44px 24px',textAlign:'center',cursor:'pointer',background:'rgba(255,255,255,.5)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',transition:'all .25s'}}>
+            <input ref={bulkInputRef} type="file" multiple accept=".pdf,.doc,.docx,image/*" onChange={e => addBulk(e.target.files)} style={{display:'none'}} />
+            <div style={{width:'70px',height:'70px',borderRadius:'22px',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.3)'}}>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+            </div>
+            <div style={{fontSize:'17px',fontWeight:'700',color:'#23202b',marginBottom:'6px'}}>{L.dropTitle}</div>
+            <div style={{fontSize:'12.5px',color:'#9a949e'}}>{L.dropHint}</div>
+          </div>
+
+          {bulkFiles.length > 0 && (
+            <div style={{display:'flex',flexDirection:'column',gap:'9px',marginTop:'16px'}}>
+              {bulkFiles.map((f, i) => {
+                const stStyle = f.status==='done'?{marginLeft:'8px',color:'#1e8449',fontWeight:'700',fontSize:'11px'}:f.status==='error'?{marginLeft:'8px',color:'#c0392b',fontWeight:'700',fontSize:'11px'}:f.status==='loading'?{marginLeft:'8px',color:'#b4123a',fontSize:'11px'}:{display:'none'};
+                const stText = f.status==='done'?t('✓ Done','✓ تم'):f.status==='error'?t('✗ Failed','✗ فشل'):f.status==='loading'?t('Uploading…','جاري الرفع…'):'';
+                return (
+                  <div key={i} data-r="bulkrow" style={{display:'grid',gridTemplateColumns:'1fr 1fr auto',gap:'9px',alignItems:'center',padding:'12px 14px',borderRadius:'14px',background:'rgba(255,255,255,.62)',border:'1px solid rgba(255,255,255,.8)'}}>
+                    <div style={{gridColumn:'1/-1',fontSize:'12.5px',fontWeight:'600',color:'#3a3640',display:'flex',alignItems:'center',gap:'8px'}}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
+                      {f.fileName}<span style={stStyle}>{stText}</span>
+                    </div>
+                    <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} placeholder={L.candidateName} style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    <input value={f.position} onInput={e => setBulkField(i,'position',e.target.value)} disabled={f.status!=='idle'} placeholder={L.positionOptional} style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    {f.status === 'idle' && (
+                      <button onClick={() => removeBulk(i)} style={{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'}}>✕</button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {bulkUploading && (
+            <>
+              <div style={{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.08)',overflow:'hidden',margin:'14px 0 8px'}}>
+                <div style={{height:'100%',borderRadius:'99px',transition:'width .4s',width:`${bulkProgress}%`,background:'linear-gradient(90deg,#d6204a,#6e0b2a)'}}></div>
+              </div>
+              <div style={{fontSize:'12.5px',color:'#6b6670',textAlign:'center'}}>{bulkStatus}</div>
+            </>
+          )}
+
+          {bulkFiles.length > 0 && (
+            <div style={{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}>
+              <button onClick={uploadAllBulk} disabled={bulkUploading} style={{padding:'13px 26px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'}}>{L.uploadAll}</button>
+              <button onClick={() => bulkInputRef.current?.click()} style={{padding:'12px 22px',borderRadius:'14px',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'600',color:'#b4123a',background:'rgba(214,32,74,.08)',border:'1px solid rgba(180,18,58,.2)'}}>{L.addMore}</button>
+            </div>
+          )}
+
+          {bulkDone && (
+            <div style={{textAlign:'center',padding:'30px 0',marginTop:'16px'}}>
+              <div style={{width:'56px',height:'56px',borderRadius:'50%',margin:'0 auto 14px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)'}}>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </div>
+              <div style={{fontSize:'18px',fontWeight:'800',color:'#1e8449',marginBottom:'6px'}}>{L.doneTitle}</div>
+              <div style={{fontSize:'13px',color:'#6b6670'}}>{L.doneSub}</div>
+            </div>
+          )}
+        </section>
+
+        {/* FOOTER */}
+        <footer style={{marginTop:'30px',padding:'40px clamp(16px,4vw,48px)',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'}}>
+          <img src="project/assets/hifive-mark.png" alt="HiFive Holdings" style={{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1) sepia(1) saturate(6) hue-rotate(-15deg)',opacity:'0.92'}} />
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'18px',color:'#fff',fontWeight:'600',letterSpacing:'.02em',marginBottom:'10px'}}>HiFive Holdings</div>
+          <p style={{fontSize:'13px',color:'rgba(255,255,255,.5)',lineHeight:'1.7'}}>
+            © 2026 HiFive Holdings LLC · Abu Dhabi, UAE<br/>
+            <a href="mailto:hr@hifiveholdings.ae" style={{color:'rgba(255,255,255,.78)',textDecoration:'none'}}>hr@hifiveholdings.ae</a> &nbsp;·&nbsp; {L.footerNote}
+          </p>
+        </footer>
+      </div>
+
+      {/* APPLY MODAL */}
+      {modalOpen && (
+        <div onClick={e => { if (e.target === e.currentTarget) closeModal(); }} style={{position:'fixed',inset:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'center',padding:'20px',background:'rgba(42,10,24,.5)',backdropFilter:'blur(6px)',WebkitBackdropFilter:'blur(6px)',animation:'hf-in .25s ease both',direction:dir}}>
+          <div style={{width:'100%',maxWidth:'520px',maxHeight:'92vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(255,255,255,.96)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'}}>
+            {success ? (
+              <div style={{textAlign:'center',padding:'14px 0'}}>
+                <div style={{width:'64px',height:'64px',borderRadius:'50%',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)',boxShadow:'0 12px 26px rgba(30,132,73,.34)'}}>
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'24px',fontWeight:'600',color:'#23202b',marginBottom:'8px'}}>{L.successTitle}</h3>
+                <p style={{fontSize:'13.5px',color:'#6b6670'}}>{L.refLabel}</p>
+                <div style={{margin:'14px auto',maxWidth:'240px',padding:'13px',borderRadius:'12px',background:'rgba(30,132,73,.1)',color:'#1e8449',fontSize:'16px',fontWeight:'800',letterSpacing:'.08em'}}>{successRef}</div>
+                <p style={{fontSize:'12.5px',color:'#9a949e',marginBottom:'18px'}}>{L.saveIdNote}</p>
+                <button onClick={closeModal} style={{padding:'13px 30px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)'}}>{L.closeBtn}</button>
+              </div>
+            ) : (
+              <div>
+                <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'23px',fontWeight:'600',color:'#23202b',lineHeight:'1.2'}}>{t('Apply — ','تقدم — ')}{modalPosition}</h3>
+                <p style={{fontSize:'13px',color:'#6b6670',margin:'8px 0 22px',lineHeight:'1.55'}}>{L.modalSubtitle}</p>
+                <div style={{display:'flex',flexDirection:'column',gap:'13px'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.fullName}</label>
+                    <input value={formName} onInput={e => setFormName(e.target.value)} placeholder="As per passport" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'13px'}}>
+                    <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                      <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.phone}</label>
+                      <input value={formPhone} onInput={e => setFormPhone(e.target.value)} placeholder="971XXXXXXXXX" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    </div>
+                    <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                      <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.nationality}</label>
+                      <input value={formNat} onInput={e => setFormNat(e.target.value)} style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    </div>
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.email}</label>
+                    <input value={formEmail} onInput={e => setFormEmail(e.target.value)} type="email" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.expSalary}</label>
+                    <input value={formSalary} onInput={e => setFormSalary(e.target.value)} type="number" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.cvLabel}</label>
+                    <input ref={cvRef} type="file" accept=".pdf,.doc,.docx" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'11px 12px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#6b6670'}} />
+                  </div>
+                </div>
+                <div style={{display:'flex',gap:'10px',marginTop:'22px'}}>
+                  <button onClick={submitApplication} disabled={submitting} style={{flex:'1',padding:'14px',borderRadius:'13px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'}}>{submitting ? t('Submitting…','جاري الإرسال…') : t('Submit Application','تقديم الطلب')}</button>
+                  <button onClick={closeModal} style={{padding:'14px 22px',borderRadius:'13px',cursor:'pointer',fontFamily:'inherit',fontSize:'14px',fontWeight:'600',color:'#6b6670',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'}}>{L.cancelBtn}</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
-function renderTracker() {
-  const f = L();
-  const section = el('section', { id:'tracker', style:{padding:'clamp(34px,4vw,60px) clamp(16px,4vw,48px)',scrollMarginTop:'90px'} });
-  const box = el('div', { style:{maxWidth:'760px',margin:'0 auto',borderRadius:'30px',overflow:'hidden',position:'relative',background:'linear-gradient(150deg,#2a0a18 0%,#5c0a24 50%,#3a0a18 100%)',boxShadow:'0 30px 70px -24px rgba(110,11,42,.5)'} });
-  box.appendChild(el('div', { style:{position:'absolute',top:'-80px',right:'-60px',width:'300px',height:'300px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.4),transparent 65%)',filter:'blur(10px)',pointerEvents:'none'} }));
-
-  const inner = el('div', { style:{position:'relative',zIndex:'2',padding:'clamp(34px,4vw,52px) clamp(22px,4vw,48px)',textAlign:'center'} },
-    el('h2', { style:{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,38px)',fontWeight:'600',color:'#fff',letterSpacing:'-.01em'} }, f.trackTitle),
-    el('p', { style:{margin:'12px auto 0',maxWidth:'480px',fontSize:'14px',color:'rgba(255,255,255,.66)',lineHeight:'1.6'} }, f.trackSub)
-  );
-
-  const inputsRow = el('div', { style:{display:'flex',gap:'10px',maxWidth:'460px',margin:'26px auto 0',flexWrap:'wrap'} });
-  const firstNameInput = document.createElement('input');
-  firstNameInput.value = S.trackFirstName; firstNameInput.placeholder = t('First Name','الاسم الأول');
-  firstNameInput.style.cssText = 'flex:1;min-width:140px;border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:15px 18px;font-size:15px;font-weight:600;color:#fff;background:rgba(255,255,255,.08);outline:none';
-  firstNameInput.addEventListener('input', e => { S.trackFirstName = e.target.value; S.trackErr=''; S.trackNotFound=false; });
-  firstNameInput.addEventListener('keydown', e => { if (e.key === 'Enter') doTrack(); });
-
-  const idInput = document.createElement('input');
-  idInput.value = S.trackInput; idInput.placeholder = 'REC-0001'; idInput.maxLength = 8;
-  idInput.style.cssText = 'flex:1;min-width:140px;border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:15px 18px;font-size:15px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.08);outline:none';
-  idInput.addEventListener('input', e => { S.trackInput = e.target.value.toUpperCase(); S.trackErr=''; S.trackNotFound=false; });
-  idInput.addEventListener('keydown', e => { if (e.key === 'Enter') doTrack(); });
-
-  inputsRow.appendChild(firstNameInput);
-  inputsRow.appendChild(idInput);
-  inputsRow.appendChild(el('button', { class:'hf-track-btn', onclick:doTrack, style:{padding:'15px 28px',borderRadius:'14px',border:'none',cursor:'pointer',fontSize:'14.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#9a0f33)',boxShadow:'0 10px 22px rgba(214,32,74,.4)',whiteSpace:'nowrap'} }, S.trackLoading ? '…' : f.trackBtn));
-  inner.appendChild(inputsRow);
-
-  if (S.trackErr) inner.appendChild(el('div', { style:{color:'#ff8aa0',fontSize:'13.5px',marginTop:'14px'} }, S.trackErr));
-  if (S.trackNotFound) inner.appendChild(el('div', { style:{color:'rgba(255,255,255,.7)',fontSize:'14px',marginTop:'18px'} }, f.trackNotFound));
-
-  if (S.trackResult) {
-    const r = S.trackResult;
-    const resultBox = el('div', { style:{marginTop:'26px',textAlign:'left',borderRadius:'20px',padding:'26px',background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.1)'} },
-      el('div', { style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:'10px',marginBottom:'20px'} },
-        el('div', {},
-          el('div', { style:{color:'#fff',fontSize:'18px',fontWeight:'700'} }, r.name),
-          el('div', { style:{color:'rgba(255,255,255,.5)',fontSize:'13px',marginTop:'3px'} }, r.id)
-        ),
-        (() => { const sty = statusBadgeStyle(r.status); const span = el('span', {}, r.status); Object.assign(span.style, sty); return span; })()
-      ),
-      el('div', { 'data-r':'trackgrid', style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'} },
-        trackField(f.posWord, r.position),
-        trackField(f.entityWord, fullEntityName(r.entity)),
-        trackField(f.appliedOn, r.submittedDate ? fmtDate(r.submittedDate) : '—'),
-        trackField(f.interviewDate, r.interviewDate ? fmtDate(r.interviewDate) : '—')
-      ),
-      buildTimelineBlock(r.status, f)
-    );
-    inner.appendChild(resultBox);
-  }
-
-  box.appendChild(inner);
-  section.appendChild(box);
-  return section;
-}
-function trackField(label, val) {
-  return el('div', {},
-    el('div', { style:{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'3px'} }, label),
-    el('div', { style:{color:'#fff',fontSize:'13.5px',fontWeight:'600'} }, val)
-  );
-}
-function buildTimelineBlock(status, f) {
-  const nodes = buildTimeline(status);
-  const wrap = el('div', { style:{marginTop:'22px',paddingTop:'18px',borderTop:'1px solid rgba(255,255,255,.1)'} },
-    el('div', { style:{color:'rgba(255,255,255,.5)',fontSize:'11.5px',marginBottom:'14px'} }, f.progressLabel)
-  );
-  const row = el('div', { style:{display:'flex',alignItems:'flex-start'} });
-  nodes.forEach(n => {
-    if (n.isDot) {
-      row.appendChild(el('div', { style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'7px',flex:'0 0 auto',width:'64px'} },
-        el('div', { style:{width:'30px',height:'30px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12.5px',fontWeight:'700',background:n.dotBg,color:n.dotColor} }, n.dotText),
-        el('div', { style:{fontSize:'10px',textAlign:'center',lineHeight:'1.3',color:n.labelColor,fontWeight:n.labelWeight} }, n.labelText)
-      ));
-    } else if (n.isLine) {
-      row.appendChild(el('div', { style:{flex:'1',height:'2px',marginTop:'14px',borderRadius:'2px',background:n.lineBg} }));
-    }
-  });
-  wrap.appendChild(row);
-  return wrap;
-}
-
-function renderBulkDrop() {
-  const f = L();
-  const section = el('section', { id:'cvdrop', style:{maxWidth:'820px',margin:'0 auto',padding:'clamp(30px,4vw,56px) clamp(16px,4vw,48px)'} },
-    el('div', { style:{textAlign:'center',marginBottom:'28px'} },
-      el('h2', { style:{fontFamily:"'Playfair Display',serif",fontSize:'clamp(26px,3.6vw,40px)',fontWeight:'600',letterSpacing:'-.02em',color:'#23202b'} }, f.bulkTitle),
-      el('p', { style:{marginTop:'8px',fontSize:'14px',color:'#6b6670',maxWidth:'520px',marginLeft:'auto',marginRight:'auto',lineHeight:'1.6'} }, f.bulkSub)
-    )
-  );
-
-  const bulkInput = document.createElement('input');
-  bulkInput.type = 'file'; bulkInput.multiple = true; bulkInput.accept = '.pdf,.doc,.docx,image/*';
-  bulkInput.style.display = 'none';
-  bulkInput.addEventListener('change', e => addBulk(e.target.files));
-
-  const dropZone = el('div', { class:'hf-bulk-zone', onclick:()=>bulkInput.click(), ondragover:e=>e.preventDefault(), ondrop:e=>{e.preventDefault();addBulk(e.dataTransfer.files);}, style:{border:'2px dashed rgba(180,18,58,.3)',borderRadius:'26px',padding:'44px 24px',textAlign:'center',cursor:'pointer',background:'rgba(255,255,255,.5)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)'} },
-    bulkInput,
-    el('div', { style:{width:'70px',height:'70px',borderRadius:'22px',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 12px 26px rgba(110,11,42,.3)'} },
-      svg('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>', {size:30,color:'#fff',sw:1.8})
-    ),
-    el('div', { style:{fontSize:'17px',fontWeight:'700',color:'#23202b',marginBottom:'6px'} }, f.dropTitle),
-    el('div', { style:{fontSize:'12.5px',color:'#9a949e'} }, f.dropHint)
-  );
-  section.appendChild(dropZone);
-
-  if (S.bulkFiles.length > 0) {
-    const list = el('div', { style:{display:'flex',flexDirection:'column',gap:'9px',marginTop:'16px'} });
-    S.bulkFiles.forEach((bf, i) => {
-      const stMap = {
-        done: {color:'#1e8449',text:t('✓ Done','✓ تم')},
-        error: {color:'#c0392b',text:t('✗ Failed','✗ فشل')},
-        loading: {color:'#b4123a',text:t('Uploading…','جاري الرفع…')},
-      };
-      const st = stMap[bf.status];
-      const row = el('div', { 'data-r':'bulkrow', style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr auto',gap:'9px',alignItems:'center',padding:'12px 14px',borderRadius:'14px',background:'rgba(255,255,255,.62)',border:'1px solid rgba(255,255,255,.8)'} },
-        el('div', { style:{gridColumn:'1/-1',fontSize:'12.5px',fontWeight:'600',color:'#3a3640',display:'flex',alignItems:'center',gap:'8px'} },
-          svg('<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/>', {size:15,color:'#b4123a',sw:1.9}),
-          bf.fileName,
-          st ? el('span', { style:{marginLeft:'8px',color:st.color,fontWeight:'700',fontSize:'11px'} }, st.text) : null
-        )
-      );
-
-      const nameInput = document.createElement('input');
-      nameInput.value = bf.name; nameInput.placeholder = f.candidateName; nameInput.disabled = bf.status !== 'idle';
-      nameInput.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
-      nameInput.addEventListener('input', e => setBulkField(i, 'name', e.target.value));
-      row.appendChild(nameInput);
-
-      const posSelect = document.createElement('select');
-      posSelect.disabled = bf.status !== 'idle';
-      posSelect.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
-      posSelect.appendChild(el('option', { value:'' }, f.selectPosition));
-      const uniquePositions = [...new Set(S.positions.map(p => p.customPosition || p.position))].sort();
-      uniquePositions.forEach(p => { const o = el('option', { value:p }, p); if (bf.position===p) o.selected = true; posSelect.appendChild(o); });
-      const otherOpt = el('option', { value:'Other' }, t('Other / Not Listed','أخرى / غير مدرجة'));
-      if (bf.position === 'Other') otherOpt.selected = true;
-      posSelect.appendChild(otherOpt);
-      posSelect.addEventListener('change', e => setBulkField(i, 'position', e.target.value));
-      row.appendChild(posSelect);
-
-      const facSelect = document.createElement('select');
-      facSelect.disabled = bf.status !== 'idle';
-      facSelect.style.cssText = 'border:1px solid rgba(180,18,58,.16);border-radius:9px;padding:9px 11px;font-size:12.5px;outline:none;background:#fff;color:#1c1b22';
-      facSelect.appendChild(el('option', { value:'' }, f.selectFacility));
-      ENTITY_OPTIONS.forEach(([k,v]) => { const o = el('option', { value:k }, v); if (bf.facility===k) o.selected = true; facSelect.appendChild(o); });
-      facSelect.addEventListener('change', e => setBulkField(i, 'facility', e.target.value));
-      row.appendChild(facSelect);
-
-      if (bf.status === 'idle') {
-        row.appendChild(el('button', { onclick:()=>removeBulk(i), style:{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'} }, '✕'));
-      } else {
-        row.appendChild(el('div', {}));
-      }
-      list.appendChild(row);
-    });
-    section.appendChild(list);
-  }
-
-  if (S.bulkUploading) {
-    section.appendChild(el('div', { style:{height:'6px',borderRadius:'99px',background:'rgba(28,27,34,.08)',overflow:'hidden',margin:'14px 0 8px'} },
-      el('div', { style:{height:'100%',borderRadius:'99px',transition:'width .4s',width:S.bulkProgress+'%',background:'linear-gradient(90deg,#d6204a,#6e0b2a)'} })
-    ));
-    section.appendChild(el('div', { style:{fontSize:'12.5px',color:'#6b6670',textAlign:'center'} }, S.bulkStatus));
-  }
-
-  if (S.bulkFiles.length > 0) {
-    section.appendChild(el('div', { style:{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'} },
-      el('button', { onclick:uploadAllBulk, disabled: S.bulkUploading, style:{padding:'13px 26px',borderRadius:'14px',border:'none',cursor:'pointer',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'} }, f.uploadAll),
-      el('button', { onclick:()=>bulkInput.click(), style:{padding:'12px 22px',borderRadius:'14px',cursor:'pointer',fontSize:'14px',fontWeight:'600',color:'#b4123a',background:'rgba(214,32,74,.08)',border:'1px solid rgba(180,18,58,.2)'} }, f.addMore)
-    ));
-  }
-
-  if (S.bulkDone) {
-    section.appendChild(el('div', { style:{textAlign:'center',padding:'30px 0',marginTop:'16px'} },
-      el('div', { style:{width:'56px',height:'56px',borderRadius:'50%',margin:'0 auto 14px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)'} },
-        svg('<path d="M20 6 9 17l-5-5"/>', {size:26,color:'#fff',sw:2.6})
-      ),
-      el('div', { style:{fontSize:'18px',fontWeight:'800',color:'#1e8449',marginBottom:'6px'} }, f.doneTitle),
-      el('div', { style:{fontSize:'13px',color:'#6b6670'} }, f.doneSub)
-    ));
-  }
-
-  return section;
-}
-
-function renderFooter() {
-  const f = L();
-  return el('footer', { style:{marginTop:'30px',padding:'40px clamp(16px,4vw,48px)',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'} },
-    el('img', { src:'/logo.png', alt:'HiFive Holdings', style:{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1)',opacity:'0.95'} }),
-    el('div', { style:{fontFamily:"'Playfair Display',serif",fontSize:'18px',color:'#fff',fontWeight:'600',letterSpacing:'.02em',marginBottom:'10px'} }, 'HiFive Holdings'),
-    el('p', { style:{fontSize:'13px',color:'rgba(255,255,255,.5)',lineHeight:'1.7'} },
-      '© 2026 HiFive Holdings LLC', el('br'),
-      el('a', { href:'mailto:'+CAREERS_EMAIL, style:{color:'rgba(255,255,255,.78)',textDecoration:'none'} }, CAREERS_EMAIL),
-      ' · ' + f.footerNote
-    )
-  );
-}
-
-function renderApplyModal() {
-  if (!S.modalOpen) return null;
-  const f = L();
-  const overlay = el('div', { onclick:e=>{ if (e.target===e.currentTarget) closeModal(); }, style:{position:'fixed',inset:'0',zIndex:'200',display:'flex',alignItems:'center',justifyContent:'center',padding:'20px',background:'rgba(42,10,24,.5)',backdropFilter:'blur(6px)',WebkitBackdropFilter:'blur(6px)',animation:'hf-in .25s ease both',direction:dir()} });
-  const box = el('div', { style:{width:'100%',maxWidth:'520px',maxHeight:'92vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(255,255,255,.96)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'} });
-
-  if (S.success) {
-    box.appendChild(el('div', { style:{textAlign:'center',padding:'14px 0'} },
-      el('div', { style:{width:'64px',height:'64px',borderRadius:'50%',margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#1e8449,#14663a)',boxShadow:'0 12px 26px rgba(30,132,73,.34)'} },
-        svg('<path d="M20 6 9 17l-5-5"/>', {size:30,color:'#fff',sw:2.6})
-      ),
-      el('h3', { style:{fontFamily:"'Playfair Display',serif",fontSize:'24px',fontWeight:'600',color:'#23202b',marginBottom:'8px'} }, f.successTitle),
-      el('p', { style:{fontSize:'13.5px',color:'#6b6670'} }, f.refLabel),
-      el('div', { style:{margin:'14px auto',maxWidth:'240px',padding:'13px',borderRadius:'12px',background:'rgba(30,132,73,.1)',color:'#1e8449',fontSize:'16px',fontWeight:'800',letterSpacing:'.08em'} }, S.successRef),
-      el('p', { style:{fontSize:'12.5px',color:'#9a949e',marginBottom:'18px'} }, f.saveIdNote),
-      el('button', { onclick:closeModal, style:{padding:'13px 30px',borderRadius:'14px',border:'none',cursor:'pointer',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)'} }, f.closeBtn)
-    ));
-  } else {
-    cvFileRef = null;
-    box.appendChild(el('h3', { style:{fontFamily:"'Playfair Display',serif",fontSize:'23px',fontWeight:'600',color:'#23202b',lineHeight:'1.2'} }, t('Apply — ','تقدم — ')+S.modalPosition));
-    box.appendChild(el('p', { style:{fontSize:'13px',color:'#6b6670',margin:'8px 0 22px',lineHeight:'1.55'} }, f.modalSubtitle));
-
-    const formCol = el('div', { style:{display:'flex',flexDirection:'column',gap:'13px'} });
-    formCol.appendChild(formField(f.fullName, 'text', 'formName', 'As per passport'));
-
-    const phoneNatRow = el('div', { style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'13px'} });
-    phoneNatRow.appendChild(formField(f.phone, 'text', 'formPhone', '971XXXXXXXXX'));
-    phoneNatRow.appendChild(formField(f.nationality, 'text', 'formNat', ''));
-    formCol.appendChild(phoneNatRow);
-
-    formCol.appendChild(formField(f.email, 'email', 'formEmail', ''));
-    formCol.appendChild(formField(f.expSalary, 'number', 'formSalary', ''));
-
-    const cvField = el('div', { style:{display:'flex',flexDirection:'column',gap:'5px'} },
-      el('label', { style:{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'} }, f.cvLabel)
-    );
-    const cvInput = document.createElement('input');
-    cvInput.type = 'file'; cvInput.accept = '.pdf,.doc,.docx';
-    cvInput.style.cssText = 'border:1px solid rgba(180,18,58,.18);border-radius:11px;padding:11px 12px;font-size:12.5px;outline:none;background:#fff;color:#6b6670';
-    cvInput.addEventListener('change', e => { cvFileRef = e.target.files[0] || null; });
-    cvField.appendChild(cvInput);
-    formCol.appendChild(cvField);
-
-    box.appendChild(formCol);
-    box.appendChild(el('div', { style:{display:'flex',gap:'10px',marginTop:'22px'} },
-      el('button', { onclick:submitApplication, disabled:S.submitting, style:{flex:'1',padding:'14px',borderRadius:'13px',border:'none',cursor:'pointer',fontSize:'14px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'} }, S.submitting ? t('Submitting…','جاري الإرسال…') : t('Submit Application','تقديم الطلب')),
-      el('button', { onclick:closeModal, style:{padding:'14px 22px',borderRadius:'13px',cursor:'pointer',fontSize:'14px',fontWeight:'600',color:'#6b6670',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'} }, f.cancelBtn)
-    ));
-  }
-
-  overlay.appendChild(box);
-  return overlay;
-}
-function formField(label, type, stateKey, placeholder) {
-  const wrap = el('div', { style:{display:'flex',flexDirection:'column',gap:'5px'} },
-    el('label', { style:{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'} }, label)
-  );
-  const input = document.createElement('input');
-  input.type = type; input.value = S[stateKey]; if (placeholder) input.placeholder = placeholder;
-  input.style.cssText = 'border:1px solid rgba(180,18,58,.18);border-radius:11px;padding:12px 14px;font-size:14px;outline:none;background:#fff;color:#1c1b22';
-  input.addEventListener('input', e => { S[stateKey] = e.target.value; });
-  wrap.appendChild(input);
-  return wrap;
-}
-
-function renderJDModal() {
-  if (!S.jdModalOpen) return null;
-  const f = L();
-  const overlay = el('div', { onclick:e=>{ if (e.target===e.currentTarget) closeJD(); }, style:{position:'fixed',inset:'0',zIndex:'210',display:'flex',alignItems:'center',justifyContent:'center',padding:'20px',background:'rgba(42,10,24,.5)',backdropFilter:'blur(6px)',WebkitBackdropFilter:'blur(6px)',animation:'hf-in .25s ease both',direction:dir()} });
-  const box = el('div', { style:{width:'100%',maxWidth:'560px',maxHeight:'82vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(255,255,255,.97)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'} },
-    el('div', { style:{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a',marginBottom:'8px'} }, S.jdEntity),
-    el('h3', { style:{fontFamily:"'Playfair Display',serif",fontSize:'24px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'18px'} }, S.jdTitle),
-    el('div', { style:{fontSize:'14px',lineHeight:'1.75',color:'#3a3640',whiteSpace:'pre-wrap',marginBottom:'24px'} },
-      S.jdText && S.jdText.trim() ? S.jdText : f.jdEmptyText
-    ),
-    el('div', { style:{display:'flex',gap:'10px'} },
-      el('button', { onclick:()=>{ closeJD(); openApply(S.jdTitle.split(' · ')[0], S.jdEntity); }, style:{flex:'1',padding:'13px',borderRadius:'13px',border:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'} }, f.applyFromJD),
-      el('button', { onclick:closeJD, style:{padding:'13px 22px',borderRadius:'13px',cursor:'pointer',fontSize:'13.5px',fontWeight:'600',color:'#6b6670',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'} }, f.closeBtn)
-    )
-  );
-  overlay.appendChild(box);
-  return overlay;
-}
-
-function render() {
-  const root = document.getElementById('root');
-  root.innerHTML = '';
-  document.documentElement.lang = S.lang;
-  document.body.style.direction = dir();
-
-  const page = el('div', { style:{position:'relative',minHeight:'100vh',overflow:'hidden',direction:dir()} });
-
-  const orbs = el('div', { style:{position:'fixed',inset:'0',zIndex:'0',pointerEvents:'none',overflow:'hidden'} },
-    el('div', { style:{position:'absolute',top:'-120px',left:'-80px',width:'520px',height:'520px',borderRadius:'50%',background:'radial-gradient(circle at 30% 30%,rgba(214,32,74,.22),transparent 65%)',filter:'blur(20px)',animation:'hf-drift 22s ease-in-out infinite'} }),
-    el('div', { style:{position:'absolute',top:'30%',right:'-140px',width:'560px',height:'560px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(120,11,42,.16),transparent 66%)',filter:'blur(24px)',animation:'hf-drift 28s ease-in-out infinite reverse'} }),
-    el('div', { style:{position:'absolute',bottom:'-160px',left:'25%',width:'480px',height:'480px',borderRadius:'50%',background:'radial-gradient(circle at 50% 50%,rgba(196,150,120,.18),transparent 66%)',filter:'blur(22px)',animation:'hf-drift 26s ease-in-out infinite'} })
-  );
-  page.appendChild(orbs);
-
-  const content = el('div', { style:{position:'relative',zIndex:'2'} });
-  content.appendChild(renderNav());
-  content.appendChild(renderHero());
-  content.appendChild(renderEntitiesStrip());
-  content.appendChild(renderPositions());
-  content.appendChild(renderWhy());
-  content.appendChild(renderTracker());
-  content.appendChild(renderBulkDrop());
-  content.appendChild(renderFooter());
-  page.appendChild(content);
-
-  root.appendChild(page);
-
-  const modal = renderApplyModal();
-  if (modal) root.appendChild(modal);
-  const jdModal = renderJDModal();
-  if (jdModal) root.appendChild(jdModal);
-}
-
-try {
-  render();
-  loadPositions();
-  animateStatCount();
-} catch (e) {
-  document.getElementById('root').innerHTML = '<div style="padding:60px 20px;text-align:center;font-family:sans-serif;color:#b4123a">Something went wrong loading this page. Please refresh, or contact career@hifiveholding.ae if the issue continues.</div>';
-  console.error('CareersPage error:', e);
-}
+ReactDOM.createRoot(document.getElementById('root')).render(<CareersPage />);
 </script>
 </body>
 </html>
