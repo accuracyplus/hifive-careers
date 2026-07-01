@@ -79,53 +79,9 @@
 
     select{cursor:pointer}
     input,select,textarea{font-family:inherit}
-  
-/* ── Splash screen ────────────────────────────── */
-#hf-splash{position:fixed;inset:0;z-index:9999;background:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#hf-splash video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
-.splash-skip{position:absolute;bottom:32px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.1em;opacity:0;animation:hf-up .6s 1.5s forwards}
-#hf-splash .sp-d{display:none}
-#hf-splash .sp-m{display:none}
-@media(min-width:768px){#hf-splash .sp-d{display:block}}
-@media(max-width:767px){#hf-splash .sp-m{display:block}}
-/* JD content — reset any pasted external styles */
-.hf-jd-body * { font-family: inherit !important; color: inherit !important; background: transparent !important; font-size: inherit !important; }
-.hf-jd-body p  { margin: 0 0 10px; line-height: 1.75; }
-.hf-jd-body b, .hf-jd-body strong { font-weight: 700; color: #23202b !important; }
-.hf-jd-body ul, .hf-jd-body ol { padding-left: 20px; margin: 8px 0 12px; }
-.hf-jd-body li { margin-bottom: 4px; }
-.hf-jd-body h1,.hf-jd-body h2,.hf-jd-body h3 { font-weight: 700; color: #23202b !important; margin: 14px 0 6px; }
-.hf-jd-body br + br { display: none; } /* collapse double line breaks */
-</style>
+  </style>
 </head>
 <body>
-<div id="hf-splash">
-  <video class="sp-d" autoplay muted playsinline onended="hfSplashDone()">
-    <source src="https://hifive-recruitment.pages.dev/splash-desktop.mp4" type="video/mp4">
-  </video>
-  <video class="sp-m" autoplay muted playsinline onended="hfSplashDone()">
-    <source src="https://hifive-recruitment.pages.dev/splash-mobile.mp4" type="video/mp4">
-  </video>
-  <div class="splash-skip">TAP TO SKIP</div>
-</div>
-<script>
-(function(){
-  var el = document.getElementById('hf-splash');
-  function hfSplashDone(){
-    if(!el) return;
-    el.style.opacity='0';
-    el.style.transition='opacity .5s ease';
-    setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 500);
-  }
-  window.hfSplashDone = hfSplashDone;
-  el.addEventListener('click', hfSplashDone);
-  // Skip if already seen this session
-  if(sessionStorage.getItem('hf_careers_splash')){ hfSplashDone(); return; }
-  sessionStorage.setItem('hf_careers_splash','1');
-  setTimeout(hfSplashDone, 8000); // failsafe
-})();
-</script>
-
 <div id="root">
   <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;color:#8a8590;font-size:14px">Loading…</div>
 </div>
@@ -337,8 +293,10 @@ function posVM(p) {
   };
 }
 function dynamicEyebrow() {
-  const totalOpen = S.positions.reduce((sum,p) => sum + Math.max(0, (p.headcount||p.count||1)-(p.filledCount||0)), 0);
-  const unitsHiring = new Set(S.positions.filter(p => ((p.headcount||p.count||1)-(p.filledCount||0))>0).map(p=>p.entity)).size;
+  // Use filtered positions for the eyebrow stat when an entity filter is active
+  const src = S.entity ? filteredPositions() : S.positions;
+  const totalOpen = src.reduce((sum,p) => sum + Math.max(0, (p.headcount||p.count||1)-(p.filledCount||0)), 0);
+  const unitsHiring = new Set(src.filter(p => ((p.headcount||p.count||1)-(p.filledCount||0))>0).map(p=>p.entity)).size;
   if (unitsHiring > 0) {
     return t('Now Hiring in '+unitsHiring+' Unit'+(unitsHiring!==1?'s':'')+' · '+totalOpen+' Position'+(totalOpen!==1?'s':''),
       'نوظف الآن في '+unitsHiring+' وحدة · '+totalOpen+' وظيفة');
@@ -346,7 +304,10 @@ function dynamicEyebrow() {
   return L().heroEyebrowDefault;
 }
 function featuredVM() {
-  const all = S.positions.map(posVM);
+  // Use filtered list when entity filter is active so the hero card reflects
+  // the selected entity, not always the first position across all entities.
+  const source = S.entity ? filteredPositions() : S.positions;
+  const all = source.map(posVM);
   const open = all.find(v => v.isOpen) || all[0];
   if (!open) {
     return { title: t('Multiple Openings','وظائف متعددة'), entityLine: 'HiFive Holdings', metaTag: t('Across 5 units','عبر 5 وحدات'), applyAction: () => scrollToId('positions') };
@@ -1036,27 +997,9 @@ function renderJDModal() {
   const box = el('div', { style:{width:'100%',maxWidth:'560px',maxHeight:'82vh',overflowY:'auto',borderRadius:'26px',padding:'clamp(26px,4vw,38px)',background:'rgba(255,255,255,.97)',backdropFilter:'blur(24px)',WebkitBackdropFilter:'blur(24px)',border:'1px solid rgba(255,255,255,.9)',boxShadow:'0 40px 90px rgba(110,11,42,.4)',animation:'hf-up .35s cubic-bezier(.2,.7,.2,1) both'} },
     el('div', { style:{fontSize:'10.5px',letterSpacing:'.14em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a',marginBottom:'8px'} }, S.jdEntity),
     el('h3', { style:{fontFamily:"'Playfair Display',serif",fontSize:'24px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'18px'} }, S.jdTitle),
-    (() => {
-      const jdDiv = el('div', { className:'hf-jd-body', style:{fontSize:'14px',lineHeight:'1.75',color:'#3a3640',marginBottom:'24px'} });
-      const text = S.jdText && S.jdText.trim() ? S.jdText : f.jdEmptyText;
-      if (text.includes('<') && text.includes('>')) {
-        // HTML content — strip all inline styles, fonts, colours from external paste
-        // then render as HTML so bold/lists/headings work properly
-        const clean = text
-          .replace(/\s*style="[^"]*"/gi, '')          // remove all style= attributes
-          .replace(/\s*class="[^"]*"/gi, '')           // remove class= attributes
-          .replace(/<font[^>]*>/gi, '').replace(/<\/font>/gi, '') // strip font tags
-          .replace(/&quot;/g, '"')                     // decode entities
-          .replace(/<br\s*\/?>/gi, '<br>')             // normalise br
-          .replace(/<p>\s*<\/p>/gi, '')                // remove empty paragraphs
-          .trim();
-        jdDiv.innerHTML = clean;
-      } else {
-        jdDiv.style.whiteSpace = 'pre-wrap';
-        jdDiv.textContent = text;
-      }
-      return jdDiv;
-    })(),
+    el('div', { style:{fontSize:'14px',lineHeight:'1.75',color:'#3a3640',whiteSpace:'pre-wrap',marginBottom:'24px'} },
+      S.jdText && S.jdText.trim() ? S.jdText : f.jdEmptyText
+    ),
     el('div', { style:{display:'flex',gap:'10px'} },
       el('button', { onclick:()=>{ closeJD(); openApply(S.jdTitle.split(' · ')[0], S.jdEntity); }, style:{flex:'1',padding:'13px',borderRadius:'13px',border:'none',cursor:'pointer',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 10px 22px rgba(110,11,42,.28)'} }, f.applyFromJD),
       el('button', { onclick:closeJD, style:{padding:'13px 22px',borderRadius:'13px',cursor:'pointer',fontSize:'13.5px',fontWeight:'600',color:'#6b6670',background:'#f3eee8',border:'1px solid rgba(28,27,34,.08)'} }, f.closeBtn)
