@@ -190,7 +190,7 @@ function CareersPage() {
       .then(r => r.json())
       .then(d => {
         const arr = d.positions || [];
-        setPositions(arr.length ? arr : FALLBACK);
+        setPositions((arr.length ? arr : FALLBACK).map(p => ({ ...p, entity: normEntity(p.entity) })));
         setLoading(false);
       })
       .catch(() => { setPositions(FALLBACK); setLoading(false); });
@@ -223,6 +223,23 @@ function CareersPage() {
     if (!isNaN(n) && n > 1000) { const dt = new Date(new Date(1899,11,30).getTime() + n*86400000); return `${String(dt.getDate()).padStart(2,'0')}-${String(dt.getMonth()+1).padStart(2,'0')}-${dt.getFullYear()}`; }
     return s;
   };
+
+
+  // Normalise entity names from the worker — Excel stores full names like
+  // "Accuracy Plus Medical Laboratory" but filter keys are short ("APML").
+  const ENTITY_NORM = {
+    "accuracy plus medical laboratory": "APML",
+    "herbal park ayurvedic health center": "Herbal Park",
+    "herbal park ayurveda": "Herbal Park",
+    "herbal park": "Herbal Park",
+    "atomic drugstore": "Atomic Drugstore",
+    "pine pharmacy": "Pine Pharmacy",
+    "pine group of pharmacies": "Pine Pharmacy",
+    "al jebal opticals": "Al Jebal Opticals",
+    "al jebal group of opticals": "Al Jebal Opticals",
+    "apml": "APML",
+  };
+  const normEntity = (raw) => raw ? (ENTITY_NORM[raw.trim().toLowerCase()] || raw) : raw;
 
   const filteredPositions = useMemo(() => {
     const s = search.toLowerCase().trim();
