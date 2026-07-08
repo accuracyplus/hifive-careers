@@ -3,6 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Careers at HiFive Holdings — Healthcare & Retail Jobs in UAE</title>
+  <meta name="description" content="Join HiFive Holdings — Abu Dhabi's growing healthcare and retail group. Open positions across APML, Herbal Park, Atomic Drugstore, Pine Pharmacy and Al Jebal Opticals. Apply today.">
+  <meta name="keywords" content="jobs UAE, healthcare jobs Abu Dhabi, pharmacist jobs UAE, medical laboratory jobs, Ayurveda jobs, optometrist jobs UAE, HiFive Holdings careers">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://hifive-careers.pages.dev/">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Careers at HiFive Holdings — Healthcare & Retail Jobs in UAE">
+  <meta property="og:description" content="Join a growing healthcare and retail group across Abu Dhabi, Dubai, Fujairah and beyond. View open positions and apply today.">
+  <meta property="og:url" content="https://hifive-careers.pages.dev/">
+  <meta property="og:image" content="https://hifive-careers.pages.dev/logo.png">
+  <meta property="og:site_name" content="HiFive Holdings Careers">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Careers at HiFive Holdings">
+  <meta name="twitter:description" content="Open positions in healthcare and retail across the UAE. Join our growing team.">
+  <!-- Structured Data -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"HiFive Holdings LLC","url":"https://hifive-careers.pages.dev","logo":"https://hifive-careers.pages.dev/logo.png","description":"Multi-entity healthcare and retail group operating across the UAE","areaServed":"AE","hasOfferCatalog":{"@type":"OfferCatalog","name":"Job Openings"}}</script>
   <title>Careers — HiFive Holdings</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,6 +115,7 @@ function CareersPage() {
   const [formNat, setFormNat] = useState('');
   const [formSalary, setFormSalary] = useState('');
   const [trackInput, setTrackInput] = useState('');
+  const [trackName, setTrackName] = useState('');
   const [trackLoading, setTrackLoading] = useState(false);
   const [trackErr, setTrackErr] = useState('');
   const [trackResult, setTrackResult] = useState(null);
@@ -274,7 +293,7 @@ function CareersPage() {
       badgeFull: isFull,
       locWord: t('UAE','الإمارات'),
       applyText: isFull ? t('No vacancies','لا شواغر') : t('Apply','تقدم'),
-      onApply: () => openApply(p.position, p.entity),
+      onApply: () => openApply(p.customPosition || p.position, p.entity, p.jobDescription || ''),
     };
   };
 
@@ -294,8 +313,9 @@ function CareersPage() {
     return open;
   }, [allVMs, lang]);
 
-  const openApply = (position, ent) => {
-    setModalOpen(true); setModalPosition(position); setModalEntity(ent);
+  const [modalJD, setModalJD] = useState('');
+  const openApply = (position, ent, jd='') => {
+    setModalOpen(true); setModalPosition(position); setModalEntity(ent); setModalJD(jd);
     setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormSalary('');
   };
   const closeModal = () => { setModalOpen(false); setSuccess(false); };
@@ -308,18 +328,22 @@ function CareersPage() {
     }
     setSubmitting(true);
     try {
-      const res = await fetch(`${WORKER}/add-candidate`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ name:formName, phone:formPhone, email:formEmail, nationality:formNat,
-          expectedSalary:formSalary, position:modalPosition, entity:modalEntity, source:'Careers Page', role:'recruiter' }),
-      });
+      // Use the public CV upload endpoint which handles both candidate creation
+      // and CV upload in one call — no auth key needed from the public careers page
+      const fd = new FormData();
+      fd.append('name', formName);
+      fd.append('phone', formPhone);
+      fd.append('email', formEmail);
+      fd.append('nationality', formNat);
+      fd.append('expectedSalary', formSalary);
+      fd.append('position', modalPosition);
+      fd.append('entity', modalEntity);
+      fd.append('source', 'Careers Page');
+      fd.append('file', cvFile);
+      const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
       const data = await res.json();
       if (!data.success) throw new Error(data.error || 'Submission failed');
       const candID = data.candidateID;
-      const fd = new FormData();
-      fd.append('candidateID', candID);
-      fd.append('file', cvFile);
-      await fetch(`${WORKER}/upload-cv`, { method:'POST', headers:{'X-App-Key':''}, body:fd });
       setSuccess(true); setSuccessRef(candID);
     } catch (e) {
       alert(t('Submission failed: ','فشل الإرسال: ') + e.message);
@@ -362,9 +386,10 @@ function CareersPage() {
     const id = trackInput.trim().toUpperCase();
     setTrackErr(''); setTrackResult(null); setTrackNotFound(false);
     if (!/^REC-\d{4}$/.test(id)) { setTrackErr(t('Please enter a valid reference ID (e.g. REC-0001)','يرجى إدخال رقم مرجع صحيح (مثال: REC-0001)')); return; }
+    if (!trackName.trim()) { setTrackErr(t('Please enter your first name','يرجى إدخال اسمك الأول')); return; }
     setTrackLoading(true);
     try {
-      const r = await fetch(`${WORKER}/track-status?id=${id}`);
+      const r = await fetch(`${WORKER}/track-status?id=${id}&firstName=${encodeURIComponent(trackName.trim())}`);
       const data = await r.json();
       if (!data.found) { setTrackNotFound(true); return; }
       setTrackResult(data);
@@ -435,6 +460,8 @@ function CareersPage() {
           </div>
           <div data-r="navbtns" style={{display:'flex',alignItems:'center',gap:'6px'}}>
             <button className="hf-nav-btn" onClick={() => scrollToId('positions')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navPositions}</button>
+            <button className="hf-nav-btn" onClick={() => scrollToId('about')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>About</button>
+            <button className="hf-nav-btn" onClick={() => scrollToId('blog')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>News</button>
             <button className="hf-nav-btn" onClick={() => scrollToId('tracker')} style={{border:'none',background:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#4a4751',padding:'9px 14px',borderRadius:'99px',transition:'all .2s'}}>{L.navTrack}</button>
             <button className="hf-lang-btn" onClick={() => setLang(l => l==='en'?'ar':'en')} style={{cursor:'pointer',fontFamily:'inherit',fontSize:'13px',fontWeight:'700',color:'#fff',padding:'9px 18px',borderRadius:'99px',border:'none',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 16px rgba(110,11,42,.28)',transition:'transform .2s'}}>{L.langLabel}</button>
           </div>
@@ -692,6 +719,7 @@ function CareersPage() {
               <p style={{margin:'12px auto 0',maxWidth:'480px',fontSize:'14px',color:'rgba(255,255,255,.66)',lineHeight:'1.6'}}>{L.trackSub}</p>
               <div style={{display:'flex',gap:'10px',maxWidth:'460px',margin:'26px auto 0',flexWrap:'wrap'}}>
                 <input value={trackInput} onInput={e => { setTrackInput(e.target.value.toUpperCase()); setTrackErr(''); setTrackNotFound(false); }} onKeyDown={onTrackKey} placeholder="REC-0001" maxLength={8} style={{flex:'1',minWidth:'180px',border:'1px solid rgba(255,255,255,.18)',borderRadius:'14px',padding:'15px 18px',fontFamily:'inherit',fontSize:'15px',fontWeight:'600',letterSpacing:'.08em',textTransform:'uppercase',color:'#fff',background:'rgba(255,255,255,.08)',outline:'none'}} />
+                <input value={trackName} onInput={e => setTrackName(e.target.value)} onKeyDown={onTrackKey} placeholder={t('Your first name','اسمك الأول')} style={{flex:'1',minWidth:'140px',border:'1px solid rgba(255,255,255,.18)',borderRadius:'14px',padding:'15px 18px',fontFamily:'inherit',fontSize:'15px',color:'#fff',background:'rgba(255,255,255,.08)',outline:'none'}} />
                 <button className="hf-track-btn" onClick={doTrack} style={{padding:'15px 28px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'14.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#9a0f33)',boxShadow:'0 10px 22px rgba(214,32,74,.4)',whiteSpace:'nowrap',transition:'transform .2s'}}>{trackLoading ? '…' : L.trackBtn}</button>
               </div>
               {trackErr && <div style={{color:'#ff8aa0',fontSize:'13.5px',marginTop:'14px'}}>{trackErr}</div>}
@@ -800,6 +828,76 @@ function CareersPage() {
         </section>
 
         {/* FOOTER */}
+        {/* ── Mission & Vision ─────────────────────────────────────────── */}
+        <section id="about" style={{padding:'clamp(50px,6vw,80px) clamp(16px,4vw,48px)',background:'linear-gradient(135deg,#faf7f4,#f3ede8)',scrollMarginTop:'90px'}}>
+          <div style={{maxWidth:'1100px',margin:'0 auto'}}>
+            <div style={{textAlign:'center',marginBottom:'48px'}}>
+              <div style={{display:'inline-block',padding:'5px 16px',borderRadius:'99px',background:'rgba(110,11,42,.08)',color:'#6e0b2a',fontSize:'11.5px',fontWeight:'800',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:'14px'}}>Who We Are</div>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(30px,4vw,42px)',fontWeight:'700',color:'#1c1b22',lineHeight:'1.2',margin:'0 0 16px'}}>Built on Purpose.<br/><span style={{color:'#b4123a',fontStyle:'italic'}}>Driven by People.</span></h2>
+              <p style={{fontSize:'15px',color:'#6b6670',maxWidth:'600px',margin:'0 auto',lineHeight:'1.8'}}>HiFive Holdings brings together five complementary healthcare and retail brands under one vision — delivering excellence to every community we serve across the UAE.</p>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'24px'}}>
+              {[
+                { icon:'🎯', title:'Our Mission', text:'To provide accessible, high-quality healthcare and retail services that improve everyday lives across the UAE — combining clinical precision with genuine human care.' },
+                { icon:'🔭', title:'Our Vision', text:'To be the most trusted multi-specialty healthcare and retail group in the GCC, recognised for operational excellence, staff wellbeing, and community impact.' },
+                { icon:'💎', title:'Our Values', text:'Integrity in every interaction. Excellence in every service. Empathy for every patient and customer. Growth for every team member who joins our journey.' },
+              ].map((item, i) => (
+                <div key={i} style={{padding:'30px 28px',borderRadius:'20px',background:'#fff',border:'1px solid rgba(180,18,58,.08)',boxShadow:'0 4px 20px rgba(110,11,42,.06)'}}>
+                  <div style={{fontSize:'36px',marginBottom:'14px'}}>{item.icon}</div>
+                  <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'20px',fontWeight:'700',color:'#1c1b22',marginBottom:'10px'}}>{item.title}</h3>
+                  <p style={{fontSize:'14px',color:'#6b6670',lineHeight:'1.8',margin:0}}>{item.text}</p>
+                </div>
+              ))}
+            </div>
+            <div style={{marginTop:'48px',display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:'16px'}}>
+              {[
+                { n:'160+', label:'Professionals' },
+                { n:'5', label:'Facilities' },
+                { n:'4', label:'Emirates' },
+                { n:'10+', label:'Years of Care' },
+              ].map((s,i) => (
+                <div key={i} style={{textAlign:'center',padding:'22px 16px',borderRadius:'16px',background:'linear-gradient(135deg,#fdf0f2,#fce8ec)',border:'1px solid rgba(180,18,58,.1)'}}>
+                  <div style={{fontFamily:"'Playfair Display',serif",fontSize:'36px',fontWeight:'700',color:'#b4123a'}}>{s.n}</div>
+                  <div style={{fontSize:'12px',fontWeight:'600',color:'#8a8590',marginTop:'4px',textTransform:'uppercase',letterSpacing:'.06em'}}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Blog & News ──────────────────────────────────────────────── */}
+        <section id="blog" style={{padding:'clamp(50px,6vw,80px) clamp(16px,4vw,48px)',background:'#fff',scrollMarginTop:'90px'}}>
+          <div style={{maxWidth:'1100px',margin:'0 auto'}}>
+            <div style={{textAlign:'center',marginBottom:'40px'}}>
+              <div style={{display:'inline-block',padding:'5px 16px',borderRadius:'99px',background:'rgba(110,11,42,.08)',color:'#6e0b2a',fontSize:'11.5px',fontWeight:'800',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:'14px'}}>Latest</div>
+              <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(28px,4vw,38px)',fontWeight:'700',color:'#1c1b22',margin:'0 0 12px'}}>News & Insights</h2>
+              <p style={{fontSize:'14px',color:'#8a8590',margin:0}}>Updates from HiFive Holdings — our growth, our people, our community.</p>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:'24px'}}>
+              {[
+                { tag:'Growth', date:'June 2026', title:'HiFive Expands Herbal Park to a Second Location', body:'We are excited to announce the planned expansion of Herbal Park Ayurvedic Health Center, serving more communities with authentic Ayurvedic care.' },
+                { tag:'Team', date:'May 2026', title:'130+ Strong: How HiFive Builds Its People-First Culture', body:'From Pine Pharmacy to Al Jebal Opticals, our team reflects the diversity and dedication that drives our group\'s exceptional service standards.' },
+                { tag:'Healthcare', date:'April 2026', title:'APML Achieves ISO 15189 Accreditation Renewal', body:'Accuracy Plus Medical Laboratory continues its commitment to diagnostic excellence with a successful ISO 15189 accreditation renewal this quarter.' },
+              ].map((post, i) => (
+                <div key={i} style={{borderRadius:'18px',overflow:'hidden',border:'1px solid rgba(28,27,34,.07)',background:'#faf9f8',transition:'transform .2s,box-shadow .2s'}}
+                  onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-4px)';e.currentTarget.style.boxShadow='0 16px 40px rgba(110,11,42,.1)';}}
+                  onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow='none';}}>
+                  <div style={{height:'8px',background:'linear-gradient(90deg,#d6204a,#6e0b2a)'}}/>
+                  <div style={{padding:'22px 24px'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'14px'}}>
+                      <span style={{padding:'3px 10px',borderRadius:'99px',background:'rgba(180,18,58,.1)',color:'#b4123a',fontSize:'10.5px',fontWeight:'700'}}>{post.tag}</span>
+                      <span style={{fontSize:'11.5px',color:'#9a949e'}}>{post.date}</span>
+                    </div>
+                    <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'17px',fontWeight:'700',color:'#1c1b22',lineHeight:'1.4',marginBottom:'10px'}}>{post.title}</h3>
+                    <p style={{fontSize:'13.5px',color:'#6b6670',lineHeight:'1.7',margin:'0 0 16px'}}>{post.body}</p>
+                    <span style={{fontSize:'12px',fontWeight:'700',color:'#b4123a',cursor:'pointer'}}>Read more →</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <footer style={{marginTop:'30px',padding:'40px clamp(16px,4vw,48px)',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'}}>
           <img src="/logo.png" alt="HiFive Holdings" style={{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1) sepia(1) saturate(6) hue-rotate(-15deg)',opacity:'0.92'}} />
           <div style={{fontFamily:"'Playfair Display',serif",fontSize:'18px',color:'#fff',fontWeight:'600',letterSpacing:'.02em',marginBottom:'10px'}}>HiFive Holdings</div>
@@ -828,7 +926,11 @@ function CareersPage() {
             ) : (
               <div>
                 <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'23px',fontWeight:'600',color:'#23202b',lineHeight:'1.2'}}>{t('Apply — ','تقدم — ')}{modalPosition}</h3>
-                <p style={{fontSize:'13px',color:'#6b6670',margin:'8px 0 22px',lineHeight:'1.55'}}>{L.modalSubtitle}</p>
+                <p style={{fontSize:'13px',color:'#6b6670',margin:'8px 0 16px',lineHeight:'1.55'}}>{L.modalSubtitle}</p>
+                {modalJD && (
+                  <div style={{maxHeight:'160px',overflowY:'auto',padding:'12px 14px',borderRadius:'12px',background:'#f9f5f1',border:'1px solid rgba(180,18,58,.1)',fontSize:'13px',lineHeight:'1.7',color:'#3a3540',marginBottom:'18px'}}
+                    dangerouslySetInnerHTML={{__html: modalJD}}/>
+                )}
                 <div style={{display:'flex',flexDirection:'column',gap:'13px'}}>
                   <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
                     <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.fullName}</label>
