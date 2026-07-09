@@ -71,7 +71,7 @@
 <body>
 <div id="root"></div>
 
-<script src="project/image-slot.js"></script>
+
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js" crossorigin></script>
@@ -866,7 +866,7 @@ function CareersPage() {
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
                       {f.fileName}<span style={stStyle}>{stText}</span>
                     </div>
-                    <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} required placeholder={`${L.candidateName} *`} style={{border:`1px solid ${!f.name?'rgba(214,32,74,.4)":"rgba(180,18,58,.16)"}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} required placeholder={`${L.candidateName} *`} style={{border:`1px solid ${!f.name?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
 {f.status==='idle' ? (
                       <select value={f.position} onChange={e=>setBulkField(i,'position',e.target.value)}
                         style={{border:`1px solid ${!f.position?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:f.position?'#1c1b22':'#9a949e'}}>
