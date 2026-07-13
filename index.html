@@ -192,8 +192,10 @@ function CareersPage() {
     emptyText: t('No positions match your filters.','لا توجد وظائف تطابق معاييرك.'),
     whyTitle: t('Why Join HiFive?','لماذا تنضم إلى هايفايف؟'),
     whySub: t('We grow together','ننمو معاً'),
-    why1Title: t('Healthcare Leader','رائد الرعاية الصحية'),
-    why1Desc: t('CAP & ISO 15189:2022 accredited laboratory and DOH-licensed clinics. Branches across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah.','مختبر معتمد من CAP وISO 15189:2022 وعيادات مرخصة من DOH. فروع في أبوظبي ودبي والشارقة والفجيرة ورأس الخيمة.'),
+    whyHealthcareLeader: t('Healthcare Leader','رائد الرعاية الصحية'),
+    whyHealthcareDesc: t('CAP & ISO 15189:2022 accredited laboratory and DOH-licensed clinics. Branches across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah.','مختبر معتمد من CAP وISO 15189:2022 وعيادات مرخصة من DOH. فروع في أبوظبي ودبي والشارقة والفجيرة ورأس الخيمة.'),
+    why1Title: t('Healthcare Leader','رائد في الرعاية'),
+    why1Desc: t('ISO 15189:2022 accredited laboratory and DOH-licensed clinics.','مختبر معتمد وعيادات مرخصة من دائرة الصحة.'),
     why2Title: t('UAE-Wide Operations','عمليات في الإمارات'),
     why2Desc: t('Branches across Abu Dhabi, Dubai, RAK and Fujairah.','فروع عبر أبوظبي ودبي ورأس الخيمة والفجيرة.'),
     why3Title: t('Growth Culture','ثقافة النمو'),
@@ -889,16 +891,13 @@ function CareersPage() {
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:'18px'}}>
             {[
-              { title: L.why1Title, desc: L.why1Desc, icon: <><path d="M8 2h8l4 6-8 14L4 8z"/><path d="M12 8v8M8.5 12h7"/></> },
-              { title: L.why2Title, desc: L.why2Desc, icon: <><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></> },
-              { title: L.why3Title, desc: L.why3Desc, icon: <><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></> },
-              { title: L.why4Title, desc: L.why4Desc, icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></> },
-              { title: L.whyHealthcareLeader, desc: L.whyHealthcareDesc, icon: <><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></> },
+              { title: L.why2Title, desc: L.why2Desc },
+              { title: L.why3Title, desc: L.why3Desc },
+              { title: L.why4Title, desc: L.why4Desc },
+              { title: L.whyHealthcareLeader, desc: L.whyHealthcareDesc },
             ].map((card, i) => (
               <div key={i} className="hf-why-card" style={{padding:'28px 24px',borderRadius:'24px',background:'rgba(255,255,255,.6)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.78)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',transition:'transform .25s,box-shadow .25s'}}>
-                <div style={{width:'50px',height:'50px',borderRadius:'16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,rgba(214,32,74,.12),rgba(110,11,42,.1))',color:'#b4123a',marginBottom:'16px'}}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{card.icon}</svg>
-                </div>
+
                 <div style={{fontWeight:'700',fontSize:'15px',color:'#23202b',marginBottom:'6px'}}>{card.title}</div>
                 <div style={{fontSize:'13px',color:'#6b6670',lineHeight:'1.55'}}>{card.desc}</div>
               </div>
