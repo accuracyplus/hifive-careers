@@ -192,6 +192,8 @@ function CareersPage() {
     emptyText: t('No positions match your filters.','لا توجد وظائف تطابق معاييرك.'),
     whyTitle: t('Why Join HiFive?','لماذا تنضم إلى هايفايف؟'),
     whySub: t('We grow together','ننمو معاً'),
+    whyHealthcareLeader: t('Healthcare Leader','رائد الرعاية الصحية'),
+    whyHealthcareDesc: t('CAP & ISO 15189:2022 accredited laboratory and DOH-licensed clinics. Branches across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah.','مختبر معتمد من CAP وISO 15189:2022 وعيادات مرخصة من DOH. فروع في أبوظبي ودبي والشارقة والفجيرة ورأس الخيمة.'),
     why1Title: t('Healthcare Leader','رائد في الرعاية'),
     why1Desc: t('ISO 15189:2022 accredited laboratory and DOH-licensed clinics.','مختبر معتمد وعيادات مرخصة من دائرة الصحة.'),
     why2Title: t('UAE-Wide Operations','عمليات في الإمارات'),
@@ -691,66 +693,53 @@ function CareersPage() {
               <div style={{position:'absolute',top:'-60px',right:'-40px',width:'280px',height:'280px',borderRadius:'50%',background:'radial-gradient(circle,rgba(214,32,74,.35),transparent 65%)',filter:'blur(12px)',pointerEvents:'none'}}/>
               <div style={{position:'absolute',bottom:'-40px',left:'-30px',width:'220px',height:'220px',borderRadius:'50%',background:'radial-gradient(circle,rgba(110,11,42,.3),transparent 65%)',filter:'blur(10px)',pointerEvents:'none'}}/>
               <div style={{position:'relative',zIndex:2}}>
-                {/* Header + photo row */}
-                <div style={{display:'grid',gridTemplateColumns:'1fr auto',gap:'28px',alignItems:'start',marginBottom:'32px'}} data-r="about-header">
-                  <div>
-                    <div style={{display:'inline-block',padding:'4px 14px',borderRadius:'99px',background:'rgba(255,255,255,.1)',color:'rgba(255,255,255,.8)',fontSize:'11px',fontWeight:'800',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:'14px'}}>{t('Who We Are','من نحن')}</div>
-                    <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(22px,3vw,34px)',fontWeight:'700',color:'#fff',lineHeight:'1.25',margin:'0 0 12px'}}>{t('Built on Purpose.','مبنيون على هدف.')}<br/><span style={{color:'#ff7a9a',fontStyle:'italic'}}>{t('Driven by People.','يقودنا الناس.')}</span></h2>
-                    <p style={{fontSize:'13.5px',color:'rgba(255,255,255,.65)',lineHeight:'1.75',margin:'0',maxWidth:'520px'}}>{t('HiFive Holdings is committed to driving healthcare innovation and accessibility. By investing in cutting-edge diagnostics, personalized wellness, eye care, sustainable agriculture, and renewable energy solutions, we aim to enhance healthcare standards, reduce costs, and improve patient outcomes.','تلتزم هايفايف هولدينجز بدفع عجلة الابتكار في الرعاية الصحية وتعزيز إمكانية الوصول إليها.')}</p>
+                {/* Full-width photo fading into text */}
+                <div style={{position:'relative',marginBottom:'28px',borderRadius:'20px',overflow:'hidden',height:'clamp(160px,22vw,260px)'}}>
+                  <img src={TEAM_PHOTOS[photoIdx]} alt="HiFive Team"
+                    onError={e=>{e.target.style.display='none';}}
+                    style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:photoFade?1:0,transition:'opacity .4s ease'}}/>
+                  {/* Fade to dark on right so text overlaps naturally */}
+                  <div style={{position:'absolute',inset:0,background:'linear-gradient(90deg,transparent 30%,rgba(42,10,24,.85) 65%,rgba(42,10,24,1) 100%)'}}/>
+                  {/* Text overlaid on right side */}
+                  <div style={{position:'absolute',top:0,right:0,bottom:0,width:'55%',display:'flex',flexDirection:'column',justifyContent:'center',padding:'20px 24px 20px 0',zIndex:2}}>
+                    <div style={{display:'inline-block',padding:'3px 12px',borderRadius:'99px',background:'rgba(255,255,255,.1)',color:'rgba(255,255,255,.8)',fontSize:'10px',fontWeight:'800',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:'10px',alignSelf:'flex-start'}}>{t('Who We Are','من نحن')}</div>
+                    <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(18px,2.5vw,28px)',fontWeight:'700',color:'#fff',lineHeight:'1.25',margin:'0 0 8px'}}>{t('Built on Purpose.','مبنيون على هدف.')}<br/><span style={{color:'#ff7a9a',fontStyle:'italic'}}>{t('Driven by People.','يقودنا الناس.')}</span></h2>
+                    <p style={{fontSize:'12px',color:'rgba(255,255,255,.65)',lineHeight:'1.7',margin:0}}>{t('HiFive Holdings is committed to driving healthcare innovation and accessibility across the UAE.','تلتزم هايفايف هولدينجز بدفع عجلة الابتكار في الرعاية الصحية عبر الإمارات.')}</p>
                   </div>
-                  {/* Rotating photo */}
-                  <div style={{position:'relative',borderRadius:'18px',overflow:'hidden',width:'clamp(120px,18vw,200px)',height:'clamp(120px,18vw,200px)',flexShrink:0,background:'rgba(255,255,255,.08)'}}>
-                    <img src={TEAM_PHOTOS[photoIdx]} alt="HiFive Team"
-                      onError={e=>{e.target.style.display='none';}}
-                      style={{width:'100%',height:'100%',objectFit:'cover',opacity:photoFade?1:0,transition:'opacity .4s ease'}}/>
-                    <div style={{position:'absolute',bottom:'8px',left:'50%',transform:'translateX(-50%)',display:'flex',gap:'5px'}}>
-                      {TEAM_PHOTOS.map((_,i)=>(
-                        <button key={i} onClick={()=>{setPhotoIdx(i);setPhotoFade(true);}}
-                          style={{width:i===photoIdx?18:5,height:5,borderRadius:99,border:'none',cursor:'pointer',background:i===photoIdx?'#fff':'rgba(255,255,255,.4)',transition:'all .3s',padding:0}}/>
-                      ))}
-                    </div>
+                  {/* Photo dots */}
+                  <div style={{position:'absolute',bottom:'10px',left:'14px',display:'flex',gap:'5px',zIndex:3}}>
+                    {TEAM_PHOTOS.map((_,i)=>(
+                      <button key={i} onClick={()=>{setPhotoIdx(i);setPhotoFade(true);}}
+                        style={{width:i===photoIdx?18:5,height:5,borderRadius:99,border:'none',cursor:'pointer',background:i===photoIdx?'#fff':'rgba(255,255,255,.4)',transition:'all .3s',padding:0}}/>
+                    ))}
                   </div>
                 </div>
 
-                {/* Stats row */}
-                <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(100px,1fr))',gap:'10px',marginBottom:'28px'}}>
-                  {[{n:'160+',l:t('Professionals','محترف')},{n:'5',l:t('Facilities','منشأة')},{n:'4',l:t('Emirates','إمارات')},{n:'10+',l:t('Years of Care','سنوات الرعاية')}].map((s,i)=>(
-                    <div key={i} style={{textAlign:'center',padding:'14px 10px',borderRadius:'14px',background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.1)'}}>
-                      <div style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(20px,2.5vw,28px)',fontWeight:'700',color:'#ff9ab5',lineHeight:1}}>{s.n}</div>
-                      <div style={{fontSize:'10.5px',fontWeight:'600',color:'rgba(255,255,255,.55)',marginTop:'4px',textTransform:'uppercase',letterSpacing:'.06em'}}>{s.l}</div>
-                    </div>
-                  ))}
+                {/* Mission + Vision side by side */}
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'14px',marginBottom:'14px'}}>
+                  <div style={{padding:'20px 22px',borderRadius:'16px',background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.1)'}}>
+                    <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'15px',fontWeight:'700',color:'#fff',marginBottom:'10px',marginTop:0}}>{t('Our Mission','مهمتنا')}</h3>
+                    <p style={{fontSize:'12px',color:'rgba(255,255,255,.65)',lineHeight:'1.75',margin:0}}>{t('HiFive Holdings is committed to driving healthcare innovation and accessibility. By investing in cutting-edge diagnostics, personalized wellness, eye care, sustainable agriculture, and renewable energy solutions, we aim to enhance healthcare standards, reduce costs, and improve patient outcomes. Our mission is to foster a healthier, sustainable future through transformative healthcare solutions, benefiting individuals and communities alike.','تلتزم هايفايف هولدينجز بدفع عجلة الابتكار في الرعاية الصحية وتعزيز إمكانية الوصول إليها من خلال الاستثمار في التشخيص المتطور والعافية الشخصية والرعاية البصرية والزراعة المستدامة وحلول الطاقة المتجددة.')}</p>
+                  </div>
+                  <div style={{padding:'20px 22px',borderRadius:'16px',background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.1)'}}>
+                    <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'15px',fontWeight:'700',color:'#fff',marginBottom:'10px',marginTop:0}}>{t('Our Vision','رؤيتنا')}</h3>
+                    <p style={{fontSize:'12px',color:'rgba(255,255,255,.65)',lineHeight:'1.75',margin:0}}>{t('To be a leader in healthcare innovation, recognized for sustainable and accessible solutions that empower communities and advance global wellness standards. Through strategic investments and collaborative partnerships, we envision a future where healthcare excellence and environmental stewardship are inseparable.','أن نكون رواداً في الابتكار الصحي، معروفين بحلولنا المستدامة والمتاحة التي تمكّن المجتمعات وترفع معايير العافية العالمية.')}</p>
+                  </div>
                 </div>
-
-                {/* Mission / Vision / Values — 3 column grid, no icons */}
-                <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:'14px'}}>
-                  {/* Mission */}
-                  <div style={{padding:'20px 22px',borderRadius:'16px',background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.1)'}}>
-                    <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'16px',fontWeight:'700',color:'#fff',marginBottom:'10px',marginTop:0}}>{t('Our Mission','مهمتنا')}</h3>
-                    <p style={{fontSize:'12.5px',color:'rgba(255,255,255,.65)',lineHeight:'1.75',margin:0}}>{t('HiFive Holdings is committed to driving healthcare innovation and accessibility. By investing in cutting-edge diagnostics, personalized wellness, eye care, sustainable agriculture, and renewable energy solutions, we aim to enhance healthcare standards, reduce costs, and improve patient outcomes. Our mission is to foster a healthier, sustainable future through transformative healthcare solutions, benefiting individuals and communities alike.','تلتزم هايفايف هولدينجز بدفع عجلة الابتكار في الرعاية الصحية وتعزيز إمكانية الوصول إليها من خلال الاستثمار في التشخيص المتطور والعافية الشخصية والرعاية البصرية والزراعة المستدامة وحلول الطاقة المتجددة.')}</p>
-                  </div>
-                  {/* Vision */}
-                  <div style={{padding:'20px 22px',borderRadius:'16px',background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.1)'}}>
-                    <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'16px',fontWeight:'700',color:'#fff',marginBottom:'10px',marginTop:0}}>{t('Our Vision','رؤيتنا')}</h3>
-                    <p style={{fontSize:'12.5px',color:'rgba(255,255,255,.65)',lineHeight:'1.75',margin:'0 0 10px'}}>{t('To be a leader in healthcare innovation, recognized for sustainable and accessible solutions that empower communities and advance global wellness standards. Through strategic investments and collaborative partnerships, we envision a future where healthcare excellence and environmental stewardship are inseparable.','أن نكون رواداً في الابتكار الصحي، معروفين بحلولنا المستدامة والمتاحة التي تمكّن المجتمعات وترفع معايير العافية العالمية.')}</p>
-                    <div style={{padding:'10px 14px',borderRadius:'10px',background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.08)'}}>
-                      <div style={{fontSize:'11.5px',fontWeight:'700',color:'rgba(255,255,255,.8)',marginBottom:'5px'}}>{t('Healthcare Leader','رائد الرعاية الصحية')}</div>
-                      <p style={{fontSize:'11.5px',color:'rgba(255,255,255,.55)',lineHeight:'1.7',margin:0}}>{t('CAP & ISO 15189:2022 accredited laboratory and DOH-licensed clinics. Branches across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah.','مختبر معتمد من CAP و ISO 15189:2022 وعيادات مرخصة من DOH. فروع في أبوظبي ودبي والشارقة والفجيرة ورأس الخيمة.')}</p>
-                    </div>
-                  </div>
-                  {/* Values */}
-                  <div style={{padding:'20px 22px',borderRadius:'16px',background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.1)'}}>
-                    <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'16px',fontWeight:'700',color:'#fff',marginBottom:'12px',marginTop:0}}>{t('Our Values','قيمنا')}</h3>
+                {/* Values — full width separate box */}
+                <div style={{padding:'20px 24px',borderRadius:'16px',background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.1)'}}>
+                  <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:'15px',fontWeight:'700',color:'#fff',marginBottom:'14px',marginTop:0}}>{t('Our Values','قيمنا')}</h3>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:'14px'}}>
                     {[
-                      ['Innovation','ابتكار','We champion forward-thinking ideas, adopting advanced technology and sustainable practices to transform healthcare.','نتبنى الأفكار المتطورة وأحدث التقنيات والممارسات المستدامة لتحويل قطاع الرعاية الصحية.'],
-                      ['Integrity','نزاهة','Our commitment to ethical practices and transparency builds trust with our stakeholders and community.','التزامنا بالممارسات الأخلاقية والشفافية يبني الثقة مع أصحاب المصلحة والمجتمع.'],
-                      ['Excellence','تميز','We strive to provide the highest standards of quality, driven by continual improvement and patient-focused outcomes.','نسعى لتقديم أعلى معايير الجودة مدفوعين بالتحسين المستمر والنتائج المتمحورة حول المريض.'],
-                      ['Sustainability','استدامة','We prioritize eco-friendly solutions across all our ventures, balancing progress with environmental responsibility.','نولي الأولوية للحلول الصديقة للبيئة في جميع مشاريعنا موازنين بين التقدم والمسؤولية البيئية.'],
-                      ['Collaboration','تعاون','By fostering strong partnerships within and beyond healthcare, we build integrated solutions that create lasting positive impact.','من خلال تعزيز الشراكات القوية داخل قطاع الرعاية الصحية وخارجه نبني حلولاً متكاملة ذات أثر إيجابي دائم.'],
+                      ['Innovation','ابتكار','We champion forward-thinking ideas, adopting advanced technology and sustainable practices to transform healthcare.','نتبنى الأفكار المتطورة وأحدث التقنيات والممارسات المستدامة.'],
+                      ['Integrity','نزاهة','Our commitment to ethical practices and transparency builds trust with our stakeholders and community.','التزامنا بالممارسات الأخلاقية والشفافية يبني الثقة مع المجتمع.'],
+                      ['Excellence','تميز','We strive to provide the highest standards of quality, driven by continual improvement and patient-focused outcomes.','نسعى لأعلى معايير الجودة مدفوعين بالتحسين المستمر.'],
+                      ['Sustainability','استدامة','We prioritize eco-friendly solutions across all our ventures, balancing progress with environmental responsibility.','نولي الأولوية للحلول الصديقة للبيئة في جميع مشاريعنا.'],
+                      ['Collaboration','تعاون','By fostering strong partnerships within and beyond healthcare, we build integrated solutions that create lasting positive impact.','نبني شراكات قوية لحلول متكاملة ذات أثر إيجابي دائم.'],
                     ].map(([en,ar,desc_en,desc_ar],i)=>(
-                      <div key={i} style={{marginBottom:i<4?'10px':0}}>
-                        <div style={{fontSize:'12px',fontWeight:'700',color:'#ff9ab5',marginBottom:'3px'}}>{t(en,ar)}</div>
-                        <p style={{fontSize:'11.5px',color:'rgba(255,255,255,.55)',lineHeight:'1.6',margin:0}}>{t(desc_en,desc_ar)}</p>
+                      <div key={i}>
+                        <div style={{fontSize:'12px',fontWeight:'800',color:'#ff9ab5',marginBottom:'4px',letterSpacing:'.02em'}}>{t(en,ar)}</div>
+                        <p style={{fontSize:'11.5px',color:'rgba(255,255,255,.55)',lineHeight:'1.65',margin:0}}>{t(desc_en,desc_ar)}</p>
                       </div>
                     ))}
                   </div>
@@ -906,6 +895,7 @@ function CareersPage() {
               { title: L.why2Title, desc: L.why2Desc, icon: <><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></> },
               { title: L.why3Title, desc: L.why3Desc, icon: <><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></> },
               { title: L.why4Title, desc: L.why4Desc, icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></> },
+              { title: L.whyHealthcareLeader, desc: L.whyHealthcareDesc, icon: <><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></> },
             ].map((card, i) => (
               <div key={i} className="hf-why-card" style={{padding:'28px 24px',borderRadius:'24px',background:'rgba(255,255,255,.6)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.78)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',transition:'transform .25s,box-shadow .25s'}}>
                 <div style={{width:'50px',height:'50px',borderRadius:'16px',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,rgba(214,32,74,.12),rgba(110,11,42,.1))',color:'#b4123a',marginBottom:'16px'}}>
