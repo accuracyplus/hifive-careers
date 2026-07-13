@@ -420,16 +420,18 @@ function CareersPage() {
     } finally { setSubmitting(false); }
   };
 
-  const STATUS_STEPS = ['Active','Shortlisted','Offered','Joined'];
+  const STATUS_STEPS = ['Active','Shortlisted','Ops Cleared','Mgmt Cleared','Offered','Accepted','Joined'];
   const statusLabel = (s) => {
-    const en = { Active:'Applied', Shortlisted:'Shortlisted', Offered:'Offer Extended', Joined:'Joined' };
-    const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', Offered:'تم إرسال العرض', Joined:'التحق' };
+    const en = { Active:'Applied', Shortlisted:'Shortlisted', 'Ops Cleared':'Ops Cleared', 'Mgmt Cleared':'Mgmt Cleared', Offered:'Offer Extended', Accepted:'Offer Accepted', Joined:'Joined' };
+    const ara = { Active:'تم التقديم', Shortlisted:'القائمة المختصرة', 'Ops Cleared':'اجتاز العمليات', 'Mgmt Cleared':'اجتاز الإدارة', Offered:'تم إرسال العرض', Accepted:'قبول العرض', Joined:'التحق' };
     return (ar ? ara : en)[s] || s;
   };
   const statusBadgeStyle = (status) => {
     const m = {
       Active:{bg:'rgba(43,108,176,.18)',color:'#cfe6ff'}, Shortlisted:{bg:'rgba(216,138,20,.22)',color:'#ffd9a0'},
-      Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'}, Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
+      'Ops Cleared':{bg:'rgba(110,11,42,.28)',color:'#ffc2cf'}, 'Mgmt Cleared':{bg:'rgba(110,11,42,.38)',color:'#ffb0c4'},
+      Offered:{bg:'rgba(214,32,74,.24)',color:'#ffc2cf'}, Accepted:{bg:'rgba(47,111,237,.22)',color:'#bdd8ff'},
+      Joined:{bg:'rgba(30,132,73,.24)',color:'#b8f0cf'},
       Rejected:{bg:'rgba(192,57,43,.24)',color:'#ffc2bb'}, 'On Hold':{bg:'rgba(108,52,131,.24)',color:'#e6c8f0'},
     };
     const {bg='rgba(255,255,255,.15)',color='#fff'} = m[status] || {};
