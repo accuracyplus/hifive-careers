@@ -11,9 +11,11 @@
   <meta name="geo.region" content="AE-AZ">
   <meta name="geo.placename" content="Abu Dhabi">
   <link rel="canonical" href="https://hifive-careers.pages.dev/">
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Healthcare Careers in UAE | HiFive Holdings Jobs">
-  <meta property="og:description" content="Build your career with HiFive Holdings. Explore opportunities across UAE in our growing healthcare group. Apply online today.">
+  <meta property="og:title" content="Careers at HiFive Holdings — Healthcare Jobs in Abu Dhabi & UAE">
+  <meta property="og:description" content="Join a CAP & ISO 15189:2022 accredited healthcare group. Open positions across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah. Apply online.">
   <meta property="og:url" content="https://hifive-careers.pages.dev/">
   <meta property="og:image" content="https://hifive-careers.pages.dev/hero-people.jpg">
   <meta property="og:site_name" content="HiFive Holdings Careers">
@@ -414,7 +416,7 @@ function CareersPage() {
       const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
       const data = await res.json();
       if (!data.success) throw new Error(data.error || 'Submission failed');
-      setSuccess(true); setSuccessRef(data.candidateID);
+      setSuccess(true); setSuccessRef(data.cvID || data.candidateID || '');
     } catch (e) {
       alert(t('Submission failed: ','فشل الإرسال: ') + e.message);
     } finally { setSubmitting(false); }
@@ -498,7 +500,7 @@ function CareersPage() {
       try {
         const fd = new FormData();
         fd.append('file', f.file); fd.append('name', f.name||'Unknown'); const finalPos = f.position==='__other__'?(f.positionCustom||'').trim()||'General Application':f.position||'General Application';
-      fd.append('position', finalPos); fd.append('source','Careers Page CV Drop');
+      fd.append('position', finalPos); fd.append('source','Careers Page CV Drop'); fd.append('facility', f.facility || 'HiFive Holdings');
         const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
         const data = await res.json();
         if (!data.success) throw new Error(data.error||'fail');
@@ -1018,13 +1020,21 @@ function CareersPage() {
             </div>
           </div>
         </section>
-        <footer style={{marginTop:'30px',padding:'40px clamp(16px,4vw,48px)',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'}}>
-          <img src="/logo.png" alt="HiFive Holdings" style={{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1) sepia(1) saturate(6) hue-rotate(-15deg)',opacity:'0.92'}} />
+        <footer style={{marginTop:'30px',padding:'40px clamp(16px,4vw,48px) 24px',background:'linear-gradient(160deg,#23202b,#1a0a12)',textAlign:'center'}}>
+          <img src="/logo.png" alt="HiFive Holdings" style={{height:'46px',width:'auto',margin:'0 auto 14px',display:'block',filter:'brightness(0) invert(1)',opacity:'0.92'}} />
           <div style={{fontFamily:"'Playfair Display',serif",fontSize:'18px',color:'#fff',fontWeight:'600',letterSpacing:'.02em',marginBottom:'10px'}}>HiFive Holdings</div>
           <p style={{fontSize:'13px',color:'rgba(255,255,255,.5)',lineHeight:'1.7'}}>
             © 2026 HiFive Holdings LLC · Abu Dhabi, UAE<br/>
             <a href="mailto:hr@hifiveholdings.ae" style={{color:'rgba(255,255,255,.78)',textDecoration:'none'}}>hr@hifiveholdings.ae</a> &nbsp;·&nbsp; {L.footerNote}
           </p>
+          <div style={{borderTop:'1px solid rgba(255,255,255,.08)',marginTop:'24px',paddingTop:'20px',maxWidth:'720px',margin:'24px auto 0'}}>
+            <p style={{fontSize:'11px',color:'rgba(255,255,255,.35)',lineHeight:'1.7',margin:0}}>
+              {t(
+                'HiFive Holdings LLC and its subsidiaries are equal opportunity employers. All applications are treated with strict confidentiality. By submitting your CV, you consent to the processing of your personal data for recruitment purposes in accordance with UAE Federal Decree-Law No. 45 of 2021 on Personal Data Protection.',
+                'تتكافأ فرص العمل لدى هايفايف هولدينجز ذ.م.م. وشركاتها التابعة. تُعامَل جميع الطلبات بسرية تامة. بتقديم سيرتك الذاتية، توافق على معالجة بياناتك الشخصية لأغراض التوظيف وفقاً للمرسوم بقانون اتحادي رقم 45 لسنة 2021 بشأن حماية البيانات الشخصية.'
+              )}
+            </p>
+          </div>
         </footer>
       </div>
 
