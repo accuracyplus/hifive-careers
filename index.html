@@ -14,8 +14,8 @@
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="apple-touch-icon" href="/logo.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Healthcare Careers in UAE | HiFive Holdings Jobs">
-  <meta property="og:description" content="Build your career with HiFive Holdings. Explore opportunities across UAE in our growing healthcare group. Apply online today.">
+  <meta property="og:title" content="Careers at HiFive Holdings — Healthcare Jobs in Abu Dhabi & UAE">
+  <meta property="og:description" content="Join a CAP & ISO 15189:2022 accredited healthcare group. Open positions across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah. Apply online.">
   <meta property="og:url" content="https://hifive-careers.pages.dev/">
   <meta property="og:image" content="https://hifive-careers.pages.dev/hero-people.jpg">
   <meta property="og:site_name" content="HiFive Holdings Careers">
@@ -249,6 +249,12 @@ function CareersPage() {
   ];
   const [photoIdx, setPhotoIdx] = useState(0);
   const [photoFade, setPhotoFade] = useState(true);
+  const [showBackTop, setShowBackTop] = useState(false);
+  useEffect(()=>{
+    const onScroll = () => setShowBackTop(window.scrollY > 400);
+    window.addEventListener('scroll', onScroll, {passive:true});
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
   useEffect(() => {
     const iv = setInterval(() => {
       setPhotoFade(false);
@@ -1132,11 +1138,10 @@ function CareersPage() {
         </div>
       )}
 
-      <button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} title="Back to top"
-        onMouseEnter={e=>e.currentTarget.style.transform='scale(1.12)'}
-        onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}
-        style={{position:'fixed',bottom:'clamp(80px,12vw,100px)',right:'clamp(16px,3vw,28px)',zIndex:80,width:'46px',height:'46px',borderRadius:'50%',border:'none',cursor:'pointer',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',color:'#fff',boxShadow:'0 8px 20px rgba(110,11,42,.35)',display:'flex',alignItems:'center',justifyContent:'center',transition:'transform .2s'}}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 15l-6-6-6 6"/></svg>
+      <button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} className="hf-btt-btn"
+        style={{position:'fixed',bottom:'clamp(80px,12vw,100px)',right:'clamp(16px,3vw,28px)',zIndex:80}}>
+        <svg className="arrow" width="16" height="16" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none"/></svg>
+        <span className="hf-btt-text">Back to top</span>
       </button>
 
     </div>
