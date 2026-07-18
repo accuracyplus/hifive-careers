@@ -14,8 +14,8 @@
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="apple-touch-icon" href="/logo.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Healthcare Careers in UAE | HiFive Holdings Jobs">
-  <meta property="og:description" content="Build your career with HiFive Holdings. Explore opportunities across UAE in our growing healthcare group. Apply online today.">
+  <meta property="og:title" content="Careers at HiFive Holdings — Healthcare Jobs in Abu Dhabi & UAE">
+  <meta property="og:description" content="Join a CAP & ISO 15189:2022 accredited healthcare group. Open positions across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah. Apply online.">
   <meta property="og:url" content="https://hifive-careers.pages.dev/">
   <meta property="og:image" content="https://hifive-careers.pages.dev/hero-people.jpg">
   <meta property="og:site_name" content="HiFive Holdings Careers">
@@ -103,7 +103,12 @@
     .hf-track-btn:hover{transform:translateY(-1px)!important}
     .hf-bulk-zone:hover{border-color:#b4123a!important;background:rgba(255,255,255,.72)!important}
     .hf-pos-card-open:hover{transform:translateY(-3px)!important;box-shadow:0 20px 48px rgba(110,11,42,.14)!important}
-  </style>
+  .hf-btt-btn{width:40px;height:40px;background:linear-gradient(#44ea76,#39fad7);display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;position:relative;border:none;box-shadow:0 4px 12px rgba(68,234,118,0.4);}
+.hf-btt-btn .hf-btt-text{font-size:9px;width:80px;position:absolute;color:white;display:flex;align-items:center;justify-content:center;bottom:-18px;opacity:0;transition:opacity 0.4s;white-space:nowrap;font-weight:700;letter-spacing:.05em;}
+.hf-btt-btn:hover .hf-btt-text{opacity:1;}
+.hf-btt-btn:hover svg{animation:hf-btt-up 0.6s cubic-bezier(.25,.46,.45,.94) both;}
+@keyframes hf-btt-up{0%{transform:translateY(6px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+</style>
 </head>
 <body>
 <div id="root"></div>
@@ -1138,11 +1143,13 @@ function CareersPage() {
         </div>
       )}
 
-      <button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} className="hf-btt-btn"
-        style={{position:'fixed',bottom:'clamp(80px,12vw,100px)',right:'clamp(16px,3vw,28px)',zIndex:80}}>
-        <svg className="arrow" width="16" height="16" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none"/></svg>
-        <span className="hf-btt-text">Back to top</span>
-      </button>
+      {showBackTop && (
+        <button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} className="hf-btt-btn"
+          style={{position:'fixed',bottom:'clamp(80px,12vw,100px)',right:'clamp(16px,3vw,28px)',zIndex:80}}>
+          <svg className="arrow" width="16" height="16" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none"/></svg>
+          <span className="hf-btt-text">Back to top</span>
+        </button>
+      )}
 
     </div>
   );
