@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Careers at HiFive Holdings — Healthcare Jobs in Abu Dhabi & UAE</title>
   <meta name="description" content="Join HiFive Holdings — a leading healthcare group in Abu Dhabi, UAE. Open positions in medical laboratory, Ayurveda, pharmacy, opticals, and diagnostics. Apply online today.">
-  <meta name="keywords" content="healthcare jobs UAE, medical laboratory jobs Abu Dhabi, pharmacist jobs UAE, Ayurveda jobs Abu Dhabi, optician jobs UAE, diagnostic jobs UAE, HiFive Holdings careers, APML jobs, Herbal Park jobs, Atomic Drugstore jobs, Pine Pharmacy jobs, Al Jebal Opticals jobs, healthcare recruitment UAE, DOH licensed jobs Abu Dhabi, CAP accredited laboratory jobs">
+  <meta name="keywords" content="healthcare jobs UAE, medical laboratory jobs Abu Dhabi, pharmacist jobs UAE, Ayurveda jobs Abu Dhabi, optician jobs UAE, diagnostic jobs UAE, HiFive Holdings careers, Accuracy Plus Medical Laboratory jobs, Herbal Park jobs, Atomic Drugstore jobs, Pine Pharmacies jobs, Al Jebal Opticals jobs, healthcare recruitment UAE, DOH licensed jobs Abu Dhabi, CAP accredited laboratory jobs">
   <meta name="author" content="HiFive Holdings LLC">
   <meta name="robots" content="index, follow">
   <meta name="geo.region" content="AE-AZ">
@@ -14,8 +14,8 @@
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="apple-touch-icon" href="/logo.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Careers at HiFive Holdings — Healthcare Jobs in Abu Dhabi & UAE">
-  <meta property="og:description" content="Join a CAP & ISO 15189:2022 accredited healthcare group. Open positions across Abu Dhabi, Dubai, Sharjah, Fujairah & Ras Al Khaimah. Apply online.">
+  <meta property="og:title" content="Healthcare Careers in UAE | HiFive Holdings Jobs">
+  <meta property="og:description" content="Build your career with HiFive Holdings. Explore opportunities across UAE in our growing healthcare group. Apply online today.">
   <meta property="og:url" content="https://hifive-careers.pages.dev/">
   <meta property="og:image" content="https://hifive-careers.pages.dev/hero-people.jpg">
   <meta property="og:site_name" content="HiFive Holdings Careers">
@@ -124,12 +124,12 @@ const { useState, useEffect, useRef, useMemo, useCallback } = React;
 const WORKER = "https://recruitment.sinusuresh.workers.dev";
 
 const FALLBACK = [
-  { entity:'APML', branch:'Hamdan St', position:'Senior Medical Laboratory Technologist', experienceRequired:'3-5 yrs', expectedJoining:'2026-02-01', filled:1, headcount:3 },
-  { entity:'Pine Pharmacy', branch:'Dubai', position:'Registered Pharmacist', experienceRequired:'2+ yrs', genderPreference:'None', filled:0, headcount:2 },
+  { entity:'Accuracy Plus Medical Laboratory', branch:'Hamdan St', position:'Senior Medical Laboratory Technologist', experienceRequired:'3-5 yrs', expectedJoining:'2026-02-01', filled:1, headcount:3 },
+  { entity:'Pine Pharmacies', branch:'Dubai', position:'Registered Pharmacist', experienceRequired:'2+ yrs', genderPreference:'None', filled:0, headcount:2 },
   { entity:'Al Jebal Opticals', branch:'Fujairah', position:'Optometrist', experienceRequired:'2-4 yrs', filled:0, headcount:1 },
   { entity:'Herbal Park', branch:'Abu Dhabi', position:'Ayurveda Therapist', experienceRequired:'1-3 yrs', filled:2, headcount:2 },
   { entity:'Atomic Drugstore', branch:'RAK', position:'Retail Supervisor', experienceRequired:'3+ yrs', expectedJoining:'2026-03-15', filled:0, headcount:1 },
-  { entity:'APML', branch:'Abu Dhabi', position:'Phlebotomist (Home Collection)', experienceRequired:'1+ yr', filled:1, headcount:4 },
+  { entity:'Accuracy Plus Medical Laboratory', branch:'Abu Dhabi', position:'Phlebotomist (Home Collection)', experienceRequired:'1+ yr', filled:1, headcount:4 },
 ];
 
 function CareersPage() {
@@ -278,8 +278,8 @@ function CareersPage() {
 
   const [newsItems, setNewsItems] = useState([
     {tag:'Growth',date:'June 2026',title:'HiFive Expands Herbal Park to a Second Location',body:'We are excited to announce the planned expansion of Herbal Park Ayurvedic Health Center, serving more communities with authentic Ayurvedic care.'},
-    {tag:'Team',date:'May 2026',title:'130+ Strong: Our People-First Culture',body:'From Pine Pharmacy to Al Jebal Opticals, our team reflects the diversity and dedication that drives exceptional service standards.'},
-    {tag:'Healthcare',date:'April 2026',title:'APML Achieves ISO 15189 Accreditation Renewal',body:'Accuracy Plus Medical Laboratory continues its commitment to diagnostic excellence with a successful ISO 15189 accreditation renewal.'},
+    {tag:'Team',date:'May 2026',title:'130+ Strong: Our People-First Culture',body:'From Pine Pharmacies to Al Jebal Opticals, our team reflects the diversity and dedication that drives exceptional service standards.'},
+    {tag:'Healthcare',date:'April 2026',title:'Accuracy Plus Medical Laboratory Achieves ISO 15189 Accreditation Renewal',body:'Accuracy Plus Medical Laboratory continues its commitment to diagnostic excellence with a successful ISO 15189 accreditation renewal.'},
   ]);
 
   // Load news from Excel News sheet (falls back to static items above if sheet doesn't exist yet)
@@ -331,18 +331,18 @@ function CareersPage() {
 
 
   // Normalise entity names from the worker — Excel stores full names like
-  // "Accuracy Plus Medical Laboratory" but filter keys are short ("APML").
+  // "Accuracy Plus Medical Laboratory" but filter keys are short ("Accuracy Plus Medical Laboratory").
   const ENTITY_NORM = {
-    "accuracy plus medical laboratory": "APML",
+    "accuracy plus medical laboratory": "Accuracy Plus Medical Laboratory",
     "herbal park ayurvedic health center": "Herbal Park",
     "herbal park ayurveda": "Herbal Park",
     "herbal park": "Herbal Park",
     "atomic drugstore": "Atomic Drugstore",
-    "pine pharmacy": "Pine Pharmacy",
-    "pine group of pharmacies": "Pine Pharmacy",
+    "pine pharmacy": "Pine Pharmacies",
+    "pine group of pharmacies": "Pine Pharmacies",
     "al jebal opticals": "Al Jebal Opticals",
     "al jebal group of opticals": "Al Jebal Opticals",
-    "apml": "APML",
+    "apml": "Accuracy Plus Medical Laboratory",
   };
   const normEntity = (raw) => raw ? (ENTITY_NORM[raw.trim().toLowerCase()] || raw) : raw;
 
@@ -573,10 +573,10 @@ function CareersPage() {
                 <div style={{display:'flex',alignItems:'center',gap:'8px',padding:'0 6px 0 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',minWidth:'150px'}}>
                   <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 6px',cursor:'pointer',width:'100%'}}>
                     <option value="">{L.allEntities}</option>
-                    <option value="APML">APML</option>
+                    <option value="Accuracy Plus Medical Laboratory">Accuracy Plus Medical Laboratory</option>
                     <option value="Herbal Park">Herbal Park</option>
                     <option value="Atomic Drugstore">Atomic Drugstore</option>
-                    <option value="Pine Pharmacy">Pine Pharmacy</option>
+                    <option value="Pine Pharmacies">Pine Pharmacies</option>
                     <option value="Al Jebal Opticals">Al Jebal Opticals</option>
                   </select>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
@@ -692,7 +692,7 @@ function CareersPage() {
         <section style={{maxWidth:'1240px',margin:'0 auto',padding:'6px clamp(16px,4vw,48px) 18px'}}>
           <div style={{textAlign:'center',fontSize:'11px',letterSpacing:'.18em',textTransform:'uppercase',fontWeight:'700',color:'#a59b92',marginBottom:'16px'}}>{L.entitiesLabel}</div>
           <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'10px'}}>
-            {['APML — Medical Laboratory','Herbal Park — Ayurveda','Atomic Drugstore','Pine Pharmacy','Al Jebal Opticals'].map((name, i) => (
+            {['Accuracy Plus Medical Laboratory','Herbal Park — Ayurveda','Atomic Drugstore','Pine Pharmacies','Al Jebal Opticals'].map((name, i) => (
               <div key={i} style={{display:'inline-flex',alignItems:'center',gap:'9px',padding:'11px 20px',borderRadius:'99px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,.75)',boxShadow:'0 6px 18px rgba(110,11,42,.07)',fontSize:'13px',fontWeight:'600',color:'#3a3640'}}>
                 <span style={{width:'7px',height:'7px',borderRadius:'50%',background:'#d6204a',flexShrink:0}}></span>{name}
               </div>
@@ -778,10 +778,10 @@ function CareersPage() {
               <div style={{display:'flex',alignItems:'center',gap:'6px',padding:'0 14px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)'}}>
                 <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 4px',cursor:'pointer'}}>
                   <option value="">{L.allEntities}</option>
-                  <option value="APML">APML</option>
+                  <option value="Accuracy Plus Medical Laboratory">Accuracy Plus Medical Laboratory</option>
                   <option value="Herbal Park">Herbal Park</option>
                   <option value="Atomic Drugstore">Atomic Drugstore</option>
-                  <option value="Pine Pharmacy">Pine Pharmacy</option>
+                  <option value="Pine Pharmacies">Pine Pharmacies</option>
                   <option value="Al Jebal Opticals">Al Jebal Opticals</option>
                 </select>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="2.2" strokeLinecap="round"><path d="m6 9 6 6 6-6"/></svg>
