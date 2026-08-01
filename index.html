@@ -364,7 +364,7 @@ function CareersPage() {
     const labelColor = isFull ? '#c0392b' : isAlmost ? '#b8740f' : '#1a7a42';
     let meta = t('UAE · Full Time','الإمارات · دوام كامل');
     if (p.experienceRequired) meta += ` · ${p.experienceRequired}`;
-    if (p.genderPreference && p.genderPreference !== 'None') meta += ` · ${p.genderPreference} ${t('preferred','مفضل')}`;
+    // gender preference intentionally not shown in public job listings
     return {
       title: p.customPosition || p.position,
       entityLine: p.entity + (p.branch ? ` · ${p.branch}` : ''),
