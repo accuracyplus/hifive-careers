@@ -640,7 +640,7 @@ function CareersPage() {
             </div>
 
             {/* Icon rail */}
-            <div data-r="rail" style={{position:'absolute',left:'clamp(14px,2.2vw,26px)',top:'54%',transform:'translateY(-50%)',zIndex:6,display:'flex',flexDirection:'column',gap:'8px',padding:'9px',borderRadius:'99px',background:'rgba(255,255,255,.46)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.65)',boxShadow:'0 12px 30px rgba(110,11,42,.12)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.45s'}}>
+            <div data-r="rail" style={{position:'absolute',insetInlineStart:'clamp(14px,2.2vw,26px)',top:'54%',transform:'translateY(-50%)',zIndex:6,display:'flex',flexDirection:'column',gap:'8px',padding:'9px',borderRadius:'99px',background:'rgba(255,255,255,.46)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.65)',boxShadow:'0 12px 30px rgba(110,11,42,.12)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.45s'}}>
               {/* Home — scroll to top */}
               <div onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} title="Home"
                 style={{width:'42px',height:'42px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 6px 14px rgba(110,11,42,.32)',cursor:'pointer'}}>
@@ -664,7 +664,7 @@ function CareersPage() {
               {/* Left column */}
               <div style={{flex:'1 1 320px',minWidth:'280px',display:'flex',flexDirection:'column'}}>
                 {/* Headline */}
-                <div data-r="hpad" style={{position:'relative',zIndex:4,padding:'clamp(28px,5vw,52px) clamp(20px,4vw,56px) 0 clamp(100px,10vw,130px)',maxWidth:'760px'}}>
+                <div data-r="hpad" style={{position:'relative',zIndex:4,paddingTop:'clamp(28px,5vw,52px)',paddingBottom:'0',paddingInlineStart:'clamp(100px,10vw,130px)',paddingInlineEnd:'clamp(20px,4vw,56px)',maxWidth:'760px'}}>
                   <h1 data-r="hero-h1" aria-label={`${L.heroTitle1} ${L.heroTitle2}`} style={{fontFamily:"'Playfair Display',serif",fontWeight:'500',fontSize:'clamp(44px,7.2vw,92px)',lineHeight:'.98',letterSpacing:'-.02em',color:'#23202b',animation:'hf-blurin .9s cubic-bezier(.2,.7,.2,1) both',animationDelay:'.25s'}}>
                     {L.heroTitle1}<br/>
                     <span style={{background:'linear-gradient(100deg,#d6204a,#6e0b2a 60%,#b4123a)',WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent',fontStyle:'italic',fontWeight:'600',display:'block'}}>{L.heroTitle2}</span>
@@ -680,7 +680,7 @@ function CareersPage() {
                 </div>
 
                 {/* Floating glass cards */}
-                <div data-r="cpad" style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',gap:'22px',padding:'clamp(26px,4vw,40px) clamp(20px,4vw,56px) clamp(22px,3vw,32px) clamp(100px,10vw,130px)',alignItems:'flex-end'}}>
+                <div data-r="cpad" style={{position:'relative',zIndex:4,display:'flex',flexWrap:'wrap',gap:'22px',paddingTop:'clamp(26px,4vw,40px)',paddingBottom:'clamp(22px,3vw,32px)',paddingInlineStart:'clamp(100px,10vw,130px)',paddingInlineEnd:'clamp(20px,4vw,56px)',alignItems:'flex-end'}}>
                   {/* Stat card */}
                   <div style={{flex:'1',minWidth:'230px',maxWidth:'310px',padding:'22px 24px',borderRadius:'24px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 18px 44px rgba(110,11,42,.14)',animation:'hf-up .9s cubic-bezier(.2,.7,.2,1) both,hf-float 7s ease-in-out 1.4s infinite',animationDelay:'.65s',minHeight:'200px',alignSelf:'flex-end'}}>
                     <div style={{fontWeight:'700',fontSize:'14.5px',color:'#23202b',marginBottom:'5px'}}>{L.statCardTitle}</div>
@@ -714,7 +714,7 @@ function CareersPage() {
                       </div>
                       <div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginBottom:'16px'}}>
                         <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{L.uaeFullTime}</span>
-                        {featured.metaTag && <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{featured.metaTag}</span>}
+                        {featured.metaTag && <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap',unicodeBidi:'plaintext'}}>{featured.metaTag}</span>}
                       </div>
                       <button className="hf-apply-btn" onClick={featured.onApply} aria-label={t('Apply for the featured role','تقدم للوظيفة المميزة')} style={{width:'100%',padding:'12px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.26)',transition:'transform .2s'}}>{L.applyWord} →</button>
                     </div>
