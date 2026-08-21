@@ -614,7 +614,7 @@ function CareersPage() {
               </span>
               <div style={{display:'flex',alignItems:'center',gap:'8px',flex:'1',minWidth:'240px',justifyContent:'flex-end',flexWrap:'wrap'}}>
                 <div style={{display:'flex',alignItems:'center',gap:'8px',padding:'0 6px 0 16px',borderRadius:'99px',background:'rgba(255,255,255,.7)',minWidth:'150px'}}>
-                  <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 6px',cursor:'pointer',width:'100%'}}>
+                  <select onChange={e => setEntity(e.target.value)} value={entity} aria-label={t('Filter by facility','تصفية حسب المنشأة')} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 6px',cursor:'pointer',width:'100%'}}>
                     <option value="">{L.allEntities}</option>
                     <option value="Accuracy Plus Medical Laboratory">Accuracy Plus Medical Laboratory</option>
                     <option value="Herbal Park">Herbal Park</option>
@@ -700,7 +700,7 @@ function CareersPage() {
                             {featured.entityLine}
                           </div>
                         </div>
-                        <button className="hf-featured-apply" onClick={featured.onApply} style={{width:'42px',height:'42px',flexShrink:0,borderRadius:'50%',border:'1px solid rgba(180,18,58,.25)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'#fff',color:'#b4123a',transition:'all .2s'}}>
+                        <button className="hf-featured-apply" onClick={featured.onApply} aria-label={t('View the featured role','عرض الوظيفة المميزة')} style={{width:'42px',height:'42px',flexShrink:0,borderRadius:'50%',border:'1px solid rgba(180,18,58,.25)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:'#fff',color:'#b4123a',transition:'all .2s'}}>
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
                         </button>
                       </div>
@@ -708,7 +708,7 @@ function CareersPage() {
                         <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{L.uaeFullTime}</span>
                         {featured.metaTag && <span style={{fontSize:'11.5px',fontWeight:'600',color:'#4a4751',padding:'6px 12px',borderRadius:'99px',background:'rgba(214,32,74,.08)',whiteSpace:'nowrap'}}>{featured.metaTag}</span>}
                       </div>
-                      <button className="hf-apply-btn" onClick={featured.onApply} style={{width:'100%',padding:'12px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.26)',transition:'transform .2s'}}>{L.applyWord} →</button>
+                      <button className="hf-apply-btn" onClick={featured.onApply} aria-label={t('Apply for the featured role','تقدم للوظيفة المميزة')} style={{width:'100%',padding:'12px',borderRadius:'14px',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'700',color:'#fff',background:'linear-gradient(135deg,#d6204a,#6e0b2a)',boxShadow:'0 8px 18px rgba(110,11,42,.26)',transition:'transform .2s'}}>{L.applyWord} →</button>
                     </div>
                   )}
                 </div>
@@ -819,7 +819,7 @@ function CareersPage() {
                 <input value={search} onInput={e => setSearch(e.target.value)} aria-label={t('Search positions','ابحث عن وظيفة')} placeholder={L.searchPlaceholder} style={{border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',color:'#1c1b22',flex:'1',minWidth:'120px'}} />
               </div>
               <div style={{display:'flex',alignItems:'center',gap:'6px',padding:'0 14px',borderRadius:'99px',background:'rgba(255,255,255,.7)',border:'1px solid rgba(255,255,255,.85)',boxShadow:'0 6px 18px rgba(110,11,42,.07)'}}>
-                <select onChange={e => setEntity(e.target.value)} value={entity} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 4px',cursor:'pointer'}}>
+                <select onChange={e => setEntity(e.target.value)} value={entity} aria-label={t('Filter by facility','تصفية حسب المنشأة')} style={{appearance:'none',border:'none',background:'none',outline:'none',fontFamily:'inherit',fontSize:'13.5px',fontWeight:'600',color:'#1c1b22',padding:'11px 4px',cursor:'pointer'}}>
                   <option value="">{L.allEntities}</option>
                   <option value="Accuracy Plus Medical Laboratory">Accuracy Plus Medical Laboratory</option>
                   <option value="Herbal Park">Herbal Park</option>
@@ -997,7 +997,7 @@ function CareersPage() {
                     </div>
                     <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} required placeholder={`${L.candidateName} *`} style={{border:`1px solid ${!f.name?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
 {f.status==='idle' ? (
-                      <select value={f.position} onChange={e=>setBulkField(i,'position',e.target.value)}
+                      <select value={f.position} onChange={e=>setBulkField(i,'position',e.target.value)} aria-label={t('Position for this CV','الوظيفة لهذه السيرة الذاتية')}
                         style={{border:`1px solid ${!f.position?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:f.position?'#1c1b22':'#6f6a72'}}>
                         <option value="">{t('Position *','المسمى الوظيفي *')}</option>
                         {(masterPositions.length ? masterPositions : [...new Set(positions.map(p=>p.customPosition||p.position))].filter(Boolean)).map(p=><option key={p} value={p}>{p}</option>)}
