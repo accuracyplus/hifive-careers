@@ -270,7 +270,10 @@ function CareersPage() {
     bulkTitle: t('Drop Your CV Directly','أرسل سيرتك مباشرة'),
     bulkSub: t('Upload one or multiple CVs — no account needed. Files are saved securely and HR is notified instantly.','ارفع سيرة ذاتية أو أكثر — بدون حساب. تُحفظ الملفات بأمان وتُخطر الموارد البشرية فوراً.'),
     dropTitle: t('Drop CVs here or click to browse','أسقط السير هنا أو انقر للتصفح'),
-    dropHint: t('PDF · Word · Image · Multiple files supported','PDF · Word · صورة · ملفات متعددة'),
+    dropHint: t('Word or PDF with selectable text · Multiple files supported','Word أو PDF بنص قابل للتحديد · ملفات متعددة'),
+    scanNote: t('A scanned or photographed CV cannot be read by our system and is reviewed last — a Word file or a text PDF gets you reviewed sooner.','السيرة الذاتية الممسوحة ضوئياً أو المصوّرة لا يمكن لنظامنا قراءتها وتُراجع في النهاية — ملف Word أو PDF نصي يُراجع أسرع.'),
+    scanWarn: t('This file looks like a scan or a photo — our system cannot read it. You can still send it.','يبدو أن هذا الملف ممسوح ضوئياً أو صورة — لا يمكن لنظامنا قراءته. يمكنك إرساله على أي حال.'),
+    scanConfirm: t('This CV looks like a scan or a photo and cannot be read by our system. Send it anyway? (A Word file or a text PDF gets you reviewed sooner.)','يبدو أن هذه السيرة الذاتية ممسوحة ضوئياً أو صورة ولا يمكن لنظامنا قراءتها. هل تريد إرسالها على أي حال؟ (ملف Word أو PDF نصي يُراجع أسرع.)'),
     candidateName: t('Candidate name *','اسم المرشح *'),
     positionOptional: t('Position (optional)','الوظيفة (اختياري)'),
     uploadAll: t('Upload All CVs','رفع جميع السير'),
@@ -455,16 +458,19 @@ function CareersPage() {
   const [newsModal, setNewsModal] = useState(null); // {title, body, date, tag} for full news article
   const openApply = (position, ent, jd='') => {
     setModalOpen(true); setModalPosition(position); setModalEntity(ent); setModalJD(jd);
-    setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormSalary('');
+    setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormSalary(''); setCvScan(false);
   };
   const closeModal = () => { setModalOpen(false); setSuccess(false); };
 
+  const [cvScan, setCvScan] = useState(false);
+  const onCvPicked = async () => setCvScan(await looksScanned(cvRef.current?.files?.[0]));
   const submitApplication = async () => {
     const cvFile = cvRef.current?.files?.[0];
     if (!formName || !formPhone || !cvFile) {
       alert(t('Please fill in all required fields and attach your CV.','يرجى ملء جميع الحقول المطلوبة وإرفاق سيرتك الذاتية.'));
       return;
     }
+    if (cvScan && !confirm(L.scanConfirm)) return;
     setSubmitting(true);
     try {
       const fd = new FormData();
@@ -535,8 +541,21 @@ function CareersPage() {
     .replace(/\b(cv|resume|application)\b/gi,'').trim()
     .split(/\s+/).map(w => w ? w[0].toUpperCase()+w.slice(1).toLowerCase() : '').join(' ').trim();
 
-  const addBulk = (fileList) => {
-    const add = Array.from(fileList).map(f => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', status:'idle' }));
+  const looksScanned = async (f) => {
+    if (!f) return false;
+    if (/^image\//.test(f.type || '') || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name || '')) return true;
+    if (!/\.pdf$/i.test(f.name || '')) return false;
+    try {
+      const head = new Uint8Array(await f.slice(0, 2 * 1024 * 1024).arrayBuffer());
+      let str = '';
+      for (let i = 0; i < head.length; i += 0x8000) str += String.fromCharCode.apply(null, head.subarray(i, i + 0x8000));
+      return str.indexOf('%PDF') === 0 && str.indexOf('/Font') < 0;
+    } catch { return false; }
+  };
+  const addBulk = async (fileList) => {
+    const files = Array.from(fileList);
+    const flags = await Promise.all(files.map(looksScanned));
+    const add = files.map((f, i) => ({ file:f, fileName:f.name, name:guessName(f.name), position:'', status:'idle', scan: flags[i] }));
     setBulkFiles(prev => [...prev, ...add]);
     setBulkDone(false);
   };
@@ -548,6 +567,7 @@ function CareersPage() {
     const snapshot = [...bulkFiles];
     const pending = snapshot.filter(f => f.status === 'idle');
     if (!pending.length) return;
+    if (pending.some(f => f.scan) && !confirm(L.scanConfirm)) return;
     setBulkUploading(true); setBulkProgress(0); setBulkStatus('');
     let done = 0;
     for (let i = 0; i < snapshot.length; i++) {
@@ -987,6 +1007,7 @@ function CareersPage() {
             <div style={{fontSize:'17px',fontWeight:'700',color:'#23202b',marginBottom:'6px'}}>{L.dropTitle}</div>
             <div style={{fontSize:'12.5px',color:'#6f6a72'}}>{L.dropHint}</div>
           </div>
+          <p style={{marginTop:'10px',fontSize:'12px',lineHeight:'1.6',color:'#8a6d1f',textAlign:'center',maxWidth:'560px',marginLeft:'auto',marginRight:'auto'}}>{L.scanNote}</p>
 
           <p style={{marginTop:'14px',fontSize:'12px',lineHeight:'1.6',color:'#6b6670',textAlign:'center',maxWidth:'560px',marginLeft:'auto',marginRight:'auto'}}>
             {t('By submitting your CV you consent to HiFive Holdings processing your personal data for recruitment purposes, in accordance with UAE Federal Decree-Law No. 45 of 2021 on Personal Data Protection.','بتقديم سيرتك الذاتية فإنك توافق على معالجة هايفايف هولدينجز لبياناتك الشخصية لأغراض التوظيف، وفقاً للمرسوم بقانون اتحادي رقم 45 لسنة 2021 بشأن حماية البيانات الشخصية.')}
@@ -1003,6 +1024,9 @@ function CareersPage() {
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b4123a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
                       {f.fileName}<span style={stStyle}>{stText}</span>
                     </div>
+                    {f.scan && f.status==='idle' && (
+                      <div style={{gridColumn:'1/-1',fontSize:'12px',lineHeight:'1.5',color:'#8a6d1f',background:'#fff8e6',border:'1px solid #f3d98b',borderRadius:'9px',padding:'7px 10px'}}>{L.scanWarn}</div>
+                    )}
                     <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} required placeholder={`${L.candidateName} *`} style={{border:`1px solid ${!f.name?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
 {f.status==='idle' ? (
                       <select value={f.position} onChange={e=>setBulkField(i,'position',e.target.value)} aria-label={t('Position for this CV','الوظيفة لهذه السيرة الذاتية')}
@@ -1186,7 +1210,9 @@ function CareersPage() {
                   </div>
                   <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
                     <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.cvLabel}</label>
-                    <input ref={cvRef} type="file" accept=".pdf,.doc,.docx" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'11px 12px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#6b6670'}} />
+                    <input ref={cvRef} type="file" accept=".pdf,.doc,.docx" onChange={onCvPicked} style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'11px 12px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#6b6670'}} />
+                    <div style={{fontSize:'11.5px',lineHeight:'1.5',color:'#6f6a72'}}>{L.scanNote}</div>
+                    {cvScan && <div style={{fontSize:'12px',lineHeight:'1.5',color:'#8a6d1f',background:'#fff8e6',border:'1px solid #f3d98b',borderRadius:'9px',padding:'7px 10px'}}>{L.scanWarn}</div>}
                   </div>
                 </div>
                 <div style={{display:'flex',gap:'10px',marginTop:'22px'}}>
