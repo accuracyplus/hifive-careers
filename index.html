@@ -377,6 +377,17 @@ function CareersPage() {
       .catch(() => {}); // keep static fallback on error
   }, []);
 
+  // One visit per browser session, counted by the recruitment portal for its
+  // careers-site figures (no cookie; the worker keeps only a daily hash).
+  useEffect(() => {
+    try {
+      if (!sessionStorage.getItem('hf-visit')) {
+        sessionStorage.setItem('hf-visit', '1');
+        fetch(`${WORKER}/site-visit`, { method: 'POST', keepalive: true }).catch(() => {});
+      }
+    } catch (e) { /* private mode: not counted */ }
+  }, []);
+
   useEffect(() => {
     fetch(`${WORKER}/get-open-positions`)
       .then(r => r.json())
@@ -452,15 +463,22 @@ function CareersPage() {
     let meta = t('UAE · Full Time','الإمارات · دوام كامل');
     if (p.experienceRequired) meta += ` · ${p.experienceRequired}`;
     // gender preference intentionally not shown in public job listings
+    // A target joining date that has passed is not shown (the portal stops
+    // sending one too; this covers the built-in examples and old copies).
+    const upcoming = !!p.expectedJoining && String(p.expectedJoining).slice(0, 10) >= new Date().toISOString().slice(0, 10);
+    const left = total - filled;
     return {
       title: p.customPosition || p.position,
       entityLine: p.entity + (p.branch ? ` · ${p.branch}` : ''),
       metaLine: meta,
-      hasJoining: !!p.expectedJoining,
-      joiningLine: p.expectedJoining ? `${t('Target joining','الالتحاق')}: ${fmtDate(p.expectedJoining)}` : '',
+      hasJoining: upcoming,
+      joiningLine: upcoming ? `${t('Target joining','الالتحاق')}: ${fmtDate(p.expectedJoining)}` : '',
       pct, isFull, isOpen: !isFull,
       barColor,
-      fillLabel: isFull ? t('Position Filled','تم شغل الوظيفة') : `${total - filled} ${(total - filled) === 1 ? t('opening available','وظيفة متاحة') : t('openings available','وظائف متاحة')}`,
+      // "1 of 3 openings available" once some are taken (joined or accepted).
+      fillLabel: isFull ? t('Position Filled','تم شغل الوظيفة')
+        : filled > 0 ? t(`${left} of ${total} openings available`, `${left} من ${total} وظائف متاحة`)
+        : `${left} ${left === 1 ? t('opening available','وظيفة متاحة') : t('openings available','وظائف متاحة')}`,
       fillLabelStyle: { fontSize:'11.5px', fontWeight:'700', color:labelColor },
       badgeText: isFull ? t('Filled','مكتمل') : t('Hiring Now','نوظف الآن'),
       badgeFull: isFull,
