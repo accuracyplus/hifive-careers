@@ -132,11 +132,62 @@ html[lang="ar"] p,html[lang="ar"] .hf-meta{unicode-bidi:plaintext}
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js" crossorigin></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 const WORKER = "https://recruitment.sinusuresh.workers.dev";
+
+// ── Bot check (Cloudflare Turnstile) ──────────────────────────────────────
+// The recruitment worker checks it on CV uploads and status checks. Invisible
+// unless Cloudflare wants a click, when a small box appears at the bottom.
+// Empty site key = off. A passed check comes back as a 15-minute pass, kept
+// for this tab, so a bulk CV drop is checked once.
+const TURNSTILE_SITEKEY = '';
+let _cfWidget = null, _cfWaiting = null;
+function cfStoredPass() {
+  try { const p = sessionStorage.getItem('hf-cfpass') || ''; return Number(p.split('.')[0]) > Date.now() + 30000 ? p : ''; } catch { return ''; }
+}
+function cfRemember(data) {
+  try { if (data && data.cfPass) sessionStorage.setItem('hf-cfpass', data.cfPass); if (data && data.turnstile) sessionStorage.removeItem('hf-cfpass'); } catch {}
+}
+async function cfProof() {
+  if (!TURNSTILE_SITEKEY) return {};
+  const pass = cfStoredPass();
+  if (pass) return { pass };
+  for (let i = 0; i < 100 && !window.turnstile; i++) await new Promise(r => setTimeout(r, 100));
+  if (!window.turnstile) return {};   // script blocked: the worker decides
+  let box = document.getElementById('cf-box');
+  if (!box) {
+    box = document.createElement('div'); box.id = 'cf-box';
+    box.style.cssText = 'position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:99999';
+    document.body.appendChild(box);
+  }
+  return new Promise((resolve) => {
+    const finish = (v) => { const w = _cfWaiting; _cfWaiting = null; if (w) { clearTimeout(w.t); w.resolve(v); } };
+    _cfWaiting = { resolve, t: setTimeout(() => finish({}), 60000) };
+    if (_cfWidget === null) {
+      _cfWidget = window.turnstile.render(box, {
+        sitekey: TURNSTILE_SITEKEY, action: 'turnstile-spin-v1',
+        appearance: 'interaction-only', execution: 'execute',
+        callback: (token) => finish({ token }),
+        'error-callback': () => finish({}),
+        'expired-callback': () => {},
+      });
+    } else {
+      window.turnstile.reset(_cfWidget);
+    }
+    window.turnstile.execute(_cfWidget);
+  });
+}
+function cfAppend(fd, cf) {
+  if (cf.token) fd.append('cf-turnstile-response', cf.token);
+  if (cf.pass) fd.append('cfPass', cf.pass);
+}
+function cfQuery(cf) {
+  return (cf.token ? `&cf=${encodeURIComponent(cf.token)}` : '') + (cf.pass ? `&cfPass=${encodeURIComponent(cf.pass)}` : '');
+}
 
 const FALLBACK = [
   { entity:'Accuracy Plus Medical Laboratory', branch:'Hamdan St', position:'Senior Medical Laboratory Technologist', experienceRequired:'3-5 yrs', expectedJoining:'2026-02-01', filled:1, headcount:3 },
@@ -532,8 +583,10 @@ function CareersPage() {
       fd.append('expectedSalary', formSalary); fd.append('position', modalPosition);
       fd.append('entity', modalEntity); fd.append('source', 'Careers Page');
       fd.append('file', cvFile);
+      cfAppend(fd, await cfProof());
       const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
       const data = await res.json();
+      cfRemember(data);
       if (!data.success) throw new Error(data.error || 'Submission failed');
       setSuccess(true); setSuccessRef(data.cvID || data.candidateID || '');
     } catch (e) {
@@ -582,8 +635,11 @@ function CareersPage() {
     if (!trackName.trim()) { setTrackErr(t('Please enter your first name','يرجى إدخال اسمك الأول')); return; }
     setTrackLoading(true);
     try {
-      const r = await fetch(`${WORKER}/track-status?id=${id}&firstName=${encodeURIComponent(trackName.trim())}`);
+      const cf = await cfProof();
+      const r = await fetch(`${WORKER}/track-status?id=${id}&firstName=${encodeURIComponent(trackName.trim())}${cfQuery(cf)}`);
       const data = await r.json();
+      cfRemember(data);
+      if (data.turnstile) { setTrackErr(data.error); return; }
       if (!data.found) { setTrackNotFound(true); return; }
       setTrackResult(data);
     } catch (e) { setTrackErr(t('Error checking status. Please try again.','خطأ في التحقق من الحالة. يرجى المحاولة مرة أخرى.')); }
@@ -634,8 +690,10 @@ function CareersPage() {
         const fd = new FormData();
         fd.append('file', f.file); fd.append('name', f.name||'Unknown'); const finalPos = f.position==='__other__'?(f.positionCustom||'').trim()||'General Application':f.position||'General Application';
       fd.append('position', finalPos); fd.append('source','Careers Page CV Drop'); fd.append('facility', f.facility || 'HiFive Holdings');
+        cfAppend(fd, await cfProof());
         const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
         const data = await res.json();
+        cfRemember(data);
         if (!data.success) throw new Error(data.error||'fail');
         setBulkField(i, 'status', 'done'); done++;
       } catch { setBulkField(i, 'status', 'error'); }
