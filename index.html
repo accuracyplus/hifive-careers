@@ -216,6 +216,7 @@ function CareersPage() {
   const [formPhone, setFormPhone] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formNat, setFormNat] = useState('');
+  const [formDob, setFormDob] = useState('');
   const [formSalary, setFormSalary] = useState('');
   const [trackInput, setTrackInput] = useState('');
   const [trackName, setTrackName] = useState('');
@@ -365,6 +366,9 @@ function CareersPage() {
     phone: t('Phone *','رقم الهاتف *'),
     email: t('Email *','البريد الإلكتروني *'),
     nationality: t('Nationality *','الجنسية *'),
+    dob: t('Date of Birth *','تاريخ الميلاد *'),
+    dobBad: t('Please check your date of birth.','يرجى التحقق من تاريخ الميلاد.'),
+    needEach: t('Please fill in the name, position, nationality and date of birth for each CV.','يرجى إدخال الاسم والمسمى الوظيفي والجنسية وتاريخ الميلاد لكل سيرة ذاتية.'),
     expSalary: t('Expected Salary (AED) *','الراتب المتوقع (درهم) *'),
     cvLabel: t('CV (PDF/DOC) *','السيرة الذاتية *'),
     cancelBtn: t('Cancel','إلغاء'),
@@ -562,24 +566,27 @@ function CareersPage() {
   const [newsModal, setNewsModal] = useState(null); // {title, body, date, tag} for full news article
   const openApply = (position, ent, jd='') => {
     setModalOpen(true); setModalPosition(position); setModalEntity(ent); setModalJD(jd);
-    setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormSalary(''); setCvScan(false);
+    setSuccess(false); setFormName(''); setFormPhone(''); setFormEmail(''); setFormNat(''); setFormDob(''); setFormSalary(''); setCvScan(false);
   };
   const closeModal = () => { setModalOpen(false); setSuccess(false); };
 
   const [cvScan, setCvScan] = useState(false);
+  // Age 15 to 90 at most: the worker leaves out anything else.
+  const dobOk = (v) => { const y = Number(String(v || '').slice(0,4)), now = new Date().getFullYear(); return y >= now - 91 && y <= now - 14 && new Date(v) < new Date(); };
   const onCvPicked = async () => setCvScan(await looksScanned(cvRef.current?.files?.[0]));
   const submitApplication = async () => {
     const cvFile = cvRef.current?.files?.[0];
-    if (!formName || !formPhone || !cvFile) {
+    if (!formName || !formPhone || !formNat.trim() || !formDob || !cvFile) {
       alert(t('Please fill in all required fields and attach your CV.','يرجى ملء جميع الحقول المطلوبة وإرفاق سيرتك الذاتية.'));
       return;
     }
+    if (!dobOk(formDob)) { alert(L.dobBad); return; }
     if (cvScan && !confirm(L.scanConfirm)) return;
     setSubmitting(true);
     try {
       const fd = new FormData();
       fd.append('name', formName); fd.append('phone', formPhone);
-      fd.append('email', formEmail); fd.append('nationality', formNat);
+      fd.append('email', formEmail); fd.append('nationality', formNat.trim()); fd.append('dob', formDob);
       fd.append('expectedSalary', formSalary); fd.append('position', modalPosition);
       fd.append('entity', modalEntity); fd.append('source', 'Careers Page');
       fd.append('file', cvFile);
@@ -676,6 +683,8 @@ function CareersPage() {
     const snapshot = [...bulkFiles];
     const pending = snapshot.filter(f => f.status === 'idle');
     if (!pending.length) return;
+    const effPosOf = f => f.position === '__other__' ? (f.positionCustom||'').trim() : f.position||'';
+    if (pending.some(f => !f.name.trim() || !effPosOf(f) || !(f.nationality||'').trim() || !dobOk(f.dob))) { alert(L.needEach); return; }
     if (pending.some(f => f.scan) && !confirm(L.scanConfirm)) return;
     setBulkUploading(true); setBulkProgress(0); setBulkStatus('');
     let done = 0;
@@ -690,6 +699,7 @@ function CareersPage() {
         const fd = new FormData();
         fd.append('file', f.file); fd.append('name', f.name||'Unknown'); const finalPos = f.position==='__other__'?(f.positionCustom||'').trim()||'General Application':f.position||'General Application';
       fd.append('position', finalPos); fd.append('source','Careers Page CV Drop'); fd.append('facility', f.facility || 'HiFive Holdings');
+      fd.append('nationality', (f.nationality||'').trim()); fd.append('dob', f.dob||'');
         cfAppend(fd, await cfProof());
         const res = await fetch(`${WORKER}/upload-cv-public`, { method:'POST', body:fd });
         const data = await res.json();
@@ -1162,6 +1172,17 @@ function CareersPage() {
                         style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'8px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',marginTop:'4px'}}/>
                     )}
                     {f.status === 'idle' && (
+                      <input value={f.nationality||''} onInput={e=>setBulkField(i,'nationality',e.target.value)} maxLength="60" placeholder={L.nationality} aria-label={L.nationality}
+                        style={{gridColumn:'1',border:`1px solid ${!(f.nationality||'').trim()?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',minWidth:0}}/>
+                    )}
+                    {f.status === 'idle' && (
+                      <label style={{gridColumn:'2',display:'flex',flexDirection:'column',gap:'3px',fontSize:'11px',fontWeight:'600',color:'#6f6a72',minWidth:0}}>
+                        {L.dob}
+                        <input value={f.dob||''} onChange={e=>setBulkField(i,'dob',e.target.value)} type="date" max={new Date().toISOString().slice(0,10)}
+                          style={{border:`1px solid ${!f.dob?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'8px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',minWidth:0}}/>
+                      </label>
+                    )}
+                    {f.status === 'idle' && (
                       <button onClick={() => removeBulk(i)} style={{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'}}>✕</button>
                     )}
                   </div>
@@ -1327,6 +1348,14 @@ function CareersPage() {
                   <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
                     <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.email}</label>
                     <input value={formEmail} onInput={e => setFormEmail(e.target.value)} type="email" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.nationality}</label>
+                    <input value={formNat} onInput={e => setFormNat(e.target.value)} maxLength="60" placeholder="e.g. Indian" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.dob}</label>
+                    <input value={formDob} onChange={e => setFormDob(e.target.value)} type="date" max={new Date().toISOString().slice(0,10)} style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
                   </div>
                   <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
                     <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.cvLabel}</label>
