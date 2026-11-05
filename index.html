@@ -1155,7 +1155,7 @@ function CareersPage() {
                     {f.scan && f.status==='idle' && (
                       <div style={{gridColumn:'1/-1',fontSize:'12px',lineHeight:'1.5',color:'#8a6d1f',background:'#fff8e6',border:'1px solid #f3d98b',borderRadius:'9px',padding:'7px 10px'}}>{L.scanWarn}</div>
                     )}
-                    <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} required placeholder={`${L.candidateName} *`} style={{border:`1px solid ${!f.name?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
+                    <input value={f.name} onInput={e => setBulkField(i,'name',e.target.value)} disabled={f.status!=='idle'} required placeholder={L.candidateName} style={{border:`1px solid ${!f.name?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22'}} />
 {f.status==='idle' ? (
                       <select value={f.position} onChange={e=>setBulkField(i,'position',e.target.value)} aria-label={t('Position for this CV','الوظيفة لهذه السيرة الذاتية')}
                         style={{border:`1px solid ${!f.position?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:f.position?'#1c1b22':'#6f6a72'}}>
@@ -1172,15 +1172,18 @@ function CareersPage() {
                         style={{border:'1px solid rgba(180,18,58,.16)',borderRadius:'9px',padding:'8px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',marginTop:'4px'}}/>
                     )}
                     {f.status === 'idle' && (
-                      <input value={f.nationality||''} onInput={e=>setBulkField(i,'nationality',e.target.value)} maxLength="60" placeholder={L.nationality} aria-label={L.nationality}
-                        style={{gridColumn:'1',border:`1px solid ${!(f.nationality||'').trim()?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',minWidth:0}}/>
-                    )}
-                    {f.status === 'idle' && (
-                      <label style={{gridColumn:'2',display:'flex',flexDirection:'column',gap:'3px',fontSize:'11px',fontWeight:'600',color:'#6f6a72',minWidth:0}}>
-                        {L.dob}
-                        <input value={f.dob||''} onChange={e=>setBulkField(i,'dob',e.target.value)} type="date" max={new Date().toISOString().slice(0,10)}
-                          style={{border:`1px solid ${!f.dob?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'8px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',minWidth:0}}/>
-                      </label>
+                      <div style={{gridColumn:'1/-1',display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(140px,1fr))',gap:'9px'}}>
+                        <label style={{display:'flex',flexDirection:'column',gap:'3px',fontSize:'11px',fontWeight:'600',color:'#6f6a72',minWidth:0}}>
+                          {L.nationality}
+                          <input value={f.nationality||''} onInput={e=>setBulkField(i,'nationality',e.target.value)} maxLength="60" placeholder="e.g. Indian"
+                            style={{border:`1px solid ${!(f.nationality||'').trim()?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'9px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',minWidth:0,width:'100%',boxSizing:'border-box'}}/>
+                        </label>
+                        <label style={{display:'flex',flexDirection:'column',gap:'3px',fontSize:'11px',fontWeight:'600',color:'#6f6a72',minWidth:0}}>
+                          {L.dob}
+                          <input value={f.dob||''} onChange={e=>setBulkField(i,'dob',e.target.value)} type="date" max={new Date().toISOString().slice(0,10)}
+                            style={{border:`1px solid ${!f.dob?'rgba(214,32,74,.4)':'rgba(180,18,58,.16)'}`,borderRadius:'9px',padding:'8px 11px',fontFamily:'inherit',fontSize:'12.5px',outline:'none',background:'#fff',color:'#1c1b22',minWidth:0,width:'100%',boxSizing:'border-box'}}/>
+                        </label>
+                      </div>
                     )}
                     {f.status === 'idle' && (
                       <button onClick={() => removeBulk(i)} style={{width:'32px',height:'32px',borderRadius:'9px',border:'none',cursor:'pointer',background:'rgba(214,32,74,.1)',color:'#b4123a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'}}>✕</button>
@@ -1342,7 +1345,7 @@ function CareersPage() {
                     <input value={formName} onInput={e => setFormName(e.target.value)} placeholder="As per passport" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
                   </div>
                   <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
-                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.phone} *</label>
+                    <label style={{fontSize:'12.5px',fontWeight:'600',color:'#4a4751'}}>{L.phone}</label>
                     <input value={formPhone} onInput={e => setFormPhone(e.target.value)} placeholder="971XXXXXXXXX" style={{border:'1px solid rgba(180,18,58,.18)',borderRadius:'11px',padding:'12px 14px',fontFamily:'inherit',fontSize:'14px',outline:'none',background:'#fff',color:'#1c1b22'}} />
                   </div>
                   <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
