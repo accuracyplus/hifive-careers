@@ -524,6 +524,9 @@ function CareersPage() {
     const left = total - filled;
     return {
       title: p.customPosition || p.position,
+      // The facility's own logo, from HiFive ID (7 Nov 2026): the portal sends it with
+      // each job when the facility has one. Only an https link from HiFive ID is used.
+      logo: p.logo && /^https:\/\/hifive-id\.sinusuresh\.workers\.dev\/logos\//.test(String(p.logo.url || '')) ? p.logo : null,
       entityLine: p.entity + (p.branch ? ` · ${p.branch}` : ''),
       metaLine: meta,
       hasJoining: upcoming,
@@ -1004,7 +1007,14 @@ function CareersPage() {
               return (
                 <div key={i} className={vm.isOpen ? 'hf-pos-card-open' : ''} style={{padding:'22px',borderRadius:'22px',background:'rgba(255,255,255,.62)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',border:'1px solid rgba(255,255,255,.8)',boxShadow:'0 12px 34px rgba(110,11,42,.09)',opacity:vm.isFull?'0.72':'1',transition:'transform .25s,box-shadow .25s'}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px',marginBottom:'12px'}}>
-                    <span style={{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'}}>{vm.entityLine}</span>
+                    <div style={{minWidth:0}}>
+                      {vm.logo && (
+                        <img src={vm.logo.url} alt={vm.logo.alt || ''} width="120" height="40" loading="lazy" decoding="async"
+                          onError={(e)=>{ e.currentTarget.style.display='none'; }}
+                          style={{display:'block',width:'120px',height:'40px',objectFit:'contain',objectPosition:'left center',background:'#fff',borderRadius:'8px',marginBottom:'8px'}}/>
+                      )}
+                      <span style={{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'}}>{vm.entityLine}</span>
+                    </div>
                     <span style={{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background:vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color:vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em'}}>{vm.badgeText}</span>
                   </div>
                   <div style={{fontFamily:"'Playfair Display',serif",fontSize:'19px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'8px'}}>{vm.title}</div>
