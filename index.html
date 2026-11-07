@@ -1015,7 +1015,7 @@ function CareersPage() {
                       )}
                       <span style={{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'}}>{vm.entityLine}</span>
                     </div>
-                    <span style={{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background:vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color:vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em'}}>{vm.badgeText}</span>
+                    <span style={{fontSize:'10.5px',fontWeight:'700',padding:'5px 11px',borderRadius:'99px',background:vm.badgeFull?'rgba(192,57,43,.1)':'rgba(30,132,73,.12)',color:vm.badgeFull?'#c0392b':'#1a7a42',letterSpacing:'.03em',whiteSpace:'nowrap',flexShrink:0}}>{vm.badgeText}</span>
                   </div>
                   <div style={{fontFamily:"'Playfair Display',serif",fontSize:'19px',fontWeight:'600',color:'#23202b',lineHeight:'1.2',marginBottom:'8px'}}>{vm.title}</div>
                   <div style={{fontSize:'12.5px',color:'#6b6670',lineHeight:'1.5',marginBottom:'6px',unicodeBidi:'plaintext'}}>{vm.metaLine}</div>
