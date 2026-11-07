@@ -108,6 +108,9 @@
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible,[role="button"]:focus-visible{outline:3px solid #b4123a!important;outline-offset:2px!important;border-radius:6px}
 /* On the dark maroon tracker band, use a light ring so it stays visible */
 [data-hf-dark] a:focus-visible,[data-hf-dark] button:focus-visible,[data-hf-dark] input:focus-visible{outline-color:#ffd9e2!important}
+/* Facility logos on job cards: no background of their own. When the phone or browser
+   is in dark mode, a thin white outline traces the logo so dark lettering stays readable. */
+@media (prefers-color-scheme: dark){.hf-pos-logo{filter:drop-shadow(0 0 .6px #fff) drop-shadow(0 0 .6px #fff) drop-shadow(0 0 .6px #fff)}}
 /* Skip-to-content link — off-screen until focused */
 .hf-skip{position:absolute;left:12px;top:-56px;z-index:200;background:#6e0b2a;color:#fff;padding:10px 18px;border-radius:0 0 12px 12px;font-family:"Inter",sans-serif;font-weight:700;font-size:13px;text-decoration:none;transition:top .18s ease}
 .hf-skip:focus{top:0;outline:3px solid #ffd9e2;outline-offset:2px}
@@ -1009,9 +1012,9 @@ function CareersPage() {
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px',marginBottom:'12px'}}>
                     <div style={{minWidth:0}}>
                       {vm.logo && (
-                        <img src={vm.logo.url} alt={vm.logo.alt || ''} width="120" height="40" loading="lazy" decoding="async"
+                        <img className="hf-pos-logo" src={vm.logo.url} alt={vm.logo.alt || ''} width="120" height="40" loading="lazy" decoding="async"
                           onError={(e)=>{ e.currentTarget.style.display='none'; }}
-                          style={{display:'block',width:'120px',height:'40px',objectFit:'contain',objectPosition:'left center',background:'#fff',borderRadius:'8px',marginBottom:'8px'}}/>
+                          style={{display:'block',width:'120px',height:'40px',objectFit:'contain',objectPosition:'left center',marginBottom:'8px'}}/>
                       )}
                       <span style={{fontSize:'10.5px',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:'700',color:'#b4123a'}}>{vm.entityLine}</span>
                     </div>
